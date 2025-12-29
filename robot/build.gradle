@@ -1,5 +1,6 @@
 import edu.wpi.first.gradlerio.GradleRIOPlugin
-
+import org.photonvision.*
+import org.photonlib.*
 plugins {
     id "java-library"
     id "edu.wpi.first.GradleRIO"

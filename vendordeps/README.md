@@ -1,2 +1,1 @@
-# Don't use me!
-Vendor deps don't go here! You're probably looking for `/robot/vendordeps`.
+This is where all vendordeps should go, if they're under \robot\vendordeps that's incorrect, move them here.
