@@ -22,4 +22,8 @@ dependencies {
 
     compileOnly "org.jetbrains:annotations:23.0.0"
     implementation "it.unimi.dsi:fastutil:8.2.1"
+// Pull the `wpilib` version for vendordeps. If this stops working & you don't want to
+// debug further, you can just replace it with a string like `2024.3.2`
+    def apiVersion = wpi.vendor.fixedVersion.get()
+    api "edu.wpi.first.wpilibNewCommands:wpilibNewCommands-java:$apiVersion"
 }
