@@ -11,6 +11,7 @@ public final class Robot extends PhaseDrivenRobot {
 
 	private final Controller driverController = new Controller(this.scheduler, DRIVER_CONTROLLER, 0.1);
 	private final Controller operatorController = new Controller(this.scheduler, OPERATOR_CONTROLLER,  0.1);
+	private final Drivetrain drivetrain = subsystems.track(new Drivetrain(this.subsystems));
 
 	@Override
 	public void autonomousSequence() {
