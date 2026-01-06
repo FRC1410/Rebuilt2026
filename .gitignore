@@ -198,4 +198,3 @@ compile_commands.json
 robot/build/tmp/.cache/
 framework/build/tmp/
 framework/build/classes/java/main/org/frc1410/framework/AutoProfile.class
-/robot/build/libs
