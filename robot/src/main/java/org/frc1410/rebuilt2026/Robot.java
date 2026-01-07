@@ -1,5 +1,5 @@
 package org.frc1410.rebuilt2026;
-// PLEASE
+// HELP
 
 import org.frc1410.framework.PhaseDrivenRobot;
 import org.frc1410.framework.control.Controller;

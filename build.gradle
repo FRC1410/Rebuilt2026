@@ -66,9 +66,9 @@ dependencies {
     implementation "it.unimi.dsi:fastutil:8.2.1"
     implementation "gov.nist.math:jama:1.0.3"
 
-    // WPILib new commands
-    def apiVersion = wpi.versions.wpilibVersion.get()
-    api "edu.wpi.first.wpilibNewCommands:wpilibNewCommands-java:$apiVersion"
+    // WPILib new commands, unneeded but leave it here incase
+    //def apiVersion = wpi.versions.wpilibVersion.get()
+    //api "edu.wpi.first.wpilibNewCommands:wpilibNewCommands-java:$apiVersion"
 }
 
 // Simulation configuration
