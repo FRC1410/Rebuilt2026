@@ -5,6 +5,7 @@ import org.frc1410.framework.PhaseDrivenRobot;
 import org.frc1410.framework.control.Controller;
 import static org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
 import static org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
+import org.photonvision.PhotonCamera;
 
 public final class Robot extends PhaseDrivenRobot {
 	public Robot() {}

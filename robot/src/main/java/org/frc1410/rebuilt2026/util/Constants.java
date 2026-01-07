@@ -1,4 +1,64 @@
 package org.frc1410.rebuilt2026.util;
 
+import java.io.IOException;
+import java.util.List;
+
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathConstraints;
+
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.units.DistanceUnit;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularAcceleration;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.LinearAcceleration;
+import edu.wpi.first.units.measure.LinearVelocity;
+import org.json.simple.parser.ParseException;
+
+import static edu.wpi.first.units.Units.*;
+import static org.frc1410.rebuilt2026.util.Tuning.*;
+
+
 public final class Constants {
+        // Drive constants
+        public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(15.029297); 
+        public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(0.351562); //-179.648438
+        public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(-25.136719); //154.863281
+        public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(-27.861328); 
+    
+        public static final boolean FRONT_LEFT_DRIVE_MOTOR_INVERTED = true;
+        public static final boolean FRONT_RIGHT_DRIVE_MOTOR_INVERTED = true;
+        public static final boolean BACK_LEFT_DRIVE_MOTOR_INVERTED = false;
+        public static final boolean BACK_RIGHT_DRIVE_MOTOR_INVERTED = false;
+    
+        public static final boolean FRONT_LEFT_STEER_MOTOR_INVERTED = true;
+        public static final boolean FRONT_RIGHT_STEER_MOTOR_INVERTED = true;
+        public static final boolean BACK_LEFT_STEER_MOTOR_INVERTED = true;
+        public static final boolean BACK_RIGHT_STEER_MOTOR_INVERTED = true;
+    
+        public static final Translation2d FRONT_LEFT_SWERVE_MODULE_LOCATION = new Translation2d(0.301625, 0.301625);
+        public static final Translation2d FRONT_RIGHT_SWERVE_MODULE_LOCATION = new Translation2d(0.301625, -0.301625);
+        public static final Translation2d BACK_LEFT_SWERVE_MODULE_LOCATION = new Translation2d(-0.301625, 0.301625);
+        public static final Translation2d BACK_RIGHT_SWERVE_MODULE_LOCATION = new Translation2d(-0.301625, -0.301625);
+    
+        public static final SwerveDriveKinematics SWERVE_DRIVE_KINEMATICS = new SwerveDriveKinematics(
+                FRONT_LEFT_SWERVE_MODULE_LOCATION,
+                FRONT_RIGHT_SWERVE_MODULE_LOCATION,
+                BACK_LEFT_SWERVE_MODULE_LOCATION,
+                BACK_RIGHT_SWERVE_MODULE_LOCATION
+        );
+    
+        public static final double slowMultiplier = 1;
+        public static final LinearVelocity SWERVE_DRIVE_MAX_SPEED = MetersPerSecond.of(5.5 * slowMultiplier);
+        public static final AngularVelocity SWERVE_DRIVE_MAX_ANGULAR_VELOCITY = DegreesPerSecond.of(570 * slowMultiplier);
+        public static final LinearAcceleration SWERVE_DRIVE_MAX_ACCELERATION = MetersPerSecondPerSecond.of(6 * slowMultiplier);
+        public static final AngularAcceleration SWERVE_DRIVE_MAX_ANGULAR_ACCELERATION = DegreesPerSecondPerSecond.of(1062 * slowMultiplier);
+    
+        public static final double DRIVE_MOTOR_CURRENT_LIMIT = 40;
+        public static final int STEER_MOTOR_CURRENT_LIMIT = 30;
+    
 }
