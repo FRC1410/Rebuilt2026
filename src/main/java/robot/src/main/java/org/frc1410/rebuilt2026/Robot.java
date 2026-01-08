@@ -6,9 +6,15 @@ import framework.src.main.java.org.frc1410.framework.PhaseDrivenRobot;
 import framework.src.main.java.org.frc1410.framework.control.Controller;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
+
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
+
 import org.photonvision.PhotonCamera;
+
+import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskPersistence;
+import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
 
 public final class Robot extends PhaseDrivenRobot {
 	public Robot() {}
@@ -22,7 +28,9 @@ public final class Robot extends PhaseDrivenRobot {
 	}
 
 	@Override
-	public void teleopSequence() {}
+	public void teleopSequence() {
+		this.scheduler.scheduleDefaultCommand(new DriveLooped(this.drivetrain, this.driverController.LEFT_X_AXIS, this.driverController.LEFT_Y_AXIS, this.driverController.RIGHT_X_AXIS, this.driverController.RIGHT_TRIGGER), TaskPersistence.GAMEPLAY, LockPriority.HIGH);
+	}
 
 
 	@Override
