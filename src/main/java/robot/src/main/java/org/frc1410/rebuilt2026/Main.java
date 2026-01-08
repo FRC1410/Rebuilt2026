@@ -1,4 +1,4 @@
-package org.frc1410.rebuilt2026;
+package robot.src.main.java.org.frc1410.rebuilt2026;
 
 import edu.wpi.first.wpilibj.RobotBase;
 

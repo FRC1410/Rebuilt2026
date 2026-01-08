@@ -10,7 +10,7 @@ group = "org.frc1410"
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-def ROBOT_MAIN_CLASS = "org.frc1410.rebuilt2026.Main"
+def ROBOT_MAIN_CLASS = "robot.src.main.java.org.frc1410.rebuilt2026.Main"
 
 repositories {
     mavenCentral()
@@ -41,6 +41,7 @@ def deployArtifact = deploy.targets.roborio.artifacts.frcJava
 wpi.java.debugJni = false
 
 dependencies {
+    //implementation project(":framework")
     // WPILib core dependencies
     api wpi.java.deps.wpilib()
     api wpi.java.vendor.java()
@@ -77,6 +78,7 @@ wpi.sim.addDriverstation()
 
 // JAR configuration
 jar {
+    //dependsOn ":framework:build"
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
     duplicatesStrategy = DuplicatesStrategy.INCLUDE

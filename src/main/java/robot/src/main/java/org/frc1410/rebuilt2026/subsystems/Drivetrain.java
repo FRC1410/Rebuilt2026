@@ -1,4 +1,4 @@
-package org.frc1410.reefscape2025.subsystems;
+package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -12,15 +12,15 @@ import edu.wpi.first.networktables.*;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DriverStation;
-import org.frc1410.framework.scheduler.subsystem.SubsystemStore;
-import org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
-import org.frc1410.reefscape2025.util.NetworkTables;
+import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.SubsystemStore;
+import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
+import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 import java.util.Optional;
 
 import static edu.wpi.first.units.Units.*;
-import static org.frc1410.reefscape2025.util.Constants.*;
-import static org.frc1410.reefscape2025.util.IDs.*;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.*;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.*;
 
 public class Drivetrain implements TickedSubsystem {
     private final NetworkTable table = NetworkTableInstance.getDefault().getTable("Drivetrain");

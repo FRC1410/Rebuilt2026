@@ -1,4 +1,4 @@
-package org.frc1410.reefscape2025.subsystems;
+package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.StatusCode;
@@ -27,13 +27,13 @@ import edu.wpi.first.units.*;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
-import org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
+import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
 
 import java.io.IOException;
 import java.util.Random;
 
-import static org.frc1410.reefscape2025.util.Constants.*;
-import static org.frc1410.reefscape2025.util.Tuning.*;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.*;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.*;
 
 public class SwerveModule implements TickedSubsystem {
     private final TalonFX driveMotor;

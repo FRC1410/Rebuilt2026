@@ -1,10 +1,13 @@
-package org.frc1410.rebuilt2026;
+package robot.src.main.java.org.frc1410.rebuilt2026;
+
 // HELP
 
-import org.frc1410.framework.PhaseDrivenRobot;
-import org.frc1410.framework.control.Controller;
-import static org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
-import static org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
+import framework.src.main.java.org.frc1410.framework.PhaseDrivenRobot;
+import framework.src.main.java.org.frc1410.framework.control.Controller;
+import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
+
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
 import org.photonvision.PhotonCamera;
 
 public final class Robot extends PhaseDrivenRobot {

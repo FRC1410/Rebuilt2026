@@ -1,4 +1,4 @@
-package org.frc1410.rebuilt2026.util;
+package robot.src.main.java.org.frc1410.rebuilt2026.util;
 
 import edu.wpi.first.networktables.BooleanPublisher;
 import edu.wpi.first.networktables.BooleanSubscriber;
