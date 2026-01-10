@@ -3,9 +3,6 @@ package framework.src.main.java.org.frc1410.framework;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import framework.src.main.java.org.frc1410.framework.util.log.Logger;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +18,7 @@ public final class AutoSelector {
 
 	private static final Logger LOG = new Logger("AutoSelector");
 
-	private final List<@NotNull AutoProfile> profiles = new ArrayList<>();
+	private final List<AutoProfile> profiles = new ArrayList<>();
 
 	/**
 	 * Adds a profile to this auto selector.
@@ -33,8 +30,7 @@ public final class AutoSelector {
 	 * @return This {@link AutoSelector} for chaining.
 	 * @throws NullPointerException If {@code name} or {@code commandSupplier} is null.
 	 */
-	@Contract("_, _ -> this")
-	public @NotNull AutoSelector add(@NotNull String name, @NotNull Supplier<@NotNull Command> commandSupplier) {
+	public AutoSelector add(String name, Supplier<Command> commandSupplier) {
 		var profile = new AutoProfile(name, commandSupplier, profiles.size());
 		profiles.add(profile);
 		return this;
@@ -48,7 +44,7 @@ public final class AutoSelector {
 	 * @return The {@link Command} to be scheduled for this profile.
 	 * @throws NullPointerException If {@code profileName} is null.
 	 */
-	public @NotNull Command select(@NotNull String profileName) {
+	public Command select(String profileName) {
 		for (var profile : profiles) {
 			if (profileName.equalsIgnoreCase(profile.name())) {
 				return Objects.requireNonNull(profile.supplier().get(), "Generated auto command must not be null");
@@ -64,7 +60,7 @@ public final class AutoSelector {
 	 *
 	 * @return A never-null, unmodifiable {@link List} of all profiles.
 	 */
-	public @NotNull @Unmodifiable List<@NotNull AutoProfile> getProfiles() {
+	public List<AutoProfile> getProfiles() {
 		return List.copyOf(profiles);
 	}
 }

@@ -7,9 +7,6 @@ import framework.src.main.java.org.frc1410.framework.scheduler.task.impl.Command
 import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockHandler;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.TaskLock;
-import org.intellij.lang.annotations.MagicConstant;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Range;
 
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -24,7 +21,7 @@ public final class TaskScheduler {
 	public final LoopStore loopStore = new LoopStore(this);
 	public final LockHandler lockHandler = new LockHandler();
 
-	private void schedule(BoundTask task, @NotNull Loop loop) {
+	private void schedule(BoundTask task, Loop loop) {
 		loop.add(task);
 	}
 
@@ -42,7 +39,7 @@ public final class TaskScheduler {
 	 *							  or {@code loop} are null.
 	 * @throws IllegalArgumentException If {@code lockPriority} is not valid.
 	 */
-	public @NotNull BoundTask schedule(@NotNull Task job, @NotNull TaskPersistence persistence, @NotNull Observer observer, @MagicConstant(valuesFromClass = LockPriority.class) int lockPriority, @NotNull Loop loop) {
+	public BoundTask schedule(Task job, TaskPersistence persistence, Observer observer, int lockPriority, Loop loop) {
 		Objects.requireNonNull(persistence);
 		Objects.requireNonNull(observer);
 		LockPriority.requireInRange(lockPriority);
@@ -55,7 +52,7 @@ public final class TaskScheduler {
 		return task;
 	}
 
-	public @NotNull BoundTask schedule(@NotNull Supplier<@NotNull Task> jobSupplier, @NotNull TaskPersistence persistence, @NotNull Observer observer, @MagicConstant(valuesFromClass = LockPriority.class) int lockPriority, @NotNull Loop loop) {
+	public BoundTask schedule(Supplier<Task> jobSupplier, TaskPersistence persistence, Observer observer, int lockPriority, Loop loop) {
 		var deferJob = new DeferredTask(this, jobSupplier, persistence, observer, lockPriority);
 		return schedule(deferJob, persistence, observer, LockPriority.NULL);
 	}
@@ -77,7 +74,7 @@ public final class TaskScheduler {
 	 *							  are null.
 	 * @throws IllegalArgumentException If {@code lockPriority} is not valid.
 	 */
-	public @NotNull BoundTask schedule(@NotNull Task job, @NotNull TaskPersistence persistence, @NotNull Observer observer, @MagicConstant(valuesFromClass = LockPriority.class) int lockPriority, @Range(from = 0, to = Integer.MAX_VALUE) long period) {
+	public BoundTask schedule(Task job, TaskPersistence persistence, Observer observer, int lockPriority, long period) {
 		return schedule(job, persistence, observer, lockPriority, loopStore.ofPeriod(period));
 	}
 
@@ -94,7 +91,7 @@ public final class TaskScheduler {
 	 *							  are null.
 	 * @throws IllegalArgumentException If {@code lockPriority} is not valid.
 	 */
-	public @NotNull BoundTask schedule(@NotNull Task job, @NotNull TaskPersistence persistence, @NotNull Observer observer, @MagicConstant(valuesFromClass = LockPriority.class) int lockPriority) {
+	public BoundTask schedule(Task job, TaskPersistence persistence, Observer observer, int lockPriority) {
 		return schedule(job, persistence, observer, lockPriority, loopStore.main);
 	}
 
@@ -109,7 +106,7 @@ public final class TaskScheduler {
 	 *
 	 * @throws NullPointerException If {@code command} or {@code persistence} are null.
 	 */
-	public @NotNull BoundTask scheduleDefaultCommand(@NotNull Command command, @NotNull TaskPersistence persistence) {
+	public BoundTask scheduleDefaultCommand(Command command, TaskPersistence persistence) {
 		Objects.requireNonNull(command);
 		return schedule(new CommandTask(command), persistence, Observer.DEFAULT, LockPriority.LOWEST);
 	}
@@ -126,7 +123,7 @@ public final class TaskScheduler {
 	 *
 	 * @throws NullPointerException If {@code command} or {@code persistence} are null.
 	 */
-	public void scheduleDefaultCommand(@NotNull Command command, @NotNull TaskPersistence persistence, @Range(from = 0, to = Integer.MAX_VALUE) long period) {
+	public void scheduleDefaultCommand(Command command, TaskPersistence persistence, long period) {
 		Objects.requireNonNull(command);
 		schedule(new CommandTask(command), persistence, Observer.DEFAULT, LockPriority.LOWEST, period);
 	}
@@ -142,7 +139,7 @@ public final class TaskScheduler {
 	 *
 	 * @throws NullPointerException If {@code command} is null.
 	 */
-	public void scheduleAutoCommand(@NotNull Command command) {
+	public void scheduleAutoCommand(Command command) {
 		Objects.requireNonNull(command);
 		schedule(new CommandTask(command), TaskPersistence.EPHEMERAL, Observer.NO_OP, LockPriority.HIGHEST);
 	}
@@ -159,7 +156,7 @@ public final class TaskScheduler {
 	 *
 	 * @throws NullPointerException If {@code command} is null.
 	 */
-	public void scheduleAutoCommand(@NotNull Command command, @Range(from = 0, to = Integer.MAX_VALUE) long period) {
+	public void scheduleAutoCommand(Command command, long period) {
 		Objects.requireNonNull(command);
 		schedule(new CommandTask(command), TaskPersistence.EPHEMERAL, Observer.NO_OP, LockPriority.HIGHEST, period);
 	}

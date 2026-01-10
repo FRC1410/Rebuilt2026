@@ -3,7 +3,6 @@ package framework.src.main.java.org.frc1410.framework.scheduler.task.impl;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.Task;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.Set;
@@ -17,7 +16,7 @@ public final class CommandTask implements Task {
 	private final Command command;
 	private final Set<Subsystem> lockKeys;
 
-	public CommandTask(@NotNull Command command) {
+	public CommandTask(Command command) {
 		this.command = Objects.requireNonNull(command);
 		this.lockKeys = command.getRequirements();
 	}
@@ -43,7 +42,7 @@ public final class CommandTask implements Task {
 	}
 
 	@Override
-	public @NotNull Set<?> getLockKeys() {
+	public Set<?> getLockKeys() {
 		return lockKeys;
 	}
 }

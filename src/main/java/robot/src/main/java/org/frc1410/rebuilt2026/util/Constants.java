@@ -1,7 +1,6 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.util;
 
 import java.io.IOException;
-import java.util.List;
 
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -9,9 +8,7 @@ import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.units.DistanceUnit;
-import edu.wpi.first.units.Measure;
-import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -45,9 +42,9 @@ public final class Constants {
     // Robot constants
     public static final double DRIVE_GEAR_RATIO = (50.0 / 16.0) * (17.0 / 27.0) * (45.0 / 15.0);
 //    public static final double DRIVE_L_TWO_GEAR_RATIO = (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0);
-    public static final Measure<DistanceUnit> WHEEL_RADIUS = Units.Inches.of(2);
-    public static final Measure<DistanceUnit> WHEEL_CIRCUMFERENCE = WHEEL_RADIUS.times(2 * Math.PI);
-    public static final Measure<DistanceUnit> TRACKWIDTH_METERS = Meters.of(0.6032627);
+    public static final Distance WHEEL_RADIUS = Inches.of(2);
+    public static final Distance WHEEL_CIRCUMFERENCE = WHEEL_RADIUS.times(2 * Math.PI);
+    public static final Distance TRACKWIDTH_METERS = Meters.of(0.6032627);
 
     // Drive constants
     public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(15.029297); 

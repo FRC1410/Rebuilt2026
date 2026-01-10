@@ -2,8 +2,6 @@ package framework.src.main.java.org.frc1410.framework.scheduler.task;
 
 import framework.src.main.java.org.frc1410.framework.scheduler.loop.Loop;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.TaskLock;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a task that is bound to a loop and being actively ticked. This class
@@ -13,11 +11,11 @@ import org.jetbrains.annotations.Nullable;
  * @see Loop
  */
 public record BoundTask(
-		@NotNull LifecycleHandle handle,
-		@NotNull Task job,
-		@NotNull TaskPersistence persistence,
-		@NotNull Observer observer,
-		@Nullable TaskLock lock
+		LifecycleHandle handle,
+		Task job,
+		TaskPersistence persistence,
+		Observer observer,
+		TaskLock lock
 ) {
 	public BoundTask {
 		observer.init(handle); // Set the state to its correct initial value

@@ -1,10 +1,9 @@
 package framework.src.main.java.org.frc1410.framework.util.log.transport;
 
 import framework.src.main.java.org.frc1410.framework.util.log.Log;
-import org.jetbrains.annotations.NotNull;
 
 @FunctionalInterface
 public interface Transport {
 
-	void accept(@NotNull Log log);
+	void accept(Log log);
 }

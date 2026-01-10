@@ -4,7 +4,6 @@ import framework.src.main.java.org.frc1410.framework.phase.Phase;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.BoundTask;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskScheduler;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskState;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -70,7 +69,7 @@ public class Loop {
 		}
 	}
 
-	public @NotNull Collection<@NotNull BoundTask> getTasks() {
+	public Collection<BoundTask> getTasks() {
 		return tasks;
 	}
 

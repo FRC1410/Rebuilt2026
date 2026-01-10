@@ -2,7 +2,6 @@ package framework.src.main.java.org.frc1410.framework.scheduler.task.lock;
 
 import framework.src.main.java.org.frc1410.framework.scheduler.task.BoundTask;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskScheduler;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class LockHandler {
 
-	private final Map<Object, @NotNull BoundTask> owners = new ConcurrentHashMap<>();
+	private final Map<Object, BoundTask> owners = new ConcurrentHashMap<>();
 
 	/**
 	 * Checks if the provided task owns access to all of its lock keys. If a
@@ -27,7 +26,7 @@ public final class LockHandler {
 	 *
 	 * @return {@code true} if the task owns all of its locks and can execute.
 	 */
-	public boolean ownsLocks(@NotNull BoundTask task) {
+	public boolean ownsLocks(BoundTask task) {
 		// Ignore cases where a task has no lock or is not running
 		if (task.lock() == null || !task.handle().state.isExecuting()) return true;
 
@@ -59,7 +58,7 @@ public final class LockHandler {
 	 *
 	 * @param task The task to release.
 	 */
-	public void releaseLocks(@NotNull BoundTask task) {
+	public void releaseLocks(BoundTask task) {
 		if (task.lock() == null) {
 			return;
 		}

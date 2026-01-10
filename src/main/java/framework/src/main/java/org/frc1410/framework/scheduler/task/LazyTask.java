@@ -3,23 +3,20 @@ package framework.src.main.java.org.frc1410.framework.scheduler.task;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.impl.CommandTask;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 import java.util.function.Supplier;
 
 public final class LazyTask implements Task {
 
-	private final @NotNull Supplier<Task> supplier;
+	private final Supplier<Task> supplier;
 	private Task wrapped;
 
-	public LazyTask(@NotNull Supplier<Task> supplier) {
+	public LazyTask(Supplier<Task> supplier) {
 		this.supplier = supplier;
 	}
 
-	@Contract("_ -> new")
-	public static LazyTask fromCommand(@NotNull Supplier<Command> commandSupplier) {
+	public static LazyTask fromCommand(Supplier<Command> commandSupplier) {
 		return new LazyTask(() -> new CommandTask(commandSupplier.get()));
 	}
 
@@ -52,7 +49,7 @@ public final class LazyTask implements Task {
 	}
 
 	@Override
-	public @NotNull Set<? extends @NotNull Object> getLockKeys() {
+	public Set<?> getLockKeys() {
 		if (wrapped == null) return Set.of();
 		return wrapped.getLockKeys();
 	}

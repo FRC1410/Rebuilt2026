@@ -1,10 +1,9 @@
 package framework.src.main.java.org.frc1410.framework.scheduler.loop;
 
-import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import java.util.HashMap;
 import framework.src.main.java.org.frc1410.framework.phase.Phase;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskScheduler;
 import framework.src.main.java.org.frc1410.framework.util.log.Logger;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -13,7 +12,7 @@ public final class LoopStore {
 	private static final Logger LOG = new Logger("LoopStore");
 
 	private final TaskScheduler scheduler;
-	private final Long2ObjectOpenHashMap<Loop> loops = new Long2ObjectOpenHashMap<>();
+	private final HashMap<Long, Loop> loops = new HashMap<>();
 	private final Deque<Loop> untracked = new ArrayDeque<>();
 	public final Loop main;
 
@@ -35,7 +34,7 @@ public final class LoopStore {
 		return loop;
 	}
 
-	public void propagateTransition(@NotNull Phase newPhase) {
+	public void propagateTransition(Phase newPhase) {
 		main.flagTransition(newPhase);
 		
 		for (var loop : loops.values()) {

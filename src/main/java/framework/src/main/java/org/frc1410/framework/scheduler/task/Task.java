@@ -1,7 +1,5 @@
 package framework.src.main.java.org.frc1410.framework.scheduler.task;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Set;
 
 /**
@@ -67,7 +65,7 @@ public interface Task {
 	 *
 	 * @return A non-null list of {@link Object}s to use as lock keys.
 	 */
-	default @NotNull Set<? extends @NotNull Object> getLockKeys() {
+	default Set<?> getLockKeys() {
 		return Set.of();
 	}
 }

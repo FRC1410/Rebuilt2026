@@ -4,14 +4,11 @@ import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.jni.OrchestraJNI;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.pathplanner.lib.util.DriveFeedforwards;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -23,15 +20,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.DoublePublisher;
-import edu.wpi.first.units.*;
+import edu.wpi.first.units.measure.*;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
 
-import java.io.IOException;
-import java.util.Random;
-
+import static edu.wpi.first.units.Units.*;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.*;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.*;
 
@@ -63,7 +58,7 @@ public class SwerveModule implements TickedSubsystem {
             int steerEncoderID,
             boolean driveInverted,
             boolean steerInverted,
-            Measure<AngleUnit> angleOffset,
+            Angle angleOffset,
             DoublePublisher desiredVelocity,
             DoublePublisher desiredAngle,
             DoublePublisher actualVelocity,
@@ -98,11 +93,7 @@ public class SwerveModule implements TickedSubsystem {
         sparkConfig.inverted(steerInverted);
 
         this.steerMotor = new SparkMax(steerMotorID, MotorType.kBrushless);
-        this.steerMotor.configure(
-                sparkConfig,
-                SparkBase.ResetMode.kResetSafeParameters,
-                SparkBase.PersistMode.kNoPersistParameters
-        );
+        this.steerMotor.configure(sparkConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
 
         // Steer encoder config
         this.steerEncoder = new CANcoder(steerEncoderID, "CTRE");
@@ -110,7 +101,7 @@ public class SwerveModule implements TickedSubsystem {
 
         var steerEncoderConfig = new CANcoderConfiguration();
 
-        steerEncoderConfig.MagnetSensor.MagnetOffset = angleOffset.unaryMinus().in(Units.Rotation);
+        steerEncoderConfig.MagnetSensor.MagnetOffset = angleOffset.negate().in(Rotation);
         steerEncoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
 
         configurator.apply(steerEncoderConfig);
@@ -148,7 +139,7 @@ public class SwerveModule implements TickedSubsystem {
     }
 
     private Rotation2d getSteerPosition() {
-        return Rotation2d.fromRotations(this.steerEncoder.getAbsolutePosition().getValue().magnitude());
+        return Rotation2d.fromRotations(this.steerEncoder.getAbsolutePosition().getValue().in(Rotations));
     }
 
     public void setDesiredState(SwerveModuleState desiredState) {
@@ -158,16 +149,16 @@ public class SwerveModule implements TickedSubsystem {
 
         var request = new VelocityVoltage(
                 SwerveModule.moduleVelocityToMotorAngularVelocity(
-                        Units.MetersPerSecond.of(desiredState.speedMetersPerSecond)
-                ).in(Units.RotationsPerSecond)
+                        MetersPerSecond.of(desiredState.speedMetersPerSecond)
+                ).in(RotationsPerSecond)
         );
 
         this.driveMotor.setControl(request);
     }
 
-    public void drive(Measure<VoltageUnit> voltage) {
+    public void drive(Voltage voltage) {
         this.desiredState.angle = new Rotation2d();
-        this.driveMotor.setVoltage(voltage.in(Units.Volt));
+        this.driveMotor.setVoltage(voltage.in(Volt));
     }
 
     public SwerveModuleState getState() {
@@ -179,19 +170,19 @@ public class SwerveModule implements TickedSubsystem {
     }
 
     public AngularVelocity getAngularVelocity() {
-        return Units.RotationsPerSecond.of(this.driveMotor.getVelocity().getValue().magnitude());
+        return RotationsPerSecond.of(this.driveMotor.getVelocity().getValue().in(RotationsPerSecond));
     }
 
-    private static AngularVelocity moduleVelocityToMotorAngularVelocity(Measure<LinearVelocityUnit> linearVelocity) {
-        return Units.RotationsPerSecond.of(linearVelocity.in(Units.MetersPerSecond) / WHEEL_CIRCUMFERENCE.in(Units.Meters) * DRIVE_GEAR_RATIO);
+    private static AngularVelocity moduleVelocityToMotorAngularVelocity(LinearVelocity linearVelocity) {
+        return RotationsPerSecond.of(linearVelocity.in(MetersPerSecond) / WHEEL_CIRCUMFERENCE.in(Meters) * DRIVE_GEAR_RATIO);
     }
 
     private LinearVelocity getDriveVelocity() {
-        return Units.MetersPerSecond.of(this.driveMotor.getVelocity().getValue().magnitude() * WHEEL_CIRCUMFERENCE.in(Units.Meters)).div(DRIVE_GEAR_RATIO);
+        return MetersPerSecond.of(this.driveMotor.getVelocity().getValue().in(RotationsPerSecond) * WHEEL_CIRCUMFERENCE.in(Meters) / DRIVE_GEAR_RATIO);
     }
 
     private Distance getDrivePosition() {
-        return Units.Meters.of(this.driveMotor.getPosition().getValue().magnitude() * WHEEL_CIRCUMFERENCE.in(Units.Meters)).div(DRIVE_GEAR_RATIO);
+        return Meters.of(this.driveMotor.getPosition().getValue().in(Rotations) * WHEEL_CIRCUMFERENCE.in(Meters) / DRIVE_GEAR_RATIO);
     }
 
     @Override
@@ -206,7 +197,7 @@ public class SwerveModule implements TickedSubsystem {
         this.desiredVelocity.set(this.desiredState.speedMetersPerSecond);
         this.desiredAngle.set(this.desiredState.angle.getDegrees());
 
-        this.actualVelocity.set(this.getDriveVelocity().in(Units.MetersPerSecond));
+        this.actualVelocity.set(this.getDriveVelocity().in(MetersPerSecond));
         this.actualAngle.set(this.getSteerPosition().getDegrees());
     }
 }

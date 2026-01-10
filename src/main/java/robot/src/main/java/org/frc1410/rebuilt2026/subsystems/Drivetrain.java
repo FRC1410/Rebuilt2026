@@ -231,7 +231,7 @@ public class Drivetrain implements TickedSubsystem {
                 .plus(this.frontRightModule.getAngularVelocity())
                 .plus(this.backLeftModule.getAngularVelocity())
                 .plus(this.backRightModule.getAngularVelocity())
-                .div(4);
+                .divide(4);
     }
 
     public void switchSlowmode() {

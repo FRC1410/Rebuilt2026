@@ -1,7 +1,5 @@
 package framework.src.main.java.org.frc1410.framework.scheduler.task;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
  * This interface is responsible for linking tasks to external conditions such
  * as I/O inputs. Observers are ticked every time their parent task is ticked,
@@ -20,7 +18,7 @@ public interface Observer {
 	 */
 	Observer NO_OP = new NoOpObserver();
 
-	void tick(@NotNull LifecycleHandle handle);
+	void tick(LifecycleHandle handle);
 
 	default void init(LifecycleHandle handle) {
 
@@ -30,7 +28,7 @@ public interface Observer {
 final class NoOpObserver implements Observer {
 
 	@Override
-	public void tick(@NotNull LifecycleHandle handle) {
+	public void tick(LifecycleHandle handle) {
 
 	}
 

@@ -7,7 +7,6 @@ import framework.src.main.java.org.frc1410.framework.scheduler.task.impl.Subsyst
 import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.Observer;
 import framework.src.main.java.org.frc1410.framework.util.log.Logger;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -17,7 +16,7 @@ public final class SubsystemStore {
 
 	private final TaskScheduler scheduler;
 
-	public SubsystemStore(@NotNull TaskScheduler scheduler) {
+	public SubsystemStore(TaskScheduler scheduler) {
 		this.scheduler = Objects.requireNonNull(scheduler);
 	}
 

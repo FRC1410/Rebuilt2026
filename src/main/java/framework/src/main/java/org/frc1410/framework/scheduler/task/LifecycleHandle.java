@@ -1,8 +1,5 @@
 package framework.src.main.java.org.frc1410.framework.scheduler.task;
 
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
-
 /**
  * This class is responsible for external management of a task's
  * lifecycle. It contains a state, and allows other objects such
@@ -10,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class LifecycleHandle {
 
-	public @NotNull TaskState state = TaskState.SUSPENDED;
+	public TaskState state = TaskState.SUSPENDED;
 
 	/**
 	 * Requests that the command start executing. This is the
@@ -43,7 +40,6 @@ public final class LifecycleHandle {
 	 *		  a task as terminated makes it completely inaccessible in the
 	 *		  future, so it cannot be resumed.
 	 */
-	@ApiStatus.Internal
 	public void requestTermination() {
 		if (!state.isTerminated()) {
 			state = TaskState.FLAGGED_TERMINATION;
