@@ -1,5 +1,5 @@
 {
-  "version": 1.0,
+  "version": "2025.0",
   "waypoints": [
     {
       "anchor": {
@@ -24,7 +24,7 @@
         "y": 7.423393954017997
       },
       "nextControl": {
-        "x": 3.1114762368413627,
+        "x": 3.111476236841363,
         "y": 7.406182090141958
       },
       "isLocked": false,
@@ -47,8 +47,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.8,
-      "rotationDegrees": -156.4987339242185,
-      "rotateFast": false
+      "rotationDegrees": -156.4987339242185
     }
   ],
   "constraintZones": [
@@ -60,27 +59,31 @@
         "maxVelocity": 3.5,
         "maxAcceleration": 3.5,
         "maxAngularVelocity": 250.0,
-        "maxAngularAcceleration": 400.0
+        "maxAngularAcceleration": 400.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
       }
     }
   ],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.5,
     "maxAcceleration": 5.0,
     "maxAngularVelocity": 250.0,
-    "maxAngularAcceleration": 400.0
+    "maxAngularAcceleration": 400.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -123.45927718571522,
-    "rotateFast": false
+    "rotation": -123.45927718571522
   },
   "reversed": false,
   "folder": "To amp sub",
-  "previewStartingState": {
-    "rotation": 180.0,
-    "velocity": 0
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

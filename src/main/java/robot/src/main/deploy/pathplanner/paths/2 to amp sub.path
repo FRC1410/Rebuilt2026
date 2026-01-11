@@ -1,5 +1,5 @@
 {
-  "version": 1.0,
+  "version": "2025.0",
   "waypoints": [
     {
       "anchor": {
@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 5.799569492657503,
-        "y": 6.728071877440051
+        "y": 6.728071877440052
       },
       "isLocked": false,
       "linkedName": "2 from amp sub"
@@ -20,7 +20,7 @@
         "y": 6.65
       },
       "prevControl": {
-        "x": 1.332676577390192,
+        "x": 1.3326765773901923,
         "y": 7.841647734221394
       },
       "nextControl": null,
@@ -38,24 +38,31 @@
         "maxVelocity": 4.0,
         "maxAcceleration": 3.5,
         "maxAngularVelocity": 250.0,
-        "maxAngularAcceleration": 400.0
+        "maxAngularAcceleration": 400.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
       }
     }
   ],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.5,
     "maxAcceleration": 5.0,
     "maxAngularVelocity": 250.0,
-    "maxAngularAcceleration": 400.0
+    "maxAngularAcceleration": 400.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -120.0,
-    "rotateFast": false
+    "rotation": -119.99999999999999
   },
   "reversed": false,
   "folder": "To amp sub",
-  "previewStartingState": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
   "useDefaultConstraints": false
 }
