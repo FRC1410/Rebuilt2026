@@ -222,8 +222,14 @@ public class Drivetrain implements TickedSubsystem {
         };
     }
 
-    private Rotation2d getGyroYaw() {
+    public Rotation2d getGyroYaw() {
         return Rotation2d.fromDegrees(this.gyro.getYaw().getValue().in(Degrees));
+    }
+    public Rotation2d getGyroPitch(){
+        return Rotation2d.fromDegrees(this.gyro.getPitch().getValue().in(Degrees));
+    }
+    public Rotation2d getGyroRoll(){
+        return Rotation2d.fromDegrees(this.gyro.getRoll().getValue().in(Degrees));
     }
 
     public AngularVelocity getAverageDriveAngularVelocity() {
