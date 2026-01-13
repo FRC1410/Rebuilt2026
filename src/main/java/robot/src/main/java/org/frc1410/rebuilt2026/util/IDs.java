@@ -26,6 +26,9 @@ public final class IDs {
 	public static final int PIGEON_ID = 16;
 
 
-	//LED's
+	//LEDs
 	public static final int LED_ID = 17;
+
+	//Test
+	public static final int TEST_SPARK = 0;
 }
