@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.8261872171892495,
-        "y": 4.461132630598595
+        "x": 7.721281138790035,
+        "y": 1.108
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.1035909159706594,
-        "y": 4.346908342890626
+        "x": 7.721281138790035,
+        "y": 1.4341935250211089
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "IntakeRight"
     },
     {
       "anchor": {
-        "x": 2.55,
-        "y": 4.1
+        "x": 7.721,
+        "y": 3.228
       },
       "prevControl": {
-        "x": 2.0608823070133577,
-        "y": 4.203749132080346
+        "x": 7.721,
+        "y": 2.196479066861419
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,10 +33,10 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.5,
-    "maxAcceleration": 5.0,
-    "maxAngularVelocity": 250.0,
-    "maxAngularAcceleration": 400.0,
+    "maxVelocity": 0.5,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
@@ -45,10 +45,10 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "To C",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

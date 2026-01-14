@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5,
-        "y": 5.55
+        "x": 7.721281138790035,
+        "y": 6.891565836298932
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.877596343407646,
-        "y": 5.55
+        "x": 7.724521047093526,
+        "y": 6.565388401825175
       },
       "isLocked": false,
-      "linkedName": "mid sub"
+      "linkedName": "IntakeLeft"
     },
     {
       "anchor": {
-        "x": 2.3569977139954283,
-        "y": 5.55
+        "x": 7.721281138790035,
+        "y": 4.772004744958482
       },
       "prevControl": {
-        "x": 1.8769718451638338,
-        "y": 5.55
+        "x": 7.715235990242002,
+        "y": 5.803507964382504
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "B from mid sub"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -33,10 +33,10 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.5,
-    "maxAcceleration": 5.0,
-    "maxAngularVelocity": 250.0,
-    "maxAngularAcceleration": 400.0,
+    "maxVelocity": 0.5,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
@@ -45,10 +45,10 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "To B",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
