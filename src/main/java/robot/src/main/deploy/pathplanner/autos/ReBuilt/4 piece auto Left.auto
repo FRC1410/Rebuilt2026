@@ -1,0 +1,55 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Starting line to South East Coral R"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "South East Coral R to Source"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Source to South East Coral L"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "South East Coral L to Source"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Source to South Coral R"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "South Coral R to Source"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Source to South Coral L"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

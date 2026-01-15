@@ -28,4 +28,7 @@ public final class IDs {
 
 	//LED's
 	public static final int LED_ID = 17;
+
+	//Shooter
+	public static final int SHOOTER_SPARK = 7;
 }
