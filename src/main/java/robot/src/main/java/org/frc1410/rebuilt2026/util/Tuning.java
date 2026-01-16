@@ -28,9 +28,32 @@ public final class Tuning {
 
     //Vision
     public static final double VISION_TURN_kP = 0.01;
-    public static final Transform3d EoC1_OFFSET = new Transform3d(new Translation3d(0.5, 0.5, 0.5), new Rotation3d(0, 0, 0 ));
-    public static final Transform3d EoC2_OFFSET = new Transform3d(new Translation3d(0.5, 0.5, 0.5), new Rotation3d(0, 0, 0 ));
-
+    public static final Transform3d EoC1_OFFSET = new Transform3d(new Translation3d(
+        //How forward or backward the came is from robot center
+        0.5, //0.5
+        //How left or right cam is from robot center
+        0, //0
+        //Measures how far up or down from the robot center the cam is
+        0.5 //0.5
+        ),
+    new Rotation3d(
+        0,
+        0,
+        0
+        ));
+    public static final Transform3d EoC2_OFFSET = new Transform3d(new Translation3d(
+        //How forward or backward the came is from robot center
+        0.5, //0.5
+        //How left or right cam is from robot center
+        0, //0
+        //Measures how far up or down from the robot center the cam is
+        0.5 //0.5
+        ),
+    new Rotation3d(
+        0,
+        0,
+        0
+        ));
     // Path following
     public static final PIDConstants PATH_AUTO_TRANSLATION_CONSTRAINTS = new PIDConstants(3.2, 0, 0);
     public static final PIDConstants PATH_AUTO_ROTATION_CONSTRAINTS = new PIDConstants(1.3, 0, 0.1);
