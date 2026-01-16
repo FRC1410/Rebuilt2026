@@ -10,13 +10,15 @@ import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
 
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.CAM_NAME;
 
 import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskPersistence;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
+import robot.src.main.java.org.frc1410.rebuilt2026.Vision.*;
 
 public final class Robot extends PhaseDrivenRobot {
 	public Robot() {}
-
+	Vision kv = new Vision(CAM_NAME);
 	private final Controller driverController = new Controller(this.scheduler, DRIVER_CONTROLLER, 0.1);
 	private final Controller operatorController = new Controller(this.scheduler, OPERATOR_CONTROLLER,  0.1);
 	private final Drivetrain drivetrain = subsystems.track(new Drivetrain(this.subsystems));
