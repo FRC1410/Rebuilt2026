@@ -6,7 +6,7 @@ import framework.src.main.java.org.frc1410.framework.PhaseDrivenRobot;
 import framework.src.main.java.org.frc1410.framework.control.Controller;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.*;
 
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
@@ -32,6 +32,10 @@ public final class Robot extends PhaseDrivenRobot {
 	public void teleopSequence() {
 		this.scheduler.scheduleDefaultCommand(new DriveLooped(this.drivetrain, this.driverController.LEFT_X_AXIS, this.driverController.LEFT_Y_AXIS, this.driverController.RIGHT_X_AXIS, this.driverController.RIGHT_TRIGGER), TaskPersistence.GAMEPLAY, LockPriority.HIGH);
 		
+		this.driverController.RIGHT_BUMPER.whileHeldOnce(new autoAlign(
+				this.drivetrain
+				), TaskPersistence.GAMEPLAY
+		);
 	}
 
 
