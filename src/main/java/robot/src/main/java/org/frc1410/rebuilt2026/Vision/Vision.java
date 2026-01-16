@@ -10,14 +10,18 @@ public class Vision {
     private Transform3d[] EoCoffsets;
     private PhotonPoseEstimator PoC;
     PhotonCamera kv1;
+    Transform3d kv1Offset;
     PhotonCamera kv2;
+    Transform3d kv2Offset;
     boolean targetVisible = false;
     double targetYaw = 0.0;
     int tagName;
 
-    public Vision(String camName){
+    public Vision(String camName, Transform3d offset){
         this.kv1 = new PhotonCamera(camName);
+        this.kv1Offset = offset;
         EoC = new PhotonCamera[]{kv1};
+        EoCoffsets = new Transform3d[]{offset};
     }
     public Vision(String camName, String camName2){
         this.kv1 = new PhotonCamera(camName);

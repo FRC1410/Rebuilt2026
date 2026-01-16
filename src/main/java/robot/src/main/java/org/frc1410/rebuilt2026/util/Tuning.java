@@ -2,6 +2,10 @@ package robot.src.main.java.org.frc1410.rebuilt2026.util;
 
 import com.pathplanner.lib.config.PIDConstants;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+
 public final class Tuning {
 
     // Drivetrain
@@ -24,6 +28,8 @@ public final class Tuning {
 
     //Vision
     public static final double VISION_TURN_kP = 0.01;
+    public static final Transform3d EoC1_OFFSET = new Transform3d(new Translation3d(0.5, 0.5, 0.5), new Rotation3d(0, 0, 0 ));
+    public static final Transform3d EoC2_OFFSET = new Transform3d(new Translation3d(0.5, 0.5, 0.5), new Rotation3d(0, 0, 0 ));
 
     // Path following
     public static final PIDConstants PATH_AUTO_TRANSLATION_CONSTRAINTS = new PIDConstants(3.2, 0, 0);
