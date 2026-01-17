@@ -26,7 +26,7 @@ public class autoAlign extends Command {
         this.drivetrain.drive(new ChassisSpeeds(
             0, 
             0, 
-            (1.0 * targetYaw * Tuning.VISION_TURN_kP * Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY)
+            (1.0 * targetYaw * Tuning.VISION_TURN_kP )//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
         ));
         //drivetrain.
         //1.0 * targetYaw * Tuning.VISION_TURN_kP * Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY;
