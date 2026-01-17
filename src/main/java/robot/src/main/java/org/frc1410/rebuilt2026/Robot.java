@@ -34,7 +34,7 @@ public final class Robot extends PhaseDrivenRobot {
 		this.scheduler.scheduleDefaultCommand(new DriveLooped(this.drivetrain, this.driverController.LEFT_X_AXIS, this.driverController.LEFT_Y_AXIS, this.driverController.RIGHT_X_AXIS, this.driverController.RIGHT_TRIGGER), TaskPersistence.GAMEPLAY, LockPriority.HIGH);
 		
 		this.driverController.RIGHT_BUMPER.whileHeldOnce(new autoAlign(
-				this.drivetrain
+				this.drivetrain, kv.returnCamYaw()
 				), TaskPersistence.GAMEPLAY
 		);
 	}
