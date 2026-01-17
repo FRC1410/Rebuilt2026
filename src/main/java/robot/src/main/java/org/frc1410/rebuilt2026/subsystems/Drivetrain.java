@@ -1,26 +1,56 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
+import java.util.Optional;
+
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
+
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.networktables.*;
+import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Volts;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DriverStation;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.SubsystemStore;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.BACK_LEFT_DRIVE_MOTOR_INVERTED;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.BACK_LEFT_STEER_ENCODER_OFFSET;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.BACK_LEFT_STEER_MOTOR_INVERTED;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.BACK_RIGHT_DRIVE_MOTOR_INVERTED;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.BACK_RIGHT_STEER_ENCODER_OFFSET;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.BACK_RIGHT_STEER_MOTOR_INVERTED;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.FRONT_LEFT_DRIVE_MOTOR_INVERTED;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.FRONT_LEFT_STEER_ENCODER_OFFSET;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.FRONT_LEFT_STEER_MOTOR_INVERTED;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.FRONT_RIGHT_DRIVE_MOTOR_INVERTED;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.FRONT_RIGHT_STEER_ENCODER_OFFSET;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.FRONT_RIGHT_STEER_MOTOR_INVERTED;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.SWERVE_DRIVE_KINEMATICS;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.SWERVE_DRIVE_MAX_SPEED;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.BACK_LEFT_DRIVE_MOTOR;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.BACK_LEFT_STEER_ENCODER;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.BACK_LEFT_STEER_MOTOR;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.BACK_RIGHT_DRIVE_MOTOR;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.BACK_RIGHT_STEER_ENCODER;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.BACK_RIGHT_STEER_MOTOR;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.FRONT_LEFT_DRIVE_MOTOR;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.FRONT_LEFT_STEER_ENCODER;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.FRONT_LEFT_STEER_MOTOR;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.FRONT_RIGHT_DRIVE_MOTOR;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.FRONT_RIGHT_STEER_ENCODER;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.FRONT_RIGHT_STEER_MOTOR;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.PIGEON_ID;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
-
-import java.util.Optional;
-
-import static edu.wpi.first.units.Units.*;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.*;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.*;
 
 public class Drivetrain implements TickedSubsystem {
     private final NetworkTable table = NetworkTableInstance.getDefault().getTable("Drivetrain");
@@ -53,7 +83,7 @@ public class Drivetrain implements TickedSubsystem {
     private final DoublePublisher pitch = NetworkTables.PublisherFactory(this.table, "pitch", 0);
     private final DoublePublisher roll = NetworkTables.PublisherFactory(this.table, "roll", 0);
 
-    private final DoublePublisher rawPidgionVal = NetworkTables.PublisherFactory(this.table, "Pidgion Val", 0);
+    // private final DoublePublisher rawPidgionVal = NetworkTables.PublisherFactory(this.table, "Pidgion Val", 0);
 
     private final DoublePublisher characterizationVolts = NetworkTables.PublisherFactory(this.table,
             "characterization volts", 0);
@@ -222,8 +252,14 @@ public class Drivetrain implements TickedSubsystem {
         };
     }
 
-    private Rotation2d getGyroYaw() {
+    public Rotation2d getGyroYaw() {
         return Rotation2d.fromDegrees(this.gyro.getYaw().getValue().in(Degrees));
+    }
+    public Rotation2d getGyroPitch(){
+        return Rotation2d.fromDegrees(this.gyro.getPitch().getValue().in(Degrees));
+    }
+    public Rotation2d getGyroRoll(){
+        return Rotation2d.fromDegrees(this.gyro.getRoll().getValue().in(Degrees));
     }
 
     public AngularVelocity getAverageDriveAngularVelocity() {
@@ -231,26 +267,18 @@ public class Drivetrain implements TickedSubsystem {
                 .plus(this.frontRightModule.getAngularVelocity())
                 .plus(this.backLeftModule.getAngularVelocity())
                 .plus(this.backRightModule.getAngularVelocity())
-                .divide(4);
+                .div(4);
     }
 
     public void switchSlowmode() {
-        if(!slowmode) {
-            slowmode = true;
-        } else {
-            slowmode = false;
-        }
+        slowmode = !slowmode;
     }
 
     public boolean isSlowModeEnabled() {
         return slowmode;
     }
     public void switchOrientation() {
-        if(!fieldOriented) {
-            fieldOriented = true;
-        } else {
-            fieldOriented = false;
-        }
+        fieldOriented = !fieldOriented;
     }
 
     public boolean isFieldOriented() {
@@ -283,5 +311,9 @@ public class Drivetrain implements TickedSubsystem {
 
         var x = new Pose2d(this.getEstimatedPosition().toMatrix());
         this.posePublisher.set(x);
+
+        this.yaw.set(getGyroYaw().getDegrees());
+        this.pitch.set(getGyroPitch().getDegrees());
+        this.roll.set(getGyroRoll().getDegrees());
     }
 }

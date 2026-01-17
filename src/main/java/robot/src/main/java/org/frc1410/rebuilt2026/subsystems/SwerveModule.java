@@ -9,26 +9,41 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.DoublePublisher;
-import edu.wpi.first.units.measure.*;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Rotation;
+import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.Volt;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Voltage;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
-
-import static edu.wpi.first.units.Units.*;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.*;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.*;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.DRIVE_GEAR_RATIO;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.DRIVE_MOTOR_CURRENT_LIMIT;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.STEER_MOTOR_CURRENT_LIMIT;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.WHEEL_CIRCUMFERENCE;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.DRIVE_KS;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.DRIVE_KV;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_DRIVE_D;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_DRIVE_I;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_DRIVE_P;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_STEER_D;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_STEER_I;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_STEER_P;
 
 public class SwerveModule implements TickedSubsystem {
     private final TalonFX driveMotor;
@@ -66,7 +81,7 @@ public class SwerveModule implements TickedSubsystem {
     ) {
 
         // Drive config
-        this.driveMotor = new TalonFX(driveMotorID, "CTRE");
+        this.driveMotor = new TalonFX(driveMotorID);
         var driveMotorConfig = new TalonFXConfiguration();
 
         driveMotorConfig.Slot0.kS = DRIVE_KS;
@@ -93,15 +108,15 @@ public class SwerveModule implements TickedSubsystem {
         sparkConfig.inverted(steerInverted);
 
         this.steerMotor = new SparkMax(steerMotorID, MotorType.kBrushless);
-        this.steerMotor.configure(sparkConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+        this.steerMotor.configure(sparkConfig, com.revrobotics.ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
 
         // Steer encoder config
-        this.steerEncoder = new CANcoder(steerEncoderID, "CTRE");
+        this.steerEncoder = new CANcoder(steerEncoderID);
         var configurator = this.steerEncoder.getConfigurator();
 
         var steerEncoderConfig = new CANcoderConfiguration();
 
-        steerEncoderConfig.MagnetSensor.MagnetOffset = angleOffset.negate().in(Rotation);
+        steerEncoderConfig.MagnetSensor.MagnetOffset = angleOffset.unaryMinus().in(Rotation);
         steerEncoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
 
         configurator.apply(steerEncoderConfig);
