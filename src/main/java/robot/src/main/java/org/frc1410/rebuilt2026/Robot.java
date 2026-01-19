@@ -26,7 +26,7 @@ public final class Robot extends PhaseDrivenRobot {
 	@Override
 	public void teleopSequence() {
 		// this.scheduler.scheduleDefaultCommand(new DriveLooped(this.drivetrain, this.driverController.LEFT_X_AXIS, this.driverController.LEFT_Y_AXIS, this.driverController.RIGHT_X_AXIS, this.driverController.RIGHT_TRIGGER), TaskPersistence.GAMEPLAY, LockPriority.HIGH);
-		this.driverController.A.whenPressed(testSparkCommand, TaskPersistence.GAMEPLAY);
+		this.driverController.A.whileHeldOnce(testSparkCommand, TaskPersistence.GAMEPLAY);
 	}
 
 
