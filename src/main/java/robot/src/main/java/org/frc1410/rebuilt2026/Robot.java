@@ -107,9 +107,6 @@ public final class Robot extends PhaseDrivenRobot {
 			TaskPersistence.GAMEPLAY, 
 			LockPriority.HIGH
 		);
-		// this.operatorController.A.whenPressed(intake, TaskPersistence.GAMEPLAY);
-		// this.operatorController.B.whenPressed(neutral, TaskPersistence.GAMEPLAY);
-		// this.operatorController.X.whenPressed(outtake, TaskPersistence.GAMEPLAY);
 	}
 
 
