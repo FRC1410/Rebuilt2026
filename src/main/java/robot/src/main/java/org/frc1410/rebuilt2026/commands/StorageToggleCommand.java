@@ -15,7 +15,8 @@ public class StorageToggleCommand extends Command {
 
     @Override
     public void initialize() {
-        this.storage.setSpeedState(storageState);
+        this.storage.setSpeedState(this.storageState);
+        System.out.println("Trying storage thing to " + this.storageState);
     }
 
     @Override
