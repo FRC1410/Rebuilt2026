@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -45,5 +46,8 @@ public class Cam implements TickedSubsystem{
     }
     public boolean hasTargets{
         return ((PhotonPipelineResult) results).hasTargets();
+    }
+    public PoseStrategy returnPoseStrategy{
+        return poseEst.getPrimaryStrategy();
     }
 }
