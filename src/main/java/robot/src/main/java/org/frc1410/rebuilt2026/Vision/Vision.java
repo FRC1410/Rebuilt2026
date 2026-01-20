@@ -25,6 +25,9 @@ public class Vision {
         this.kv2 = new PhotonCamera(camName2);
         
     }
+    public Vision(Cam[] cams){
+        eyesOfCthulu = cams;
+    }
     public void autoAlignTest(){
         // Read in relevant data from the Camera
         

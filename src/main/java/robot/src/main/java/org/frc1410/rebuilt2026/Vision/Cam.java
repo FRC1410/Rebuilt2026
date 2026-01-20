@@ -22,6 +22,9 @@ public class Cam implements TickedSubsystem{
     private final Transform3d offset;
     private final PhotonPoseEstimator poseEst;
     private List<PhotonPipelineResult> results = new ArrayList<>();
+    boolean targetVisible = false;
+    double targetYaw = 0.0;
+    int tagName;
             //
     
         public Cam(String name, Transform3d offset){
@@ -37,9 +40,35 @@ public class Cam implements TickedSubsystem{
         public void periodic() {
             // RANDOM BS GOOOOOOOOOOOOOO
             results = cam.getAllUnreadResults();
+            if (!results.isEmpty()) {
+                // Camera processed a new frame since last
+                // Get the last one in the list.
+                var result = results.get(results.size() - 1);
+                if (result.hasTargets()) {
+                    // At least one AprilTag was seen by the camera
+                    for (var target : result.getTargets()) {
+                        if (target.getFiducialId() == 7) {
+                            // Found Tag 7, record its information
+                            this.tagName = target.getFiducialId();
+                            this.targetYaw = target.getYaw();
+                            this.targetVisible = true;
+                        }
+                    }
+                }
+            }
+
         
     }
     public List<PhotonPipelineResult> getUnreadResults(){
         return results;
+    }
+    public double returnCamYaw(){
+        return targetYaw;
+    }
+    public boolean hasTarget(){
+        return targetVisible;
+    }
+    public int returnTagID(){
+        return tagName;
     }
 }
