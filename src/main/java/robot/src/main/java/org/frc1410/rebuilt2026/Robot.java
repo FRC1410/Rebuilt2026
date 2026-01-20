@@ -11,6 +11,9 @@ import robot.src.main.java.org.frc1410.rebuilt2026.commands.*;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.EoC1_OFFSET;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.CAM_NAME1;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.CAM_NAME2;
 
@@ -37,6 +40,7 @@ public final class Robot extends PhaseDrivenRobot {
 				this.drivetrain, kv.returnCamYaw()
 				), TaskPersistence.GAMEPLAY
 		);
+		 SmartDashboard.putBoolean("Vision Target Visible", kv.hasTarget());
 	}
 
 
