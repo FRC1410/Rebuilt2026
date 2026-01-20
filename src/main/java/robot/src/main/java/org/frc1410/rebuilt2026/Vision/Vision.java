@@ -6,9 +6,7 @@ import org.photonvision.PhotonUtils;
 
 import edu.wpi.first.math.geometry.Transform3d;
 public class Vision {
-    private PhotonCamera[] EoC;
-    private Transform3d[] EoCoffsets;
-    private PhotonPoseEstimator PoC;
+    private Cam[] eyesOfCthulu;
     PhotonCamera kv1;
     Transform3d kv1Offset;
     PhotonCamera kv2;
@@ -20,13 +18,12 @@ public class Vision {
     public Vision(String camName, Transform3d offset){
         this.kv1 = new PhotonCamera(camName);
         this.kv1Offset = offset;
-        EoC = new PhotonCamera[]{kv1};
-        EoCoffsets = new Transform3d[]{offset};
+        
     }
     public Vision(String camName, String camName2){
         this.kv1 = new PhotonCamera(camName);
         this.kv2 = new PhotonCamera(camName2);
-        EoC = new PhotonCamera[]{kv1, kv2};
+        
     }
     public void autoAlignTest(){
         // Read in relevant data from the Camera
