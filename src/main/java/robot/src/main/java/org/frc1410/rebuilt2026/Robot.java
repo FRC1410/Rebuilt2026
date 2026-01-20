@@ -9,6 +9,7 @@ import framework.src.main.java.org.frc1410.framework.control.Controller;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskPersistence;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleSlowmodeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
@@ -37,7 +38,8 @@ public final class Robot extends PhaseDrivenRobot {
 
 
 	private final AutoSelector autoSelector = new AutoSelector()
-			.add("2", () -> new PathPlannerAuto("2 coral"));
+			// .add("Tst", () -> new PathPlannerAuto("Tst"))
+			.add("RightStartAuto", () -> new PathPlannerAuto("RightStartAuto"));
 
 			 {
 				{
@@ -76,7 +78,7 @@ public final class Robot extends PhaseDrivenRobot {
 	private final StringPublisher autoPublisher = NetworkTables.PublisherFactory(
 		this.table, 
 		"Profile",
-		this.autoSelector.getProfiles().isEmpty() ? "0" : this.autoSelector.getProfiles().
+		this.autoSelector.getProfiles().isEmpty() ? "" : this.autoSelector.getProfiles().
 			get(0)
 			.name()
 	);
@@ -88,6 +90,13 @@ public final class Robot extends PhaseDrivenRobot {
 	public void autonomousSequence() {
 		NetworkTables.SetPersistence(this.autoPublisher.getTopic(), true);
 			String autoProfile = this.autoSubscriber.get();
+			
+			if (autoProfile == null || autoProfile.isEmpty()) {
+				if (!this.autoSelector.getProfiles().isEmpty()) {
+					autoProfile = this.autoSelector.getProfiles().get(0).name();
+				}
+			}
+			
 			var autoCommand = this.autoSelector.select(autoProfile);
 
 			this.scheduler.scheduleAutoCommand(autoCommand);
@@ -99,13 +108,19 @@ public final class Robot extends PhaseDrivenRobot {
 		this.scheduler.scheduleDefaultCommand(
 			new DriveLooped(
 					this.drivetrain, 
-					this.driverController.LEFT_X_AXIS, 
-					this.driverController.LEFT_Y_AXIS, 
+					this.driverController.LEFT_Y_AXIS,
+					this.driverController.LEFT_X_AXIS,  
 					this.driverController.RIGHT_X_AXIS, 
 					this.driverController.RIGHT_TRIGGER
 				), 
 			TaskPersistence.GAMEPLAY, 
 			LockPriority.HIGH
+		);
+		
+		// Add slowmode toggle on left bumper
+		this.driverController.LEFT_BUMPER.whenPressed(
+			new ToggleSlowmodeCommand(this.drivetrain), 
+			TaskPersistence.GAMEPLAY
 		);
 	}
 

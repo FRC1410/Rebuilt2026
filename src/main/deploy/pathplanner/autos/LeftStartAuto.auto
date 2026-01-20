@@ -1,0 +1,31 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftStart to CenterAZ"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterAZ to IntakeLeft"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Intake from IntakeLeft"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

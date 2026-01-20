@@ -81,7 +81,7 @@ public class SwerveModule implements TickedSubsystem {
     ) {
 
         // Drive config
-        this.driveMotor = new TalonFX(driveMotorID);
+        this.driveMotor = new TalonFX(driveMotorID, CAN_BUS_NAME);
         var driveMotorConfig = new TalonFXConfiguration();
 
         driveMotorConfig.Slot0.kS = DRIVE_KS;
@@ -111,7 +111,7 @@ public class SwerveModule implements TickedSubsystem {
         this.steerMotor.configure(sparkConfig, com.revrobotics.ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
 
         // Steer encoder config
-        this.steerEncoder = new CANcoder(steerEncoderID);
+        this.steerEncoder = new CANcoder(steerEncoderID, CAN_BUS_NAME);
         var configurator = this.steerEncoder.getConfigurator();
 
         var steerEncoderConfig = new CANcoderConfiguration();
