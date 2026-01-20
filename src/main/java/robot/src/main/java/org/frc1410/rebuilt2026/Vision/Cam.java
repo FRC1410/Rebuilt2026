@@ -4,6 +4,7 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.APRIL_T
 
 import java.util.List;
 
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.targeting.PhotonPipelineResult;
@@ -18,6 +19,8 @@ public class Cam implements TickedSubsystem{
     private final PhotonCamera cam;
     private final Transform3d offset;
     private final PhotonPoseEstimator poseEst;
+    private final List<PhotonPipelineResult> results;
+        //
 
     public Cam(String name, Transform3d offset){
         this.cam = new PhotonCamera(name);
@@ -30,11 +33,17 @@ public class Cam implements TickedSubsystem{
     }
     @Override
     public void periodic() {
-        // TODO Auto-generated method stub
+        // RANDOM BS GOOOOOOOOOOOOOO
+        results = cam.getAllUnreadResults();
         
     }
     public List<PhotonPipelineResult> getUnreadResults(){
-        return cam.getAllUnreadResults();
+        return results;
     }
-    
+    public PhotonPipelineResult getBestResult(){
+        return ((Cam) results).getBestResult();
+    }
+    public boolean hasTargets{
+        return ((PhotonPipelineResult) results).hasTargets();
+    }
 }
