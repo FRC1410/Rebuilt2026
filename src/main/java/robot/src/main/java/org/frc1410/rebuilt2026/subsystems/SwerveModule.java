@@ -44,6 +44,7 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_DRI
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_STEER_D;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_STEER_I;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_STEER_P;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.CAN_BUS_NAME;
 
 public class SwerveModule implements TickedSubsystem {
     private final TalonFX driveMotor;

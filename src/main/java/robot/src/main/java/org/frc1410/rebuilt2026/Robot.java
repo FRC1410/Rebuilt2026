@@ -1,22 +1,5 @@
 package robot.src.main.java.org.frc1410.rebuilt2026;
 
-import framework.src.main.java.org.frc1410.framework.AutoSelector;
-
-// HELP
-
-import framework.src.main.java.org.frc1410.framework.PhaseDrivenRobot;
-import framework.src.main.java.org.frc1410.framework.control.Controller;
-import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskPersistence;
-import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleSlowmodeCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
-import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
-
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.*;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -25,6 +8,19 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
 import edu.wpi.first.networktables.StringSubscriber;
 import edu.wpi.first.wpilibj.DriverStation;
+import framework.src.main.java.org.frc1410.framework.AutoSelector;
+import framework.src.main.java.org.frc1410.framework.PhaseDrivenRobot;
+import framework.src.main.java.org.frc1410.framework.control.Controller;
+import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskPersistence;
+import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleSlowmodeCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOLONOMIC_AUTO_CONFIG;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.ROBOT_CONFIG;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
+import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public final class Robot extends PhaseDrivenRobot {
 
