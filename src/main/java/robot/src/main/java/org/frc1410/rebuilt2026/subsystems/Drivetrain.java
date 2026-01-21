@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -106,6 +107,7 @@ public class Drivetrain implements TickedSubsystem {
 
     private boolean slowmode = false;
     public boolean fieldOriented = false;
+    private boolean guardMode = false;
 
 
     public Drivetrain(SubsystemStore subsystems) {
@@ -179,6 +181,9 @@ public class Drivetrain implements TickedSubsystem {
     }
 
     public void drive(ChassisSpeeds chassisSpeeds) {
+        if (this.guardMode) {
+        return;
+    }
         var discretizedChassisSpeeds = ChassisSpeeds.discretize(
                 chassisSpeeds.vxMetersPerSecond,
                 chassisSpeeds.vyMetersPerSecond,
@@ -207,6 +212,25 @@ public class Drivetrain implements TickedSubsystem {
 
         this.drive(robotRelativeChassisSpeeds);
     }
+
+    public void setGuardMode(boolean enabled) {
+    this.guardMode = enabled;
+    
+    if (enabled) {
+        this.frontLeftModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+        this.frontRightModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+        this.backLeftModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+        this.backRightModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+    }
+}
+
+    public void toggleGuardMode() {
+        this.setGuardMode(!this.guardMode);
+    }
+
+    public boolean isGuardModeEnabled() {
+        return this.guardMode;
+}
 
     public void driveV(Voltage voltage) {
         this.characterizationVolts.set(voltage.in(Volts));
@@ -242,6 +266,8 @@ public class Drivetrain implements TickedSubsystem {
                 this.backLeftModule.getState(),
                 this.backRightModule.getState());
     }
+
+    
 
     private SwerveModulePosition[] getSwerveModulePositions() {
         return new SwerveModulePosition[] {
