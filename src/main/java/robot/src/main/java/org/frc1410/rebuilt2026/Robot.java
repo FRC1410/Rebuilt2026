@@ -10,6 +10,7 @@ import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskPersiste
 import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleSlowmodeCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleGuardModeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
@@ -120,6 +121,12 @@ public final class Robot extends PhaseDrivenRobot {
 		// Add slowmode toggle on left bumper
 		this.driverController.LEFT_BUMPER.whenPressed(
 			new ToggleSlowmodeCommand(this.drivetrain), 
+			TaskPersistence.GAMEPLAY
+		);
+		
+		// Add guard mode toggle on right bumper
+		this.driverController.RIGHT_BUMPER.whenPressed(
+			new ToggleGuardModeCommand(this.drivetrain), 
 			TaskPersistence.GAMEPLAY
 		);
 	}
