@@ -20,23 +20,16 @@ public class ReadyToRumbleCommand extends Command {
     }
 
     private class Tick extends TimerTask{
+        @Override
         public void run(){
             time += 1;
             switch (time) {
-                case 25:
-                    controller.rumble(1000);
-                    break;
-                case 40:
-                    controller.rumble(1000);
-                    break;
-                case 55:
-                    controller.rumble(1000);
-                    break;
-                case 70:
-                    controller.rumble(1000);
-                    break;
-                default:
-                    break;
+                case 25 -> controller.rumble(1000);
+                case 40 -> controller.rumble(1000);
+                case 55 -> controller.rumble(1000);
+                case 70 -> controller.rumble(1000);
+                default -> {
+                }
             }
         }
     }

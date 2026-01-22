@@ -21,6 +21,7 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOLONOM
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.ROBOT_CONFIG;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
+import robot.src.main.java.org.frc1410.rebuilt2026.util.ControlScheme;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public final class Robot extends PhaseDrivenRobot {
@@ -32,6 +33,8 @@ public final class Robot extends PhaseDrivenRobot {
 
 	private final NetworkTableInstance nt = NetworkTableInstance.getDefault();
 	private final NetworkTable table = this.nt.getTable("Auto");
+
+	private ControlScheme scheme = new ControlScheme(driverController, operatorController);
 
 
 	private final AutoSelector autoSelector = new AutoSelector()
@@ -52,6 +55,8 @@ public final class Robot extends PhaseDrivenRobot {
 
 
     public Robot() {
+		this.scheme.init();
+
 		AutoBuilder.configure(
 			this.drivetrain::getEstimatedPosition,
 			this.drivetrain::resetPose,
@@ -105,23 +110,23 @@ public final class Robot extends PhaseDrivenRobot {
 		this.scheduler.scheduleDefaultCommand(
 			new DriveLooped(
 					this.drivetrain, 
-					this.driverController.LEFT_Y_AXIS,
-					this.driverController.LEFT_X_AXIS,  
-					this.driverController.RIGHT_X_AXIS, 
-					this.driverController.RIGHT_TRIGGER
+					this.scheme.DRIVE_FORWARD,
+					this.scheme.DRIVE_SIDEWAYS,  
+					this.scheme.DRIVE_TURN, 
+					this.scheme.ROBOT_RELATIVE_TOGGLE
 				), 
 			TaskPersistence.GAMEPLAY, 
 			LockPriority.HIGH
 		);
 		
 		// Add slowmode toggle on left bumper
-		this.driverController.LEFT_BUMPER.whenPressed(
+		this.scheme.SLOWMODE_TOGGLE.whenPressed(
 			new ToggleSlowmodeCommand(this.drivetrain), 
 			TaskPersistence.GAMEPLAY
 		);
 		
 		// Add guard mode toggle on right bumper
-		this.driverController.RIGHT_BUMPER.whenPressed(
+		this.scheme.GUARDMODE_TOGGLE.whenPressed(
 			new ToggleGuardModeCommand(this.drivetrain), 
 			TaskPersistence.GAMEPLAY
 		);

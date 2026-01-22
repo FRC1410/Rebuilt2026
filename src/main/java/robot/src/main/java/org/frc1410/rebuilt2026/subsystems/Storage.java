@@ -1,5 +1,6 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 
