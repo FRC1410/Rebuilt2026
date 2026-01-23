@@ -66,7 +66,10 @@ public final class Robot extends PhaseDrivenRobot {
 				this.drivetrain, kv.returnCamYaw()
 				), TaskPersistence.GAMEPLAY
 		);
-		 SmartDashboard.putBoolean("Vision Target Visible", kv.hasTarget());
+		SmartDashboard.putBoolean("Vision Target Visible", kv.hasTarget());
+		SmartDashboard.putNumber("Target ID", kv.returnTagID());
+		SmartDashboard.putNumber("Target Yaw", kv.returnCamYaw());
+		
 	}
 
 
