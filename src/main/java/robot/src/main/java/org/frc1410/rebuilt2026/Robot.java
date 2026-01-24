@@ -3,19 +3,18 @@ package robot.src.main.java.org.frc1410.rebuilt2026;
 // HELP
 import framework.src.main.java.org.frc1410.framework.PhaseDrivenRobot;
 import framework.src.main.java.org.frc1410.framework.control.Controller;
-import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
-import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Shoot;
-import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Shoot.HoodStates;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterStepUpCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterStepDownCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.MoveHoodCommand;
-
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
-
 import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskPersistence;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.MoveHoodCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterStepDownCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterStepUpCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
+import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.LEDs;
+import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Shoot;
+import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Shoot.HoodStates;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
 
 public final class Robot extends PhaseDrivenRobot {
 
@@ -25,12 +24,13 @@ public final class Robot extends PhaseDrivenRobot {
     private final Controller driverController = new Controller(this.scheduler, DRIVER_CONTROLLER, 0.1);
     private final Controller operatorController = new Controller(this.scheduler, OPERATOR_CONTROLLER, 0.1);
     private final Drivetrain drivetrain = subsystems.track(new Drivetrain(this.subsystems));
-    private final Shoot shooter = new Shoot();
+    private final Shoot shooter = subsystems.track(new Shoot());
+    private final LEDs lEDs = subsystems.track(new LEDs());
     private final ShooterStepUpCommand shooterStepUpCommand = new ShooterStepUpCommand(shooter, 1);
     private final ShooterStepDownCommand shooterStepDownCommand = new ShooterStepDownCommand(shooter, 1);
-    private final MoveHoodCommand moveHoodLowLeftCommand = new MoveHoodCommand(shooter, HoodStates.LOW_LEFT);
-    private final MoveHoodCommand moveHoodLowRightCommand = new MoveHoodCommand(shooter, HoodStates.LOW_RIGHT);
-    private final MoveHoodCommand moveHoodHighLeftCommand = new MoveHoodCommand(shooter, HoodStates.HIGH_LEFT);
+    private final MoveHoodCommand moveHoodLowLeftCommand = new MoveHoodCommand(shooter, HoodStates.LOW_LEFT, lEDs);
+    private final MoveHoodCommand moveHoodLowRightCommand = new MoveHoodCommand(shooter, HoodStates.LOW_RIGHT, lEDs);
+    private final MoveHoodCommand moveHoodHighLeftCommand = new MoveHoodCommand(shooter, HoodStates.HIGH_LEFT, lEDs);
 
     @Override
     public void autonomousSequence() {
