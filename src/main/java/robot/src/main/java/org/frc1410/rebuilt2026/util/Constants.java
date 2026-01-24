@@ -101,5 +101,9 @@ public final class Constants {
             PATH_FOLLOWING_ROTATION_CONSTRAINTS
     );
 
+    public static final double HOOD_LOW_LEFT_SETPOINT = 0;
+    public static final double HOOD_LOW_RIGHT_SETPOINT = 70;
+    public static final double HOOD_HIGH_LEFT_SETPOINT = 140;
+
 
 }

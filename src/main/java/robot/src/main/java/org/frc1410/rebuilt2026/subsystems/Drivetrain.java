@@ -23,6 +23,7 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.*;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.*;
 
 public class Drivetrain implements TickedSubsystem {
+
     private final NetworkTable table = NetworkTableInstance.getDefault().getTable("Drivetrain");
 
     private final DoublePublisher frontLeftVelocitySetpoint = NetworkTables.PublisherFactory(this.table, "Front Left Velocity Setpoint", 0);
@@ -76,7 +77,6 @@ public class Drivetrain implements TickedSubsystem {
 
     private boolean slowmode = false;
     public boolean fieldOriented = false;
-
 
     public Drivetrain(SubsystemStore subsystems) {
         this.frontLeftModule = subsystems.track(new SwerveModule(
@@ -214,11 +214,11 @@ public class Drivetrain implements TickedSubsystem {
     }
 
     private SwerveModulePosition[] getSwerveModulePositions() {
-        return new SwerveModulePosition[] {
-                this.frontLeftModule.getPosition(),
-                this.frontRightModule.getPosition(),
-                this.backLeftModule.getPosition(),
-                this.backRightModule.getPosition()
+        return new SwerveModulePosition[]{
+            this.frontLeftModule.getPosition(),
+            this.frontRightModule.getPosition(),
+            this.backLeftModule.getPosition(),
+            this.backRightModule.getPosition()
         };
     }
 
@@ -231,11 +231,11 @@ public class Drivetrain implements TickedSubsystem {
                 .plus(this.frontRightModule.getAngularVelocity())
                 .plus(this.backLeftModule.getAngularVelocity())
                 .plus(this.backRightModule.getAngularVelocity())
-                .divide(4);
+                .div(4);
     }
 
     public void switchSlowmode() {
-        if(!slowmode) {
+        if (!slowmode) {
             slowmode = true;
         } else {
             slowmode = false;
@@ -245,8 +245,9 @@ public class Drivetrain implements TickedSubsystem {
     public boolean isSlowModeEnabled() {
         return slowmode;
     }
+
     public void switchOrientation() {
-        if(!fieldOriented) {
+        if (!fieldOriented) {
             fieldOriented = true;
         } else {
             fieldOriented = false;
