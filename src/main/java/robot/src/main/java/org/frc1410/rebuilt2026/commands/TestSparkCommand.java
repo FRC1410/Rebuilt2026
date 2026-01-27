@@ -15,6 +15,8 @@ public class TestSparkCommand extends Command{
     
     @Override
     public void initialize() {
+        System.out.println(this.state);
+        System.out.println(this.testSpark.getSpeed());
         this.testSpark.setState(this.state);
     }
 
