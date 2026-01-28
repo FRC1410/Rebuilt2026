@@ -2,6 +2,7 @@ package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.networktables.DoublePublisher;
@@ -29,11 +30,6 @@ public class TestSpark implements TickedSubsystem {
 
     public TestSpark() {
         this.testMotor = new SparkMax(TEST_SPARK, SparkLowLevel.MotorType.kBrushless);
-        // SparkMaxConfig testMotorConfig = new SparkMaxConfig();
-        // testMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
-        // testMotorConfig.smartCurrentLimit(30);
-
-        // this.testMotor.configure(testMotorConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
         SparkMaxConfig config = new SparkMaxConfig();
         config.inverted(true);
         this.testMotor.configure(
@@ -42,11 +38,10 @@ public class TestSpark implements TickedSubsystem {
                 com.revrobotics.PersistMode.kPersistParameters
         );
 
-
     }
 
     public double getSpeed() {
-        return this.testMotor.get();
+        return currentSpeed;
     }
 
     public void setState(TestStates state) {
@@ -67,6 +62,6 @@ public class TestSpark implements TickedSubsystem {
     @Override
     public void periodic() {
         this.testMotor.set(currentSpeed);
-        this.currentSpeedPublisher.set(this.testMotor.get());
+        this.currentSpeedPublisher.set(currentSpeed);
     }
 }
