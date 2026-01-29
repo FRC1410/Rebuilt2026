@@ -1,145 +1,136 @@
 package robot.src.main.java.org.frc1410.rebuilt2026;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
 import edu.wpi.first.networktables.StringSubscriber;
-import edu.wpi.first.wpilibj.DriverStation;
 import framework.src.main.java.org.frc1410.framework.AutoSelector;
 import framework.src.main.java.org.frc1410.framework.PhaseDrivenRobot;
 import framework.src.main.java.org.frc1410.framework.control.Controller;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskPersistence;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleGuardModeCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleSlowmodeCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOLONOMIC_AUTO_CONFIG;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.ROBOT_CONFIG;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.ReadyToRumbleCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.util.ControlScheme;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
-import robot.src.main.java.org.frc1410.rebuilt2026.util.ControlScheme;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public final class Robot extends PhaseDrivenRobot {
 
-
     private final Controller driverController = new Controller(this.scheduler, DRIVER_CONTROLLER, 0.1);
     private final Controller operatorController = new Controller(this.scheduler, OPERATOR_CONTROLLER, 0.1);
-    private final Drivetrain drivetrain = subsystems.track(new Drivetrain(this.subsystems));
+    // private final Drivetrain drivetrain = subsystems.track(new Drivetrain(this.subsystems));
 
-	private final NetworkTableInstance nt = NetworkTableInstance.getDefault();
-	private final NetworkTable table = this.nt.getTable("Auto");
+    private final NetworkTableInstance nt = NetworkTableInstance.getDefault();
+    private final NetworkTable table = this.nt.getTable("Auto");
 
-	private ControlScheme scheme = new ControlScheme(driverController, operatorController);
+    private ControlScheme scheme = new ControlScheme(driverController, operatorController);
 
+    private final ReadyToRumbleCommand readyToRumbleCommand = new ReadyToRumbleCommand(driverController);
 
-	private final AutoSelector autoSelector = new AutoSelector()
-			// .add("Tst", () -> new PathPlannerAuto("Tst"))
-			.add("RightStartAuto", () -> new PathPlannerAuto("RightStartAuto"));
+    private final AutoSelector autoSelector = new AutoSelector()
+            // .add("Tst", () -> new PathPlannerAuto("Tst"))
+            .add("RightStartAuto", () -> new PathPlannerAuto("RightStartAuto"));
 
-			 {
-				{
-		var profiles = new String[this.autoSelector.getProfiles().size()];
-		for (var i = 0; i < profiles.length; i++) {
-			profiles[i] = this.autoSelector.getProfiles().get(i).name();
-		}
+    {
+        {
+            var profiles = new String[this.autoSelector.getProfiles().size()];
+            for (var i = 0; i < profiles.length; i++) {
+                profiles[i] = this.autoSelector.getProfiles().get(i).name();
+            }
 
-		var autoChoicesPub = NetworkTables.PublisherFactory(this.table, "Choices", profiles);
-		autoChoicesPub.accept(profiles);
-		}
-	}
-
+            var autoChoicesPub = NetworkTables.PublisherFactory(this.table, "Choices", profiles);
+            autoChoicesPub.accept(profiles);
+        }
+    }
 
     public Robot() {
-		this.scheme.init();
+        this.scheme.init();
 
-		AutoBuilder.configure(
-			this.drivetrain::getEstimatedPosition,
-			this.drivetrain::resetPose,
-			this.drivetrain::getChassisSpeeds,
-			this.drivetrain::drive,
-			HOLONOMIC_AUTO_CONFIG,
-			ROBOT_CONFIG,
-			() -> {
-				var alliance = DriverStation.getAlliance();
+        // AutoBuilder.configure(
+        //         this.drivetrain::getEstimatedPosition,
+        //         this.drivetrain::resetPose,
+        //         this.drivetrain::getChassisSpeeds,
+        //         this.drivetrain::drive,
+        //         HOLONOMIC_AUTO_CONFIG,
+        //         ROBOT_CONFIG,
+        //         () -> {
+        //             var alliance = DriverStation.getAlliance();
 
-				if(alliance.isPresent()) {
-					return alliance.get() == DriverStation.Alliance.Red;
-				}
-				return false;
-			},
-			drivetrain
-		);
+        //             if (alliance.isPresent()) {
+        //                 return alliance.get() == DriverStation.Alliance.Red;
+        //             }
+        //             return false;
+        //         },
+        //         drivetrain
+        // );
 
     }
 
-	private final StringPublisher autoPublisher = NetworkTables.PublisherFactory(
-		this.table, 
-		"Profile",
-		this.autoSelector.getProfiles().isEmpty() ? "" : this.autoSelector.getProfiles().
-			get(0)
-			.name()
-	);
+    private final StringPublisher autoPublisher = NetworkTables.PublisherFactory(
+            this.table,
+            "Profile",
+            this.autoSelector.getProfiles().isEmpty() ? "" : this.autoSelector.getProfiles().
+            get(0)
+            .name()
+    );
 
-	private final StringSubscriber autoSubscriber = NetworkTables.SubscriberFactory(this.table, this.autoPublisher.getTopic());
+    private final StringSubscriber autoSubscriber = NetworkTables.SubscriberFactory(this.table, this.autoPublisher.getTopic());
 
+    @Override
+    public void autonomousSequence() {
+        NetworkTables.SetPersistence(this.autoPublisher.getTopic(), true);
+        String autoProfile = this.autoSubscriber.get();
 
-	@Override
-	public void autonomousSequence() {
-		NetworkTables.SetPersistence(this.autoPublisher.getTopic(), true);
-			String autoProfile = this.autoSubscriber.get();
-			
-			if (autoProfile == null || autoProfile.isEmpty()) {
-				if (!this.autoSelector.getProfiles().isEmpty()) {
-					autoProfile = this.autoSelector.getProfiles().get(0).name();
-				}
-			}
-			
-			var autoCommand = this.autoSelector.select(autoProfile);
+        if (autoProfile == null || autoProfile.isEmpty()) {
+            if (!this.autoSelector.getProfiles().isEmpty()) {
+                autoProfile = this.autoSelector.getProfiles().get(0).name();
+            }
+        }
 
-			this.scheduler.scheduleAutoCommand(autoCommand);
+        var autoCommand = this.autoSelector.select(autoProfile);
 
-	}
+        this.scheduler.scheduleAutoCommand(autoCommand);
 
-	@Override
-	public void teleopSequence() {
-		this.scheduler.scheduleDefaultCommand(
-			new DriveLooped(
-					this.drivetrain, 
-					this.scheme.DRIVE_FORWARD,
-					this.scheme.DRIVE_SIDEWAYS,  
-					this.scheme.DRIVE_TURN, 
-					this.scheme.ROBOT_RELATIVE_TOGGLE
-				), 
-			TaskPersistence.GAMEPLAY, 
-			LockPriority.HIGH
-		);
-		
-		// Add slowmode toggle on left bumper
-		this.scheme.SLOWMODE_TOGGLE.whenPressed(
-			new ToggleSlowmodeCommand(this.drivetrain), 
-			TaskPersistence.GAMEPLAY
-		);
-		
-		// Add guard mode toggle on right bumper
-		this.scheme.GUARDMODE_TOGGLE.whenPressed(
-			new ToggleGuardModeCommand(this.drivetrain), 
-			TaskPersistence.GAMEPLAY
-		);
-	}
+    }
 
+    @Override
+    public void teleopSequence() {
+        // this.scheduler.scheduleDefaultCommand(
+        // 	new DriveLooped(
+        // 			this.drivetrain, 
+        // 			this.scheme.DRIVE_FORWARD,
+        // 			this.scheme.DRIVE_SIDEWAYS,  
+        // 			this.scheme.DRIVE_TURN, 
+        // 			this.scheme.ROBOT_RELATIVE_TOGGLE
+        // 		), 
+        // 	TaskPersistence.GAMEPLAY, 
+        // 	LockPriority.HIGH
+        // );
 
-	@Override
-	public void testSequence() {
-	}
+        // // Add slowmode toggle on left bumper
+        // this.scheme.SLOWMODE_TOGGLE.whenPressed(
+        // 	new ToggleSlowmodeCommand(this.drivetrain), 
+        // 	TaskPersistence.GAMEPLAY
+        // );
+        // // Add guard mode toggle on right bumper
+        // this.scheme.GUARDMODE_TOGGLE.whenPressed(
+        // 	new ToggleGuardModeCommand(this.drivetrain), 
+        // 	TaskPersistence.GAMEPLAY
+        // );
+        this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
+    }
 
-	@Override
-	protected void disabledSequence() {
+    @Override
+    public void testSequence() {
+    }
 
-	}
+    @Override
+    protected void disabledSequence() {
+
+    }
 }
+
 //Comment so i can push lol

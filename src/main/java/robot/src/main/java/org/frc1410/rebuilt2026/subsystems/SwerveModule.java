@@ -1,5 +1,6 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -13,7 +14,8 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.*;
+
+// import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.*;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -45,7 +47,6 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_DRI
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_STEER_D;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_STEER_I;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_STEER_P;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.CAN_BUS_NAME;
 
 public class SwerveModule implements TickedSubsystem {
     private final TalonFX driveMotor;
@@ -81,9 +82,11 @@ public class SwerveModule implements TickedSubsystem {
             DoublePublisher actualVelocity,
             DoublePublisher actualAngle
     ) {
+        
+        CANBus canBus = CANBus.roboRIO();
 
         // Drive config
-        this.driveMotor = new TalonFX(driveMotorID, CAN_BUS_NAME);
+        this.driveMotor = new TalonFX(driveMotorID, canBus);
         var driveMotorConfig = new TalonFXConfiguration();
 
         driveMotorConfig.Slot0.kS = DRIVE_KS;
@@ -113,7 +116,7 @@ public class SwerveModule implements TickedSubsystem {
         this.steerMotor.configure(sparkConfig, com.revrobotics.ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
 
         // Steer encoder config
-        this.steerEncoder = new CANcoder(steerEncoderID, CAN_BUS_NAME);
+        this.steerEncoder = new CANcoder(steerEncoderID, canBus);
         var configurator = this.steerEncoder.getConfigurator();
 
         var steerEncoderConfig = new CANcoderConfiguration();
