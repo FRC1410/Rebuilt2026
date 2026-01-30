@@ -1,5 +1,6 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -9,11 +10,12 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.spark.SparkBase;
+// import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -31,6 +33,7 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.*;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.*;
 
 public class SwerveModule implements TickedSubsystem {
+
     private final TalonFX driveMotor;
     private final SparkMax steerMotor;
 
@@ -65,8 +68,10 @@ public class SwerveModule implements TickedSubsystem {
             DoublePublisher actualAngle
     ) {
 
+        CANBus canBus = CANBus.roboRIO();
+
         // Drive config
-        this.driveMotor = new TalonFX(driveMotorID, "CTRE");
+        this.driveMotor = new TalonFX(driveMotorID, canBus);
         var driveMotorConfig = new TalonFXConfiguration();
 
         driveMotorConfig.Slot0.kS = DRIVE_KS;
@@ -79,9 +84,9 @@ public class SwerveModule implements TickedSubsystem {
         driveMotorConfig.CurrentLimits.SupplyCurrentLimit = DRIVE_MOTOR_CURRENT_LIMIT;
         driveMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        driveMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake; 
-        driveMotorConfig.MotorOutput.Inverted =
-                driveInverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        driveMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        driveMotorConfig.MotorOutput.Inverted
+                = driveInverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
 
         this.driveMotor.getConfigurator().apply(driveMotorConfig);
 
@@ -89,19 +94,19 @@ public class SwerveModule implements TickedSubsystem {
         var sparkConfig = new SparkMaxConfig();
 
         sparkConfig.smartCurrentLimit(STEER_MOTOR_CURRENT_LIMIT);
-        sparkConfig.idleMode(SparkBaseConfig.IdleMode.kBrake); 
+        sparkConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         sparkConfig.inverted(steerInverted);
 
         this.steerMotor = new SparkMax(steerMotorID, MotorType.kBrushless);
-        this.steerMotor.configure(sparkConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+        this.steerMotor.configure(sparkConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
 
         // Steer encoder config
-        this.steerEncoder = new CANcoder(steerEncoderID, "CTRE");
+        this.steerEncoder = new CANcoder(steerEncoderID, canBus);
         var configurator = this.steerEncoder.getConfigurator();
 
         var steerEncoderConfig = new CANcoderConfiguration();
 
-        steerEncoderConfig.MagnetSensor.MagnetOffset = angleOffset.negate().in(Rotation);
+        steerEncoderConfig.MagnetSensor.MagnetOffset = angleOffset.unaryMinus().in(Rotation);
         steerEncoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
 
         configurator.apply(steerEncoderConfig);
@@ -123,7 +128,7 @@ public class SwerveModule implements TickedSubsystem {
 //        Random rand = new Random();
 //        var randomNum = rand.nextInt(3);
         StatusCode result = this.orchestra.loadMusic("Fox.chrp");
-        if(!result.isOK()) {
+        if (!result.isOK()) {
             System.out.println("Error loading orchestra music: " + result);
         } else {
             System.out.println("playing");

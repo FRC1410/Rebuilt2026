@@ -31,5 +31,5 @@ public final class IDs {
 
 	//Shooter
 	public static final int SHOOTER_SPARK = 7;
-	public static final int HOOD_ACTUATOR = 8;
+	public static final int HOOD_ACTUATOR = 1;
 }

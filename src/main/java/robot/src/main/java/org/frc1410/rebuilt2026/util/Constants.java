@@ -2,22 +2,31 @@ package robot.src.main.java.org.frc1410.rebuilt2026.util;
 
 import java.io.IOException;
 
+import org.json.simple.parser.ParseException;
+
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.units.measure.Distance;
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.DegreesPerSecond;
+import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
-import org.json.simple.parser.ParseException;
-
-import static edu.wpi.first.units.Units.*;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.*;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.PATH_AUTO_ROTATION_CONSTRAINTS;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.PATH_AUTO_TRANSLATION_CONSTRAINTS;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.PATH_FOLLOWING_ROTATION_CONSTRAINTS;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.PATH_FOLLOWING_TRANSLATION_CONSTRAINTS;
 
 
 public final class Constants {
@@ -101,9 +110,9 @@ public final class Constants {
             PATH_FOLLOWING_ROTATION_CONSTRAINTS
     );
 
-    public static final double HOOD_LOW_LEFT_SETPOINT = 0;
-    public static final double HOOD_LOW_RIGHT_SETPOINT = 70;
-    public static final double HOOD_HIGH_LEFT_SETPOINT = 140;
+    public static final double HOOD_LOW_LEFT_SETPOINT = 0.0;
+    public static final double HOOD_LOW_RIGHT_SETPOINT = 0.5;
+    public static final double HOOD_HIGH_LEFT_SETPOINT = 1.0;
 
 
 }
