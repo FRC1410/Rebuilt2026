@@ -85,10 +85,10 @@ public final class Robot extends PhaseDrivenRobot {
 	public void teleopSequence() {
 		this.scheduler.scheduleDefaultCommand(new DriveLooped(this.drivetrain, this.driverController.LEFT_X_AXIS, this.driverController.LEFT_Y_AXIS, this.driverController.RIGHT_X_AXIS, this.driverController.RIGHT_TRIGGER), TaskPersistence.GAMEPLAY, LockPriority.HIGH);
 		
-		this.kv.autoAlignTest();
+		//this.kv.autoAlignTest();
 		
 		this.driverController.RIGHT_BUMPER.whileHeldOnce(new AutoAlign(
-				this.drivetrain, kv.returnCamYaw()
+				this.drivetrain, kv
 				), TaskPersistence.GAMEPLAY
 		);
 		SmartDashboard.putBoolean("Vision Target Visible", kv.hasTarget());

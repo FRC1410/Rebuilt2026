@@ -83,7 +83,7 @@ public class SwerveModule implements TickedSubsystem {
             DoublePublisher actualAngle
     ) {
 
-        CANBus canBus = CANBus.roboRIO();
+        CANBus canBus = new CANBus("Hammy");
 
         // Drive config
         this.driveMotor = new TalonFX(driveMotorID, canBus);

@@ -296,20 +296,20 @@ public class Drivetrain implements TickedSubsystem {
                 .div(4);
     }
 
-    // public void switchSlowmode() {
-    //     slowmode = !slowmode;
-    // }
+    public void switchSlowmode() {
+        slowmode = !slowmode;
+    }
 
-    // public boolean isSlowModeEnabled() {
-    //     return slowmode;
-    // }
-    // public void switchOrientation() {
-    //     fieldOriented = !fieldOriented;
-    // }
+    public boolean isSlowModeEnabled() {
+        return slowmode;
+    }
+    public void switchOrientation() {
+        fieldOriented = !fieldOriented;
+    }
 
-    // public boolean isFieldOriented() {
-    //     return fieldOriented;
-    // }
+    public boolean isFieldOriented() {
+        return fieldOriented;
+    }
 
     public void playMusic() {
         this.frontLeftModule.randomMusic();
