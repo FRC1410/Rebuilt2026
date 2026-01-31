@@ -17,7 +17,7 @@ import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleGuardModeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleSlowmodeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
-
+import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.*;
 
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
@@ -66,18 +66,18 @@ public final class Robot extends PhaseDrivenRobot {
     }
 	@Override
 	public void autonomousSequence() {
-		NetworkTables.SetPersistence(this.autoPublisher.getTopic(), true);
-			String autoProfile = this.autoSubscriber.get();
+		// NetworkTables.SetPersistence(this.autoPublisher.getTopic(), true);
+		// 	String autoProfile = this.autoSubscriber.get();
 			
-			if (autoProfile == null || autoProfile.isEmpty()) {
-				if (!this.autoSelector.getProfiles().isEmpty()) {
-					autoProfile = this.autoSelector.getProfiles().get(0).name();
-				}
-			}
+		// 	if (autoProfile == null || autoProfile.isEmpty()) {
+		// 		if (!this.autoSelector.getProfiles().isEmpty()) {
+		// 			autoProfile = this.autoSelector.getProfiles().get(0).name();
+		// 		}
+		// 	}
 			
-			var autoCommand = this.autoSelector.select(autoProfile);
+		// 	var autoCommand = this.autoSelector.select(autoProfile);
 
-			this.scheduler.scheduleAutoCommand(autoCommand);
+		// 	this.scheduler.scheduleAutoCommand(autoCommand);
 
 	}
 
