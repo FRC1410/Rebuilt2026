@@ -2,6 +2,8 @@ package robot.src.main.java.org.frc1410.rebuilt2026.util;
 
 import java.io.IOException;
 
+import org.json.simple.parser.ParseException;
+
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
@@ -10,16 +12,23 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.units.measure.Distance;
+import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.DegreesPerSecond;
+import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
+import static edu.wpi.first.units.Units.Inches;
+import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
-import org.json.simple.parser.ParseException;
-
-import static edu.wpi.first.units.Units.*;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.*;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.PATH_AUTO_ROTATION_CONSTRAINTS;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.PATH_AUTO_TRANSLATION_CONSTRAINTS;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.PATH_FOLLOWING_ROTATION_CONSTRAINTS;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.PATH_FOLLOWING_TRANSLATION_CONSTRAINTS;
 
 
 public final class Constants {
@@ -51,7 +60,7 @@ public final class Constants {
     // Drive constants
     public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(15.029297); 
     public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(0.351562); //-179.648438
-    public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(-25.136719); //154.863281
+    public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(-25.136699); //154.863281
     public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(-27.861328); 
 
     public static final boolean FRONT_LEFT_DRIVE_MOTOR_INVERTED = true;

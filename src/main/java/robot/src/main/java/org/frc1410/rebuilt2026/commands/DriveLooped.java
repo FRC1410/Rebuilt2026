@@ -41,32 +41,32 @@ public class DriveLooped extends Command {
         
 
         if(this.drivetrain.isSlowModeEnabled()) {
-            xVelocity = SWERVE_DRIVE_MAX_SPEED.times(-this.xAxis.get() * 0.6);
-            yVelocity = SWERVE_DRIVE_MAX_SPEED.times(-this.yAxis.get() * 0.6);
+            xVelocity = SWERVE_DRIVE_MAX_SPEED.times(this.xAxis.get() * 0.6);
+            yVelocity = SWERVE_DRIVE_MAX_SPEED.times(this.yAxis.get() * 0.6);
             angularVelocity = SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.times(-this.rotationAxis.get() * 0.6);
         } else {
-            xVelocity = SWERVE_DRIVE_MAX_SPEED.times(-this.xAxis.get());
-            yVelocity = SWERVE_DRIVE_MAX_SPEED.times(-this.yAxis.get());
+            xVelocity = SWERVE_DRIVE_MAX_SPEED.times(this.xAxis.get());
+            yVelocity = SWERVE_DRIVE_MAX_SPEED.times(this.yAxis.get());
             angularVelocity = SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.times(-this.rotationAxis.get());
         }
 
 //        drivetrain.drive(new ChassisSpeeds(xVelocity, yVelocity, angularVelocity));
 
         if(robotRelativeTrigger.button().isActive()) { 
-            drivetrain.drive(new ChassisSpeeds(xVelocity.times(-1), yVelocity.times(-1), angularVelocity.times(-1)));
+            drivetrain.drive(new ChassisSpeeds(xVelocity.times(-1), yVelocity.times(-1), angularVelocity));
         } else {
             this.drivetrain.fieldOrientedDrive(
-                    new ChassisSpeeds(
-                            xVelocity.in(MetersPerSecond),
-                            yVelocity.in(MetersPerSecond),
-                            angularVelocity.in(RadiansPerSecond)
-                    )
+                new ChassisSpeeds(
+                    xVelocity.in(MetersPerSecond),
+                    yVelocity.in(MetersPerSecond),
+                    angularVelocity.in(RadiansPerSecond)
+                )
             );
         }
-    }
+        }
 
-    @Override
-    public boolean isFinished() {
+        @Override
+        public boolean isFinished() {
         return false;
-    }
+        }
 }
