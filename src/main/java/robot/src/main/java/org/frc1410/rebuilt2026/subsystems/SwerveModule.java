@@ -1,5 +1,6 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -65,8 +66,10 @@ public class SwerveModule implements TickedSubsystem {
             DoublePublisher actualAngle
     ) {
 
+        CANBus canBus = CANBus.roboRIO();
+
         // Drive config
-        this.driveMotor = new TalonFX(driveMotorID, "CTRE");
+        this.driveMotor = new TalonFX(driveMotorID, canBus);
         var driveMotorConfig = new TalonFXConfiguration();
 
         driveMotorConfig.Slot0.kS = DRIVE_KS;
@@ -93,10 +96,10 @@ public class SwerveModule implements TickedSubsystem {
         sparkConfig.inverted(steerInverted);
 
         this.steerMotor = new SparkMax(steerMotorID, MotorType.kBrushless);
-        this.steerMotor.configure(sparkConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+        this.steerMotor.configure(sparkConfig, com.revrobotics.ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
 
         // Steer encoder config
-        this.steerEncoder = new CANcoder(steerEncoderID, "CTRE");
+        this.steerEncoder = new CANcoder(steerEncoderID, canBus);
         var configurator = this.steerEncoder.getConfigurator();
 
         var steerEncoderConfig = new CANcoderConfiguration();

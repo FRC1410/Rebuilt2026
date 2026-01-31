@@ -7,10 +7,10 @@ import robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 
-public class autoAlign extends Command {
+public class AutoAlign extends Command {
     private final Drivetrain drivetrain;
     private final double targetYaw;
-    public autoAlign(Drivetrain dt, double yaw){
+    public AutoAlign(Drivetrain dt, double yaw){
         this.drivetrain = dt;
         this.targetYaw = yaw;
     }

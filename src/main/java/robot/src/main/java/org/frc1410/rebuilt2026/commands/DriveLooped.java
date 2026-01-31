@@ -53,7 +53,7 @@ public class DriveLooped extends Command {
 //        drivetrain.drive(new ChassisSpeeds(xVelocity, yVelocity, angularVelocity));
 
         if(robotRelativeTrigger.button().isActive()) { 
-            drivetrain.drive(new ChassisSpeeds(xVelocity, yVelocity, angularVelocity));
+            drivetrain.drive(new ChassisSpeeds(xVelocity.times(-1), yVelocity.times(-1), angularVelocity.times(-1)));
         } else {
             this.drivetrain.fieldOrientedDrive(
                     new ChassisSpeeds(

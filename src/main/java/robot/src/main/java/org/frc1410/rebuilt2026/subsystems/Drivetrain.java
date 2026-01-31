@@ -53,7 +53,7 @@ public class Drivetrain implements TickedSubsystem {
     private final DoublePublisher pitch = NetworkTables.PublisherFactory(this.table, "pitch", 0);
     private final DoublePublisher roll = NetworkTables.PublisherFactory(this.table, "roll", 0);
 
-    private final DoublePublisher rawPidgionVal = NetworkTables.PublisherFactory(this.table, "Pidgion Val", 0);
+    // private final DoublePublisher rawPidgionVal = NetworkTables.PublisherFactory(this.table, "Pidgion Val", 0);
 
     private final DoublePublisher characterizationVolts = NetworkTables.PublisherFactory(this.table,
             "characterization volts", 0);
