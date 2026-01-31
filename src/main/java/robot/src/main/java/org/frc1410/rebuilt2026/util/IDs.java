@@ -28,5 +28,5 @@ public final class IDs {
 
 	//LED's
 	public static final int LED_ID = 17;
-	public static final int INTAKE_SPARK = 13;
+	public static final int INTAKE_SPARK = 2;
 }
