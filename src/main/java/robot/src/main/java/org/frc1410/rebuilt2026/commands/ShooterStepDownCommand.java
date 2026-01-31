@@ -15,6 +15,7 @@ public class ShooterStepDownCommand extends Command {
 
     @Override
     public void initialize() {
+        System.out.println("DOWN!");
         shooter.tickDown(multiplier);
     }
 

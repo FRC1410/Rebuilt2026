@@ -15,6 +15,7 @@ public class ShooterStepUpCommand extends Command {
 
     @Override
     public void initialize() {
+        System.out.println("UP!");
         shooter.tickUp(multiplier);
     }
 
