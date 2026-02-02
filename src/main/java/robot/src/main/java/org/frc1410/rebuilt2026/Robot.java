@@ -88,7 +88,7 @@ public final class Robot extends PhaseDrivenRobot {
 		//this.kv.autoAlignTest();
 		
 		this.driverController.RIGHT_BUMPER.whileHeldOnce(new AutoAlign(
-				this.drivetrain, kv
+				this.drivetrain, CAM_NAME1
 				), TaskPersistence.GAMEPLAY
 		);
 		SmartDashboard.putBoolean("Vision Target Visible", kv.hasTarget());
