@@ -13,7 +13,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
+//Ratata
 public class AutoAlign extends Command {
     private final Drivetrain drivetrain;
     private final Cam[] cams;
