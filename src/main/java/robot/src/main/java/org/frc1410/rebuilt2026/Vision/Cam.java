@@ -36,19 +36,21 @@ public class Cam implements TickedSubsystem{
                     this.offset
             );
         }
-        @Override
-        public void periodic() {
-            // RANDOM BS GOOOOOOOOOOOOOO
-            results = cam.getAllUnreadResults();
-            if (!results.isEmpty()) {
+    @Override
+    public void periodic() {
+        // RANDOM BS GOOOOOOOOOOOOOO
+        results = cam.getAllUnreadResults();
+    }
+    public void lookForTag(int id){
+        if (!results.isEmpty()) {
                 // Camera processed a new frame since last
                 // Get the last one in the list.
                 var result = results.get(results.size() - 1);
                 if (result.hasTargets()) {
                     // At least one AprilTag was seen by the camera
                     for (var target : result.getTargets()) {
-                        if (target.getFiducialId() == 7) {
-                            // Found Tag 7, record its information
+                        if (target.getFiducialId() == id) {
+                            // Found Tag, record its information
                             this.tagName = target.getFiducialId();
                             this.targetYaw = target.getYaw();
                             this.targetVisible = true;
@@ -56,8 +58,6 @@ public class Cam implements TickedSubsystem{
                     }
                 }
             }
-
-        
     }
     public List<PhotonPipelineResult> getUnreadResults(){
         return results;

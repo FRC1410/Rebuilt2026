@@ -13,9 +13,6 @@ import framework.src.main.java.org.frc1410.framework.PhaseDrivenRobot;
 import framework.src.main.java.org.frc1410.framework.control.Controller;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskPersistence;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleGuardModeCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleSlowmodeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.*;
@@ -28,6 +25,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOLONOMIC_AUTO_CONFIG;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.ROBOT_CONFIG;
@@ -39,7 +37,7 @@ import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPri
 import robot.src.main.java.org.frc1410.rebuilt2026.Vision.*;
 
 public final class Robot extends PhaseDrivenRobot {
-	Vision kv = new Vision(CAM_NAME1, EoC1_OFFSET);
+	Cam[] eyesOfCthulu = new Cam[]{new Cam(CAM_NAME1, EoC1_OFFSET)};
 	private final Controller driverController = new Controller(this.scheduler, DRIVER_CONTROLLER, 0.1);
 	private final Controller operatorController = new Controller(this.scheduler, OPERATOR_CONTROLLER,  0.1);
 	private final Drivetrain drivetrain = subsystems.track(new Drivetrain(this.subsystems));
@@ -87,14 +85,9 @@ public final class Robot extends PhaseDrivenRobot {
 		
 		//this.kv.autoAlignTest();
 		
-		this.driverController.RIGHT_BUMPER.whileHeldOnce(new AutoAlign(
-				this.drivetrain, CAM_NAME1
-				), TaskPersistence.GAMEPLAY
+		//this.driverController.RIGHT_BUMPER.whileHeldOnce();
+		this.driverController.X.whenPressed(new AutoAlign(drivetrain, eyesOfCthulu), TaskPersistence.GAMEPLAY
 		);
-		SmartDashboard.putBoolean("Vision Target Visible", kv.hasTarget());
-		SmartDashboard.putNumber("Target ID", kv.returnTagID());
-		SmartDashboard.putNumber("Target Yaw", kv.returnCamYaw());
-		
 	}
 
 
