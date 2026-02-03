@@ -11,6 +11,7 @@ import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class AutoAlign extends Command {
@@ -25,22 +26,23 @@ public class AutoAlign extends Command {
             
         @Override
         public void initialize() {
-            for(Cam c : cams){
-                c.lookForTag(7);
-            }
+            // for(Cam c : cams){
+            //     c.lookForTag(7);
+            // }
+            SmartDashboard.putBoolean("AutoAlign Init Working", true);
         }
          @Override
         public void execute(){
             // Read in relevant data from the Camera
-            System.out.println("I'm WORKING!");
-        // // // for(Cam c : cams){
-        // // //     if(c.returnCamYaw() != 0){
-        // // //         this.drivetrain.drive(new ChassisSpeeds(
-        // // //     0, 
-        // // //     0, 
-        // // //     (-1.0 * 0 * Tuning.VISION_TURN_kP)//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
-        // // // ));
-        // //     }
+            SmartDashboard.putBoolean("AutoAlign EXEC", true);
+        // for(Cam c : cams){
+        //     if(c.returnCamYaw() != 0){
+        //         this.drivetrain.drive(new ChassisSpeeds(
+        //     0, 
+        //     0, 
+        //     (-1.0 * 0 * Tuning.VISION_TURN_kP)//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
+        // ));
+        //    }
         // }
         //drivetrain.
         //1.0 * targetYaw * Tuning.VISION_TURN_kP * Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY;
