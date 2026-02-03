@@ -1,5 +1,7 @@
 package framework.src.main.java.org.frc1410.framework;
 
+import edu.wpi.first.net.WebServer;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import framework.src.main.java.org.frc1410.framework.phase.Phase;
 import framework.src.main.java.org.frc1410.framework.phase.PhaseController;
@@ -69,6 +71,7 @@ public abstract class PhaseDrivenRobot extends TimedRobot {
 		LOG.info("Robot initialized.");
 		// Signal that we're about to transition out of INIT as soon as the scheduler does a sweep
 		phaseController.beginTransition();
+		WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
 	}
 
 	/**
