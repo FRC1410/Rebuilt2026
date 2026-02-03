@@ -3,51 +3,38 @@ package robot.src.main.java.org.frc1410.rebuilt2026.Vision;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonUtils;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import java.util.List;
+import java.util.Optional;
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.simulation.PhotonCameraSim;
+import org.photonvision.simulation.SimCameraProperties;
+import org.photonvision.simulation.VisionSystemSim;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 
 import edu.wpi.first.math.geometry.Transform3d;
+import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 public class Vision {
     private Cam[] eyesOfCthulu;
-    PhotonCamera kv1;
-    Transform3d kv1Offset;
-    PhotonCamera kv2;
-    Transform3d kv2Offset;
-    boolean targetVisible = false;
-    double targetYaw = 0.0;
-    int tagName;
-
-    public Vision(String camName, Transform3d offset){
-        this.kv1 = new PhotonCamera(camName);
-        this.kv1Offset = offset;
-        
-    }
-    public Vision(String camName, String camName2){
-        this.kv1 = new PhotonCamera(camName);
-        this.kv2 = new PhotonCamera(camName2);
-        
-    }
-    public Vision(Cam[] cams){
+    private boolean targetVisible = false;
+    private double targetYaw = 0.0;
+    private int tagName;
+    private Drivetrain dt;
+    private Matrix<N3, N1> curStdDevs;
+    private final EstimateConsumer estConsumer;
+    public Vision(Cam[] cams, Drivetrain dt, EstimateConsumer estConsumer){
         eyesOfCthulu = cams;
-    }
-    public void autoAlignTest(){
-        // Read in relevant data from the Camera
-        
-        var results = kv1.getAllUnreadResults();
-        if (!results.isEmpty()) {
-            // Camera processed a new frame since last
-            // Get the last one in the list.
-            var result = results.get(results.size() - 1);
-            if (result.hasTargets()) {
-                // At least one AprilTag was seen by the camera
-                for (var target : result.getTargets()) {
-                    if (target.getFiducialId() == 7) {
-                        // Found Tag 7, record its information
-                        this.tagName = target.getFiducialId();
-                        this.targetYaw = target.getYaw();
-                        this.targetVisible = true;
-                    }
-                }
-            }
-        }
+        this.dt = dt;
+        this.estConsumer = estConsumer;
     }
     public double returnCamYaw(){
         return targetYaw;
@@ -59,5 +46,8 @@ public class Vision {
         return tagName;
     }
 
-
+    @FunctionalInterface
+    public static interface EstimateConsumer {
+        public void accept(Pose2d pose, double timestamp, Matrix<N3, N1> estimationStdDevs);
+    }
 }
