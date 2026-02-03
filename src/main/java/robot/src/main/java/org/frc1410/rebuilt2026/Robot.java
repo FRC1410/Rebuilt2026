@@ -86,7 +86,7 @@ public final class Robot extends PhaseDrivenRobot {
 		//this.kv.autoAlignTest();
 		
 		//this.driverController.RIGHT_BUMPER.whileHeldOnce();
-		this.driverController.X.whenPressed(new AutoAlign(drivetrain, eyesOfCthulu), TaskPersistence.GAMEPLAY
+		this.driverController.RIGHT_BUMPER.whenPressed(new AutoAlign(drivetrain, eyesOfCthulu), TaskPersistence.GAMEPLAY
 		);
 	}
 
