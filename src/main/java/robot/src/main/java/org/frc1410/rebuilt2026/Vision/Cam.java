@@ -32,7 +32,6 @@ public class Cam implements TickedSubsystem{
             this.offset = offset;
              poseEst = new PhotonPoseEstimator(
                     APRIL_TAG_FIELD_LAYOUT,
-                    PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
                     this.offset
             );
         }
