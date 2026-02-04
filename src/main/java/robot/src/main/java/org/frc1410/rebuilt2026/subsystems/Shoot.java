@@ -1,8 +1,5 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
-import com.revrobotics.spark.SparkLowLevel;
-import com.revrobotics.spark.config.SparkMaxConfig;
-
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -11,12 +8,6 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOOD_HI
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOOD_LOW_LEFT_SETPOINT;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOOD_LOW_RIGHT_SETPOINT;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.HOOD_ACTUATOR;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.SHOOTER_SPARK;
-
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
-
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public class Shoot implements TickedSubsystem {
@@ -27,8 +18,8 @@ public class Shoot implements TickedSubsystem {
         LOW_LEFT
     }
 
-    private final SparkMax shooterMotor;
-    // private final LinearServo hoodActuator;
+    // private final SparkMax shooterMotor;
+    private final LinearServo hoodActuator;
 
     private double currentTick = 0;
 
@@ -37,17 +28,17 @@ public class Shoot implements TickedSubsystem {
     private final DoublePublisher currentSpeedPublisher = NetworkTables.PublisherFactory(networkTable, "Shooter Level", currentTick);
 
     public Shoot() {
-        this.shooterMotor = new SparkMax(SHOOTER_SPARK, SparkLowLevel.MotorType.kBrushless);
-        SparkMaxConfig shooterMotorConfig = new SparkMaxConfig();
+        // this.shooterMotor = new SparkMax(SHOOTER_SPARK, SparkLowLevel.MotorType.kBrushless);
+        // SparkMaxConfig shooterMotorConfig = new SparkMaxConfig();
         // shooterMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         // shooterMotorConfig.smartCurrentLimit(30);
 
-        // this.hoodActuator = new LinearServo(HOOD_ACTUATOR);
-        this.shooterMotor.configure(
-            shooterMotorConfig, 
-            com.revrobotics.ResetMode.kNoResetSafeParameters, 
-            com.revrobotics.PersistMode.kPersistParameters
-        );
+        this.hoodActuator = new LinearServo(HOOD_ACTUATOR);
+        // this.shooterMotor.configure(
+        //     shooterMotorConfig, 
+        //     com.revrobotics.ResetMode.kNoResetSafeParameters, 
+        //     com.revrobotics.PersistMode.kPersistParameters
+        // );
     }
 
     public void setSpeed(boolean up) {
@@ -85,23 +76,28 @@ public class Shoot implements TickedSubsystem {
     }
 
     public void setHoodPos(HoodStates hoodState) {
-        // switch (hoodState) {
-        //     case LOW_LEFT:
-        //         this.hoodActuator.setPosition(HOOD_LOW_LEFT_SETPOINT);
-        //     case LOW_RIGHT:
-        //         this.hoodActuator.setPosition(HOOD_LOW_RIGHT_SETPOINT);
-        //     case HIGH_LEFT:
-        //         this.hoodActuator.setPosition(HOOD_HIGH_LEFT_SETPOINT);
-        // }
+        switch (hoodState) {
+            case LOW_LEFT ->
+                this.hoodActuator.setPosition(HOOD_LOW_LEFT_SETPOINT);
+            case LOW_RIGHT ->
+                this.hoodActuator.setPosition(HOOD_LOW_RIGHT_SETPOINT);
+            case HIGH_LEFT ->
+                this.hoodActuator.setPosition(HOOD_HIGH_LEFT_SETPOINT);
+        
+        }
     }
 
     public double getHoodPos() {
-        return 0; //this.hoodActuator.getPosition();
+        return this.hoodActuator.getPosition();
+    }    
+    
+    public double getHoodSetPos() {
+        return this.hoodActuator.getSetPos();
     }
 
     @Override
     public void periodic() {
-        this.shooterMotor.set(currentTick);
+        // this.shooterMotor.set(currentTick);
         // this.hoodActuator.periodic();
         this.currentSpeedPublisher.set(currentTick);
     }
