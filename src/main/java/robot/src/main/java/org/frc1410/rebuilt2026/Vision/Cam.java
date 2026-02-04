@@ -14,7 +14,11 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
+import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public class Cam implements TickedSubsystem{
     //The Eye of Cthulu knows all
@@ -22,6 +26,9 @@ public class Cam implements TickedSubsystem{
     private final Transform3d offset;
     private final PhotonPoseEstimator poseEst;
     private List<PhotonPipelineResult> results = new ArrayList<>();
+    private final NetworkTable table = NetworkTableInstance.getDefault().getTable("THE ORB");
+
+    private final DoublePublisher camYaw = NetworkTables.PublisherFactory(this.table, "Current Cam Yaw", 0);
     boolean targetVisible = false;
     double targetYaw = 0.0;
     int tagName;
@@ -53,6 +60,7 @@ public class Cam implements TickedSubsystem{
                             this.tagName = target.getFiducialId();
                             this.targetYaw = target.getYaw();
                             this.targetVisible = true;
+                            camYaw.set(this.targetYaw);
                         }
                     }
                 }

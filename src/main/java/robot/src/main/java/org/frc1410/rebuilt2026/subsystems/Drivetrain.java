@@ -109,6 +109,8 @@ public class Drivetrain implements TickedSubsystem {
     public boolean fieldOriented = false;
     private boolean guardMode = false;
 
+    public boolean aligning = false;
+
 
     public Drivetrain(SubsystemStore subsystems) {
         this.frontLeftModule = subsystems.track(new SwerveModule(

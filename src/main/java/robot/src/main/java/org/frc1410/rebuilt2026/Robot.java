@@ -37,7 +37,7 @@ import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPri
 import robot.src.main.java.org.frc1410.rebuilt2026.Vision.*;
 
 public final class Robot extends PhaseDrivenRobot {
-	Cam[] eyesOfCthulu = new Cam[]{new Cam(CAM_NAME1, EoC1_OFFSET)};
+	Cam[] eyesOfCthulu = new Cam[]{subsystems.track(new Cam(CAM_NAME1, EoC1_OFFSET))};
 	private final Controller driverController = new Controller(this.scheduler, DRIVER_CONTROLLER, 0.1);
 	private final Controller operatorController = new Controller(this.scheduler, OPERATOR_CONTROLLER,  0.1);
 	private final Drivetrain drivetrain = subsystems.track(new Drivetrain(this.subsystems));
@@ -86,7 +86,7 @@ public final class Robot extends PhaseDrivenRobot {
 		//this.kv.autoAlignTest();
 		
 		//this.driverController.RIGHT_BUMPER.whileHeldOnce();
-		this.driverController.RIGHT_BUMPER.whenPressed(new AutoAlign(drivetrain, eyesOfCthulu), TaskPersistence.GAMEPLAY
+		this.driverController.RIGHT_BUMPER.whileHeld(new AutoAlign(drivetrain, eyesOfCthulu), TaskPersistence.GAMEPLAY
 		);
 	}
 

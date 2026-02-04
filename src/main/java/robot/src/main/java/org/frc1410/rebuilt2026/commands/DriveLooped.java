@@ -34,6 +34,9 @@ public class DriveLooped extends Command {
 
     @Override
     public void execute() {
+        if (this.drivetrain.aligning) {
+            return;
+        }
         LinearVelocity xVelocity;
         LinearVelocity yVelocity;
         AngularVelocity angularVelocity;
