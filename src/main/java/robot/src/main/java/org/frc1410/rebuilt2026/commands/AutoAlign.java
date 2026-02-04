@@ -31,6 +31,7 @@ public class AutoAlign extends Command {
             
         @Override
         public void initialize() {
+            this.drivetrain.aligning = true;
             for(Cam c : cams){
                 c.lookForTag(7);
             if(c.returnCamYaw() != 0){
@@ -73,6 +74,7 @@ public class AutoAlign extends Command {
     }
     @Override
     public void end(boolean interrupted){
+        this.drivetrain.aligning = false;
         System.out.println("Command Finish");
     }
     @Override
