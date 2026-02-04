@@ -19,9 +19,11 @@ import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonTrackedTarget;
+import robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning;
 
 
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 public class Vision {
     private Cam[] eyesOfCthulu;
@@ -35,6 +37,19 @@ public class Vision {
         eyesOfCthulu = cams;
         this.dt = dt;
         this.estConsumer = estConsumer;
+    }
+    public void autoAlign(){
+        for(Cam c : eyesOfCthulu){
+                c.lookForTag(7);
+            if(c.returnCamYaw() != 0){
+                this.dt.drive(new ChassisSpeeds(
+            0, 
+            0, 
+            (-1.0 * c.returnCamYaw() * Tuning.VISION_TURN_kP)//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
+        ));
+           }
+        }
+        System.out.println("Command Running");
     }
     public double returnCamYaw(){
         return targetYaw;
