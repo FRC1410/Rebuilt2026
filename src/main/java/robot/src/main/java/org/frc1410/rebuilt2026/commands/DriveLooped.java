@@ -1,15 +1,15 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.commands;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj2.command.Command;
 import framework.src.main.java.org.frc1410.framework.control.Axis;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
-
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.RadiansPerSecond;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.*;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.SWERVE_DRIVE_MAX_SPEED;
 
 public class DriveLooped extends Command {
     private final Drivetrain drivetrain;
@@ -34,9 +34,9 @@ public class DriveLooped extends Command {
 
     @Override
     public void execute() {
-        if (this.drivetrain.aligning) {
-            return;
-        }
+        // if (this.drivetrain.aligning) {
+        //     return;
+        // }
         LinearVelocity xVelocity;
         LinearVelocity yVelocity;
         AngularVelocity angularVelocity;

@@ -110,6 +110,7 @@ public class Drivetrain implements TickedSubsystem {
     private boolean guardMode = false;
 
     public boolean aligning = false;
+    private double turnRate = 0;
 
 
     public Drivetrain(SubsystemStore subsystems) {
@@ -184,8 +185,9 @@ public class Drivetrain implements TickedSubsystem {
 
     public void drive(ChassisSpeeds chassisSpeeds) {
         if (this.guardMode) {
-        return;
-    }
+            return;
+        }
+
         var discretizedChassisSpeeds = ChassisSpeeds.discretize(
                 chassisSpeeds.vxMetersPerSecond,
                 chassisSpeeds.vyMetersPerSecond,
@@ -205,6 +207,11 @@ public class Drivetrain implements TickedSubsystem {
     }
 
     public void fieldOrientedDrive(ChassisSpeeds chassisSpeeds) {
+        if (this.aligning) {
+            chassisSpeeds.omegaRadiansPerSecond = turnRate;
+        }
+
+
         Rotation2d robotAngle = this.getGyroYaw().minus(this.fieldRelativeOffset);
         if (DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red))) {
             robotAngle = robotAngle.rotateBy(Rotation2d.fromDegrees(180));
@@ -216,15 +223,15 @@ public class Drivetrain implements TickedSubsystem {
     }
 
     public void setGuardMode(boolean enabled) {
-    this.guardMode = enabled;
-    
-    if (enabled) {
-        this.frontLeftModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
-        this.frontRightModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-        this.backLeftModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-        this.backRightModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+        this.guardMode = enabled;
+        
+        if (enabled) {
+            this.frontLeftModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+            this.frontRightModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+            this.backLeftModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+            this.backRightModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+        }
     }
-}
 
     public void toggleGuardMode() {
         this.setGuardMode(!this.guardMode);
@@ -232,7 +239,11 @@ public class Drivetrain implements TickedSubsystem {
 
     public boolean isGuardModeEnabled() {
         return this.guardMode;
-}
+    }
+
+    public void setTurnRate(double rate) {
+        this.turnRate = rate;
+    }
 
     public void driveV(Voltage voltage) {
         this.characterizationVolts.set(voltage.in(Volts));
