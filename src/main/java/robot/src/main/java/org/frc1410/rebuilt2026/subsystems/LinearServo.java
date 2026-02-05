@@ -33,7 +33,7 @@ public class LinearServo extends Servo {
     }
 
     public void periodic() {
-        this.set(voltageCalc());
+        this.set(this.setPos);
     }
 
     public double getSetPos() {

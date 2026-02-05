@@ -83,14 +83,14 @@ public class Shoot implements TickedSubsystem {
                 this.hoodActuator.setPosition(HOOD_LOW_RIGHT_SETPOINT);
             case HIGH_LEFT ->
                 this.hoodActuator.setPosition(HOOD_HIGH_LEFT_SETPOINT);
-        
+
         }
     }
 
     public double getHoodPos() {
         return this.hoodActuator.getPosition();
-    }    
-    
+    }
+
     public double getHoodSetPos() {
         return this.hoodActuator.getSetPos();
     }
@@ -98,7 +98,7 @@ public class Shoot implements TickedSubsystem {
     @Override
     public void periodic() {
         // this.shooterMotor.set(currentTick);
-        // this.hoodActuator.periodic();
+        this.hoodActuator.periodic();
         this.currentSpeedPublisher.set(currentTick);
     }
 }
