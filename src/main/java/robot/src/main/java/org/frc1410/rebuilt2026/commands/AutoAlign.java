@@ -5,20 +5,23 @@ import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Cam;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning;
 
+import framework.src.main.java.org.frc1410.framework.control.Button;
+
 //Ratata
 public class AutoAlign extends Command {
 
     private final Drivetrain drivetrain;
     private final Cam[] cams;
+    private final Button toggle;
 
-    public AutoAlign(Drivetrain dt, Cam[] eyes) {
+    public AutoAlign(Drivetrain dt, Cam[] eyes, Button toggle) {
         this.drivetrain = dt;
         this.cams = eyes;
+        this.toggle = toggle;
     }
 
     @Override
     public void initialize() {
-        this.drivetrain.aligning = true;
         // for (Cam c : cams) {
         //     c.lookForTag(7);
         //     if (c.returnCamYaw() != 0) {
@@ -36,7 +39,7 @@ public class AutoAlign extends Command {
         //         );
         //     }
         // }
-        System.out.println("Command Running");
+        // System.out.println("Command Running");
         // SmartDashboard.putBoolean("AutoAlign Init Working", true);
     }
 
@@ -44,15 +47,18 @@ public class AutoAlign extends Command {
     public void execute() {
         // Read in relevant data from the Camera
         // SmartDashboard.putBoolean("AutoAlign EXEC", true);
-        for (Cam c : cams) {
-            c.lookForTag(7);
-            if (c.returnCamYaw() != 0) {
-                this.drivetrain.setTurnRate(
-                        (-1.0 * c.returnCamYaw() * Tuning.VISION_TURN_kP)//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
-                );
+        this.drivetrain.aligning = this.toggle.isActive();
+        if (this.drivetrain.aligning) {
+    ;       for (Cam c : cams) {
+                c.lookForTag(7);
+                if (c.returnCamYaw() != 0) {
+                    this.drivetrain.setTurnRate(
+                            (-1.0 * c.returnCamYaw() * Tuning.VISION_TURN_kP)//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
+                    );
+                }
             }
         }
-        System.out.println("Command Running");
+        // System.out.println("Command Running");
     }
 
     @Override
@@ -63,12 +69,12 @@ public class AutoAlign extends Command {
 
     @Override
     public boolean isFinished() {
-        for (Cam c : cams) {
-            c.lookForTag(7);
-            if (c.returnCamYaw() < 5) {
-                return true;
-            }
-        }
+        // for (Cam c : cams) {
+        //     c.lookForTag(7);
+        //     if (c.returnCamYaw() < 5) {
+        //         return true;
+        //     }
+        // }
         return false;
     }
 }
