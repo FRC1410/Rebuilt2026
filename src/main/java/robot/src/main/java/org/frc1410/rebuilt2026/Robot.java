@@ -75,7 +75,6 @@ public final class Robot extends PhaseDrivenRobot {
 		// 	var autoCommand = this.autoSelector.select(autoProfile);
 
 		// 	this.scheduler.scheduleAutoCommand(autoCommand);
-
 	}
 
 	@Override
