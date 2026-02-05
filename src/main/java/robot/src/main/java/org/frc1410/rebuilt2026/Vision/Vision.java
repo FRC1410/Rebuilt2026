@@ -17,7 +17,6 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.kMultiT
 import java.util.List;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
-import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
