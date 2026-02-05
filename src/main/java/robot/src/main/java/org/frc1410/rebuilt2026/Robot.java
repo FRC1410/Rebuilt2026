@@ -60,7 +60,6 @@ public final class Robot extends PhaseDrivenRobot {
 			},
 			drivetrain
 		);
-
     }
 	@Override
 	public void autonomousSequence() {
