@@ -69,12 +69,27 @@ public class Cam implements TickedSubsystem{
     public List<PhotonPipelineResult> getUnreadResults(){
         return results;
     }
+
+    /**
+     * Returns the Cam yaw
+     * @return Target yaw in degrees
+     */
     public double returnCamYaw(){
         return targetYaw;
     }
+
+    /**
+     * Returns the whether the camera has the target
+     * @return If the target is visible
+     */
     public boolean hasTarget(){
         return targetVisible;
     }
+
+    /**
+     * Returns the Tag ID
+     * @return ID of tag
+     */
     public int returnTagID(){
         return tagName;
     }

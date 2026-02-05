@@ -19,23 +19,23 @@ public class AutoAlign extends Command {
     @Override
     public void initialize() {
         this.drivetrain.aligning = true;
-        for (Cam c : cams) {
-            c.lookForTag(7);
-            if (c.returnCamYaw() != 0) {
-                this.drivetrain.setTurnRate(
-                        (-1.0 * c.returnCamYaw() * Tuning.VISION_TURN_kP)//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
-                );
-            }
-        }
-        System.out.println("Command Init");
-        for (Cam c : cams) {
-            c.lookForTag(7);
-            if (c.returnCamYaw() != 0) {
-                this.drivetrain.setTurnRate(
-                        (-1.0 * c.returnCamYaw() * Tuning.VISION_TURN_kP)//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
-                );
-            }
-        }
+        // for (Cam c : cams) {
+        //     c.lookForTag(7);
+        //     if (c.returnCamYaw() != 0) {
+        //         this.drivetrain.setTurnRate(
+        //                 (-1.0 * c.returnCamYaw() * Tuning.VISION_TURN_kP)//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
+        //         );
+        //     }
+        // }
+        // System.out.println("Command Init");
+        // for (Cam c : cams) {
+        //     c.lookForTag(7);
+        //     if (c.returnCamYaw() != 0) {
+        //         this.drivetrain.setTurnRate(
+        //                 (-1.0 * c.returnCamYaw() * Tuning.VISION_TURN_kP)//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
+        //         );
+        //     }
+        // }
         System.out.println("Command Running");
         // SmartDashboard.putBoolean("AutoAlign Init Working", true);
     }
@@ -63,6 +63,12 @@ public class AutoAlign extends Command {
 
     @Override
     public boolean isFinished() {
-        return true;
+        for (Cam c : cams) {
+            c.lookForTag(7);
+            if (c.returnCamYaw() < 5) {
+                return true;
+            }
+        }
+        return false;
     }
 }
