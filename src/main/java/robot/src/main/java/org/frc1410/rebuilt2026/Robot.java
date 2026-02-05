@@ -95,7 +95,6 @@ public final class Robot extends PhaseDrivenRobot {
 
 	@Override
 	protected void disabledSequence() {
-
 	}
 }
 //Comment so i can push lol
