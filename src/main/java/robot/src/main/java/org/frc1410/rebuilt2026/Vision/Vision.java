@@ -11,6 +11,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
+import static edu.wpi.first.units.Units.DegreesPerSecond;
 
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.kSingleTagStdDevs;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.CAM_NAME1;
@@ -25,6 +26,8 @@ import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonTrackedTarget;
+
+import robot.src.main.java.org.frc1410.rebuilt2026.util.Constants;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning;
 
 
@@ -33,9 +36,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 public class Vision implements TickedSubsystem{
     private Cam[] eyesOfCthulu;
-    private boolean targetVisible = false;
-    private double targetYaw = 0.0;
-    private int tagName;
     private Drivetrain dt;
     private Matrix<N3, N1> curStdDevs;
     private final EstimateConsumer estConsumer;
@@ -51,16 +51,14 @@ public class Vision implements TickedSubsystem{
         }
     }
     public void autoAlign(){
-        for(Cam c : eyesOfCthulu){
+        for (Cam c : eyesOfCthulu) {
                 c.lookForTag(7);
-            if(c.returnCamYaw() != 0){
-                this.dt.drive(new ChassisSpeeds(
-            0, 
-            0, 
-            (-1.0 * c.returnCamYaw() * Tuning.VISION_TURN_kP)//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
-        ));
-           }
-        }
+                if (c.returnCamYaw() != 0) {
+                    this.dt.setTurnRate(
+                            (-1.0 * c.returnCamYaw() * Tuning.VISION_TURN_kP * Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.in(DegreesPerSecond))//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
+                    );
+                }
+            }
         System.out.println("Command Running");
     }
     
@@ -109,16 +107,6 @@ public class Vision implements TickedSubsystem{
     //     }
     // }
     
-    public double returnCamYaw(){
-        return targetYaw;
-    }
-    public boolean hasTarget(){
-        return targetVisible;
-    }
-    public int returnTagID(){
-        return tagName;
-    }
-
     @FunctionalInterface
     public static interface EstimateConsumer {
         public void accept(Pose2d pose, double timestamp, Matrix<N3, N1> estimationStdDevs);
