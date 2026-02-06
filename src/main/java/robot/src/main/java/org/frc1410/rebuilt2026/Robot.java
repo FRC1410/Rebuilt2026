@@ -20,6 +20,7 @@ import robot.src.main.java.org.frc1410.rebuilt2026.commands.*;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.EoC1_OFFSET;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.EoC2_OFFSET;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -35,11 +36,17 @@ import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPri
 import robot.src.main.java.org.frc1410.rebuilt2026.Vision.*;
 
 public final class Robot extends PhaseDrivenRobot {
-	Cam[] eyesOfCthulu = new Cam[]{subsystems.track(new Cam(CAM_NAME1, EoC1_OFFSET))};
+	
 	private final Controller driverController = new Controller(this.scheduler, DRIVER_CONTROLLER, 0.1);
 	private final Controller operatorController = new Controller(this.scheduler, OPERATOR_CONTROLLER,  0.1);
 	private final Drivetrain drivetrain = subsystems.track(new Drivetrain(this.subsystems));
-
+	
+	Cam EoC1 = subsystems.track(new Cam(CAM_NAME1, EoC1_OFFSET));
+	Cam EoC2 = subsystems.track(new Cam(CAM_NAME2, EoC2_OFFSET));
+	Cam[] eyesOfCthulu = new Cam[]{EoC1, EoC2};
+	Vision kv = subsystems.track(new Vision(eyesOfCthulu, drivetrain, null));
+	
+	
 	public Robot() {
 		AutoBuilder.configure(
 			this.drivetrain::getEstimatedPosition,

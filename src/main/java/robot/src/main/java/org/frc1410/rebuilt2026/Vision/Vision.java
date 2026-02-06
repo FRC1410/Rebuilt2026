@@ -10,8 +10,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
 
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.kSingleTagStdDevs;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.CAM_NAME1;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.EoC1_OFFSET;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.kMultiTagStdDevs;
 
 import java.util.List;
@@ -28,7 +31,7 @@ import robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
-public class Vision {
+public class Vision implements TickedSubsystem{
     private Cam[] eyesOfCthulu;
     private boolean targetVisible = false;
     private double targetYaw = 0.0;
@@ -100,6 +103,9 @@ public class Vision {
     //         }
     //     }
     // }
+    public void periodic(){
+
+    }
     public double returnCamYaw(){
         return targetYaw;
     }
