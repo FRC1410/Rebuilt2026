@@ -45,6 +45,11 @@ public class Vision implements TickedSubsystem{
         this.estConsumer = estConsumer;
 
     }
+    public void periodic(){
+        for(Cam c : eyesOfCthulu){
+            c.update();
+        }
+    }
     public void autoAlign(){
         for(Cam c : eyesOfCthulu){
                 c.lookForTag(7);
@@ -103,9 +108,7 @@ public class Vision implements TickedSubsystem{
     //         }
     //     }
     // }
-    public void periodic(){
-
-    }
+    
     public double returnCamYaw(){
         return targetYaw;
     }

@@ -41,9 +41,8 @@ public final class Robot extends PhaseDrivenRobot {
 	private final Controller operatorController = new Controller(this.scheduler, OPERATOR_CONTROLLER,  0.1);
 	private final Drivetrain drivetrain = subsystems.track(new Drivetrain(this.subsystems));
 	
-	Cam EoC1 = subsystems.track(new Cam(CAM_NAME1, EoC1_OFFSET));
-	Cam EoC2 = subsystems.track(new Cam(CAM_NAME2, EoC2_OFFSET));
-	Cam[] eyesOfCthulu = new Cam[]{EoC1, EoC2};
+	
+	Cam[] eyesOfCthulu = new Cam[]{new Cam(CAM_NAME1, EoC1_OFFSET), new Cam(CAM_NAME2, EoC2_OFFSET)};
 	Vision kv = subsystems.track(new Vision(eyesOfCthulu, drivetrain, null));
 	
 	
@@ -92,7 +91,7 @@ public final class Robot extends PhaseDrivenRobot {
 		this.scheduler.scheduleDefaultCommand(
 			new AutoAlign(
 				drivetrain, 
-				eyesOfCthulu, 
+				kv, 
 				driverController.RIGHT_BUMPER
 			), 
 			TaskPersistence.GAMEPLAY
