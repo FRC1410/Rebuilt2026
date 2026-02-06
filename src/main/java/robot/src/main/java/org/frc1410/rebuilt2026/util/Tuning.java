@@ -27,7 +27,7 @@ public final class Tuning {
     public static double DRIVE_MULTIPLIER = 1.0;
 
     //Vision
-    public static final double VISION_TURN_kP = 1;
+    public static final double VISION_TURN_kP = 0.01;
     public static final Transform3d EoC1_OFFSET = new Transform3d(new Translation3d(
         //How forward or backward the came is from robot center
         0.5, //0.5

@@ -1,8 +1,11 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.commands;
 
+import static edu.wpi.first.units.Units.DegreesPerSecond;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Cam;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
+import robot.src.main.java.org.frc1410.rebuilt2026.util.Constants;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning;
 
 import framework.src.main.java.org.frc1410.framework.control.Button;
@@ -53,7 +56,7 @@ public class AutoAlign extends Command {
                 c.lookForTag(7);
                 if (c.returnCamYaw() != 0) {
                     this.drivetrain.setTurnRate(
-                            (-1.0 * c.returnCamYaw() * Tuning.VISION_TURN_kP)//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
+                            (-1.0 * c.returnCamYaw() * Tuning.VISION_TURN_kP * Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.in(DegreesPerSecond))//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
                     );
                 }
             }
