@@ -31,4 +31,5 @@ public final class IDs {
 
 	//Storage
 	public static final int BELT_MOTOR = 1;
+	public static final int TRANSFER_MOTOR = 2;
 }

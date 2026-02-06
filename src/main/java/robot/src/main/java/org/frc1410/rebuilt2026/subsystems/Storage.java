@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.BELT_MOTOR;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.TRANSFER_MOTOR;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public class Storage implements TickedSubsystem {
@@ -21,7 +22,10 @@ public class Storage implements TickedSubsystem {
 
     private final SparkMax beltMotor;
 
-    private double speed = 0;
+    private final SparkMax transferMotor;
+
+    private double beltSpeed = 0;
+    private double transferSpeed = 0;
 
     private final NetworkTable networkTable = NetworkTableInstance.getDefault()
             .getTable("Storage");
@@ -29,11 +33,12 @@ public class Storage implements TickedSubsystem {
     private final DoublePublisher speedPub =  NetworkTables.PublisherFactory(
             networkTable,
             "Speed",
-            speed
+            beltSpeed
     );
 
     public Storage() {
-        this.speed = 0;
+        this.beltSpeed = 0;
+        this.transferSpeed = 0;
         this.beltMotor = new SparkMax(
                 BELT_MOTOR,
                 SparkLowLevel.MotorType.kBrushless
@@ -45,23 +50,36 @@ public class Storage implements TickedSubsystem {
                 com.revrobotics.ResetMode.kNoResetSafeParameters,
                 com.revrobotics.PersistMode.kPersistParameters
         );
+        this.transferMotor = new SparkMax(
+                TRANSFER_MOTOR,
+                SparkLowLevel.MotorType.kBrushless
+        );
+        this.transferMotor.configure(
+                config,
+                com.revrobotics.ResetMode.kNoResetSafeParameters,
+                com.revrobotics.PersistMode.kPersistParameters
+        );
     }
 
-    public void setSpeed(double speed) {
-        this.speed = speed;
+    public void setBeltSpeed(double speed) {
+        this.beltSpeed = speed;
     }
 
+    public void setTransferSpeed(double speed) {
+        this.transferSpeed = speed;
+    }
     public void setSpeedState(StorageStates storageState) {
         switch (storageState) {
-            case INTAKE -> this.speed = 1;
-            case NEUTRAL -> this.speed = 0;
-            case OUTTAKE -> this.speed = -0.5;
+            case INTAKE -> this.beltSpeed = 1;
+            case NEUTRAL -> this.beltSpeed = 0;
+            case OUTTAKE -> this.beltSpeed = -0.5;
         }
     }
 
     @Override
     public void periodic() {
-        this.beltMotor.set(speed);
-        this.speedPub.set(this.speed);
+        this.beltMotor.set(beltSpeed);
+        this.speedPub.set(this.beltSpeed);
+        this.transferMotor.set(transferSpeed);
     }
 }
