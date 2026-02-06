@@ -33,7 +33,7 @@ public class Shoot implements TickedSubsystem {
         // shooterMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         // shooterMotorConfig.smartCurrentLimit(30);
 
-        this.hoodActuator = new LinearServo(HOOD_ACTUATOR);
+        this.hoodActuator = new LinearServo(HOOD_ACTUATOR, 1, 1);
         // this.shooterMotor.configure(
         //     shooterMotorConfig, 
         //     com.revrobotics.ResetMode.kNoResetSafeParameters, 
@@ -98,7 +98,7 @@ public class Shoot implements TickedSubsystem {
     @Override
     public void periodic() {
         // this.shooterMotor.set(currentTick);
-        this.hoodActuator.periodic();
+        this.hoodActuator.updateCurPos();
         this.currentSpeedPublisher.set(currentTick);
     }
 }
