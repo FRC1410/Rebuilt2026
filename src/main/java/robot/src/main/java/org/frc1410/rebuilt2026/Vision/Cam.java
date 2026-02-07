@@ -44,6 +44,10 @@ public class Cam{
         }
     public void update() {
         // RANDOM BS GOOOOOOOOOOOOOO
+        this.tagName = 0;
+        this.targetYaw = 0;
+        this.targetVisible = true;
+        camYaw.set(0);
         results = cam.getAllUnreadResults();
     }
     public void lookForTag(int id){
