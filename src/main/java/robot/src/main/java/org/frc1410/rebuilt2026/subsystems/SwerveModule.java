@@ -81,9 +81,11 @@ public class SwerveModule implements TickedSubsystem {
             DoublePublisher actualVelocity,
             DoublePublisher actualAngle
     ) {
+        
+        CANBus canBus = CANBus.roboRIO();
 
         // Drive config
-        this.driveMotor = new TalonFX(driveMotorID);
+        this.driveMotor = new TalonFX(driveMotorID, canBus);
         var driveMotorConfig = new TalonFXConfiguration();
 
         driveMotorConfig.Slot0.kS = DRIVE_KS;
@@ -113,8 +115,7 @@ public class SwerveModule implements TickedSubsystem {
         this.steerMotor.configure(sparkConfig, com.revrobotics.ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
 
         // Steer encoder config
-        CANBus canBus = CANBus.roboRIO();
-        this.steerEncoder = new CANcoder(steerEncoderID);
+        this.steerEncoder = new CANcoder(steerEncoderID, canBus);
         var configurator = this.steerEncoder.getConfigurator();
 
         var steerEncoderConfig = new CANcoderConfiguration();
