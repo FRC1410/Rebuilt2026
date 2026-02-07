@@ -1,5 +1,6 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.util;
 
+import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
 
@@ -32,16 +33,16 @@ public final class Constants {
     //Drivetrain
     public static double driveAccelerationProportionalLimitationMultiplier = 0;
 
-    // public static RobotConfig ROBOT_CONFIG;
-    // 
-    // static {
-    //     try {
-    //         ROBOT_CONFIG = RobotConfig.fromGUISettings();
-    //     } catch (IOException | ParseException e) {
-    //         throw new RuntimeException(e);
-    //     }
+    public static RobotConfig ROBOT_CONFIG;
+    
+    static {
+        try {
+            ROBOT_CONFIG = RobotConfig.fromGUISettings();
+        } catch (IOException | ParseException e) {
+            throw new RuntimeException(e);
+        }
         
-    // }
+    }
 
     // Robot constants
     public static final double DRIVE_GEAR_RATIO = (50.0 / 16.0) * (17.0 / 27.0) * (45.0 / 15.0);

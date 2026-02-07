@@ -1,11 +1,13 @@
 package robot.src.main.java.org.frc1410.rebuilt2026;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
 import edu.wpi.first.networktables.StringSubscriber;
+import edu.wpi.first.wpilibj.DriverStation;
 import framework.src.main.java.org.frc1410.framework.AutoSelector;
 import framework.src.main.java.org.frc1410.framework.PhaseDrivenRobot;
 import framework.src.main.java.org.frc1410.framework.control.Controller;
@@ -43,6 +45,12 @@ public final class Robot extends PhaseDrivenRobot {
 	private final StorageToggleCommand storageNeutral = new StorageToggleCommand(storage, Storage.StorageStates.NEUTRAL);
 	private final StorageToggleCommand storageOuttake = new StorageToggleCommand(storage, Storage.StorageStates.OUTTAKE);
 
+    private final Intake intake = subsystems.track(new Intake());
+
+    private final IntakeForwardCommand intakeForwardCommand = new IntakeForwardCommand(intake, this.driverController.LEFT_TRIGGER);
+    private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake, this.driverController.RIGHT_TRIGGER);
+
+
 	private final StorageTransferRun transfer = new StorageTransferRun(storage);
 
     private final NetworkTableInstance nt = NetworkTableInstance.getDefault();
@@ -71,24 +79,23 @@ public final class Robot extends PhaseDrivenRobot {
     public Robot() {
         this.scheme.init();
 
-        // AutoBuilder.configure(
-        //         this.drivetrain::getEstimatedPosition,
-        //         this.drivetrain::resetPose,
-        //         this.drivetrain::getChassisSpeeds,
-        //         this.drivetrain::drive,
-        //         HOLONOMIC_AUTO_CONFIG,
-        //         ROBOT_CONFIG,
-        //         () -> {
-        //             var alliance = DriverStation.getAlliance();
+		AutoBuilder.configure(
+			this.drivetrain::getEstimatedPosition,
+			this.drivetrain::resetPose,
+			this.drivetrain::getChassisSpeeds,
+			this.drivetrain::drive,
+			HOLONOMIC_AUTO_CONFIG,
+			ROBOT_CONFIG,
+			() -> {
+				var alliance = DriverStation.getAlliance();
 
-        //             if (alliance.isPresent()) {
-        //                 return alliance.get() == DriverStation.Alliance.Red;
-        //             }
-        //             return false;
-        //         },
-        //         drivetrain
-        // );
-
+				if(alliance.isPresent()) {
+					return alliance.get() == DriverStation.Alliance.Red;
+				}
+				return false;
+			},
+			drivetrain
+		);
     }
 
     private final StringPublisher autoPublisher = NetworkTables.PublisherFactory(
@@ -100,11 +107,6 @@ public final class Robot extends PhaseDrivenRobot {
     );
 
 	private final StringSubscriber autoSubscriber = NetworkTables.SubscriberFactory(this.table, this.autoPublisher.getTopic());
-
-    private final Intake intake = subsystems.track(new Intake());
-
-    private final IntakeForwardCommand intakeForwardCommand = new IntakeForwardCommand(intake, this.driverController.LEFT_TRIGGER);
-    private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake, this.driverController.RIGHT_TRIGGER);
 
     @Override
     public void autonomousSequence() {
@@ -163,15 +165,8 @@ public final class Robot extends PhaseDrivenRobot {
     @Override
     public void testSequence() {
     }
-    @Override
-    public void testSequence() {
-    }
 
     @Override
     protected void disabledSequence() {
-    @Override
-    protected void disabledSequence() {
-
-    }
     }
 }
