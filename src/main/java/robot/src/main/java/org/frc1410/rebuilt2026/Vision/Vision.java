@@ -54,9 +54,15 @@ public class Vision implements TickedSubsystem{
         for (Cam c : eyesOfCthulu) {
                 c.lookForTag(7);
                 if (c.returnCamYaw() != 0) {
+                    if(c.returnCamYaw() < 0.2 && c.returnCamYaw() > -0.2){
+                         this.dt.setTurnRate(
+                            (-1.0 * c.returnCamYaw() * (Tuning.VISION_TURN_kP - 0.05) * (Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.in(DegreesPerSecond)/360))//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
+                    );
+                    }else{
                     this.dt.setTurnRate(
                             (-1.0 * c.returnCamYaw() * Tuning.VISION_TURN_kP * (Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.in(DegreesPerSecond)/360))//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
                     );
+                    }
                 }
             }
         //System.out.println("Command Running");
