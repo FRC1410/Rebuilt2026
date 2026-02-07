@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -12,6 +13,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -109,6 +112,8 @@ public class Drivetrain implements TickedSubsystem {
     public boolean fieldOriented = false;
     private boolean guardMode = false;
 
+    public boolean aligning = false;
+    private double turnRate = 0;
 
     public Drivetrain(SubsystemStore subsystems) {
         this.frontLeftModule = subsystems.track(new SwerveModule(
@@ -182,8 +187,9 @@ public class Drivetrain implements TickedSubsystem {
 
     public void drive(ChassisSpeeds chassisSpeeds) {
         if (this.guardMode) {
-        return;
-    }
+            return;
+        }
+
         var discretizedChassisSpeeds = ChassisSpeeds.discretize(
                 chassisSpeeds.vxMetersPerSecond,
                 chassisSpeeds.vyMetersPerSecond,
@@ -203,6 +209,11 @@ public class Drivetrain implements TickedSubsystem {
     }
 
     public void fieldOrientedDrive(ChassisSpeeds chassisSpeeds) {
+        if (this.aligning) {
+            chassisSpeeds.omegaRadiansPerSecond = turnRate;
+        }
+
+
         Rotation2d robotAngle = this.getGyroYaw().minus(this.fieldRelativeOffset);
         if (DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red))) {
             robotAngle = robotAngle.rotateBy(Rotation2d.fromDegrees(180));
@@ -214,15 +225,15 @@ public class Drivetrain implements TickedSubsystem {
     }
 
     public void setGuardMode(boolean enabled) {
-    this.guardMode = enabled;
-    
-    if (enabled) {
-        this.frontLeftModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
-        this.frontRightModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-        this.backLeftModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
-        this.backRightModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+        this.guardMode = enabled;
+        
+        if (enabled) {
+            this.frontLeftModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+            this.frontRightModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+            this.backLeftModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(-45)));
+            this.backRightModule.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45)));
+        }
     }
-}
 
     public void toggleGuardMode() {
         this.setGuardMode(!this.guardMode);
@@ -230,7 +241,11 @@ public class Drivetrain implements TickedSubsystem {
 
     public boolean isGuardModeEnabled() {
         return this.guardMode;
-}
+    }
+
+    public void setTurnRate(double rate) {
+        this.turnRate = rate;
+    }
 
     public void driveV(Voltage voltage) {
         this.characterizationVolts.set(voltage.in(Volts));
@@ -316,6 +331,13 @@ public class Drivetrain implements TickedSubsystem {
         this.frontRightModule.randomMusic();
         this.backLeftModule.randomMusic();
         this.backRightModule.randomMusic();
+    }
+     public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds) {
+        poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds);
+    }
+    public void addVisionMeasurement(
+            Pose2d visionMeasurement, double timestampSeconds, Matrix<N3, N1> stdDevs) {
+        poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds, stdDevs);
     }
 
     @Override

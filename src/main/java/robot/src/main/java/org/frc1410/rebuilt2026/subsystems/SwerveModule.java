@@ -84,6 +84,8 @@ public class SwerveModule implements TickedSubsystem {
         
         CANBus canBus = CANBus.roboRIO();
 
+        CANBus canBus = new CANBus("Hammy");
+
         // Drive config
         this.driveMotor = new TalonFX(driveMotorID, canBus);
         var driveMotorConfig = new TalonFXConfiguration();
@@ -112,6 +114,7 @@ public class SwerveModule implements TickedSubsystem {
         sparkConfig.inverted(steerInverted);
 
         this.steerMotor = new SparkFlex(steerMotorID, MotorType.kBrushless);
+        this.steerMotor.configure(sparkConfig, com.revrobotics.ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
         this.steerMotor.configure(sparkConfig, com.revrobotics.ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
 
         // Steer encoder config

@@ -13,32 +13,45 @@ import framework.src.main.java.org.frc1410.framework.PhaseDrivenRobot;
 import framework.src.main.java.org.frc1410.framework.control.Controller;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskPersistence;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageToggleCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageTransferRun;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleGuardModeCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleSlowmodeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Intake;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeForwardCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeReverseCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Storage;
+import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.*;
+
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.EoC1_OFFSET;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.EoC2_OFFSET;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOLONOMIC_AUTO_CONFIG;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.ROBOT_CONFIG;
 
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ReadyToRumbleCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.ControlScheme;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
-import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.CAM_NAME1;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.CAM_NAME2;
+
+import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskPersistence;
+import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
+import robot.src.main.java.org.frc1410.rebuilt2026.Vision.*;
 
 public final class Robot extends PhaseDrivenRobot {
+
 
     private final Controller driverController = new Controller(this.scheduler, DRIVER_CONTROLLER, 0.1);
     private final Controller operatorController = new Controller(this.scheduler, OPERATOR_CONTROLLER, 0.1);
     private final Drivetrain drivetrain = subsystems.track(new Drivetrain(this.subsystems));
+
+    Cam[] eyesOfCthulu = new Cam[]{new Cam(CAM_NAME1, EoC1_OFFSET), new Cam(CAM_NAME2, EoC2_OFFSET)};
+	Vision kv = subsystems.track(new Vision(eyesOfCthulu, drivetrain, drivetrain::addVisionMeasurement));
+
 	private final Storage storage = new Storage();
 
 	private final StorageToggleCommand storageIntake = new StorageToggleCommand(storage, Storage.StorageStates.INTAKE);
@@ -53,32 +66,33 @@ public final class Robot extends PhaseDrivenRobot {
 
 	private final StorageTransferRun transfer = new StorageTransferRun(storage);
 
-    private final NetworkTableInstance nt = NetworkTableInstance.getDefault();
-    private final NetworkTable table = this.nt.getTable("Auto");
-
     private ControlScheme scheme = new ControlScheme(driverController, operatorController);
 
     private final ReadyToRumbleCommand readyToRumbleCommand = new ReadyToRumbleCommand(driverController);
 
-    private final AutoSelector autoSelector = new AutoSelector()
-            // .add("Tst", () -> new PathPlannerAuto("Tst"))
-            .add("RightStartAuto", () -> new PathPlannerAuto("RightStartAuto"));
 
-    {
-        {
-            var profiles = new String[this.autoSelector.getProfiles().size()];
-            for (var i = 0; i < profiles.length; i++) {
-                profiles[i] = this.autoSelector.getProfiles().get(i).name();
-            }
+	private final NetworkTableInstance nt = NetworkTableInstance.getDefault();
+	private final NetworkTable table = this.nt.getTable("Auto");
 
-            var autoChoicesPub = NetworkTables.PublisherFactory(this.table, "Choices", profiles);
-            autoChoicesPub.accept(profiles);
-        }
-    }
+
+	private final AutoSelector autoSelector = new AutoSelector()
+			// .add("Tst", () -> new PathPlannerAuto("Tst"))
+			.add("RightStartAuto", () -> new PathPlannerAuto("RightStartAuto"));
+
+			 {
+				{
+		var profiles = new String[this.autoSelector.getProfiles().size()];
+		for (var i = 0; i < profiles.length; i++) {
+			profiles[i] = this.autoSelector.getProfiles().get(i).name();
+		}
+
+		var autoChoicesPub = NetworkTables.PublisherFactory(this.table, "Choices", profiles);
+		autoChoicesPub.accept(profiles);
+		}
+	}
+
 
     public Robot() {
-        this.scheme.init();
-
 		AutoBuilder.configure(
 			this.drivetrain::getEstimatedPosition,
 			this.drivetrain::resetPose,
@@ -121,10 +135,9 @@ public final class Robot extends PhaseDrivenRobot {
 
         var autoCommand = this.autoSelector.select(autoProfile);
 
-        this.scheduler.scheduleAutoCommand(autoCommand);
+		this.scheduler.scheduleAutoCommand(autoCommand);
 
-    }
-
+	}
 
     @Override
     public void teleopSequence() {
@@ -160,6 +173,15 @@ public final class Robot extends PhaseDrivenRobot {
 
 
         this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
+
+		this.scheduler.scheduleDefaultCommand(
+			new AutoAlign(
+				drivetrain, 
+				kv, 
+				driverController.RIGHT_BUMPER
+			), 
+			TaskPersistence.GAMEPLAY
+		);
     }
 
     @Override

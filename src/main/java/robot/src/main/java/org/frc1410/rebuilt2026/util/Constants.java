@@ -1,11 +1,22 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.util;
 
+import java.io.IOException;
+
+import org.json.simple.parser.ParseException;
+
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathConstraints;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
+
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
@@ -99,11 +110,15 @@ public final class Constants {
             SWERVE_DRIVE_MAX_ANGULAR_VELOCITY,
             SWERVE_DRIVE_MAX_ANGULAR_ACCELERATION
     );
+    public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
     public static PPHolonomicDriveController PATH_FOLLOWING_CONTROLLER = new PPHolonomicDriveController(
             PATH_FOLLOWING_TRANSLATION_CONSTRAINTS,
             PATH_FOLLOWING_ROTATION_CONSTRAINTS
     );
 
-
+    //Vision
+    //These are fake values for now, we will have to manually tune them.
+    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
+    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
 }

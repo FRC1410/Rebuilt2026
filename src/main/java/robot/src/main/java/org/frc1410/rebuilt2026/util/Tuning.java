@@ -2,9 +2,11 @@ package robot.src.main.java.org.frc1410.rebuilt2026.util;
 
 import com.pathplanner.lib.config.PIDConstants;
 
-public final class Tuning {
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 
-    public static double CORAL_ROTATION_TOLERANCE = 0.05;
+public final class Tuning {
 
     // Drivetrain
     public static final double SWERVE_DRIVE_P = 0.401;
@@ -24,6 +26,35 @@ public final class Tuning {
 
     public static double DRIVE_MULTIPLIER = 1.0;
 
+    //Vision
+    public static final double VISION_TURN_kP = 0.07;
+    
+    public static final Transform3d EoC1_OFFSET = new Transform3d(new Translation3d(
+        //How forward or backward the came is from robot center
+        0.5, //0.5
+        //How left or right cam is from robot center
+        0, //0
+        //Measures how far up or down from the robot center the cam is
+        0.5 //0.5
+        ),
+    new Rotation3d(
+        0,
+        0,
+        0
+        ));
+    public static final Transform3d EoC2_OFFSET = new Transform3d(new Translation3d(
+        //How forward or backward the came is from robot center
+        0.5, //0.5
+        //How left or right cam is from robot center
+        0, //0
+        //Measures how far up or down from the robot center the cam is
+        0.5 //0.5
+        ),
+    new Rotation3d(
+        0,
+        0,
+        0
+        ));
     // Path following
     public static final PIDConstants PATH_AUTO_TRANSLATION_CONSTRAINTS = new PIDConstants(3.2, 0, 0);
     public static final PIDConstants PATH_AUTO_ROTATION_CONSTRAINTS = new PIDConstants(1.3, 0, 0.1);

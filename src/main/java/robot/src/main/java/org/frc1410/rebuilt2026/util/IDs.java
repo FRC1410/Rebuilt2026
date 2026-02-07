@@ -28,6 +28,9 @@ public final class IDs {
 
 	public static final int PIGEON_ID = 16;
 
+	//Vision IDs
+	public static final String CAM_NAME1 = "EoC1";
+	public static final String CAM_NAME2 = "EoC2";
 
 	//LED's
 	public static final int LED_ID = 17;
