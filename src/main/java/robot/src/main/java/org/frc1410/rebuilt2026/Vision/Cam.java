@@ -62,13 +62,13 @@ public class Cam{
                             camYaw.set(this.targetYaw);
                         }
                     }
-                }else{
+                }
+            }else{
                     this.tagName = 0;
                     this.targetYaw = 0;
                     this.targetVisible = true;
                     camYaw.set(0);
                 }
-            }
     }
     public List<PhotonPipelineResult> getUnreadResults(){
         return results;
