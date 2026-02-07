@@ -26,6 +26,7 @@ public class Shoot implements TickedSubsystem {
     private final NetworkTable networkTable = NetworkTableInstance.getDefault().getTable("Shooter Spark");
 
     private final DoublePublisher currentSpeedPublisher = NetworkTables.PublisherFactory(networkTable, "Shooter Level", currentTick);
+    private final DoublePublisher hoodPosPublisher = NetworkTables.PublisherFactory(networkTable, "Hood Pose", 0);
 
     public Shoot() {
         // this.shooterMotor = new SparkMax(SHOOTER_SPARK, SparkLowLevel.MotorType.kBrushless);
@@ -99,6 +100,7 @@ public class Shoot implements TickedSubsystem {
     public void periodic() {
         // this.shooterMotor.set(currentTick);
         this.hoodActuator.updateCurPos();
+        this.hoodPosPublisher.set(this.hoodActuator.getPosition());
         this.currentSpeedPublisher.set(currentTick);
     }
 }
