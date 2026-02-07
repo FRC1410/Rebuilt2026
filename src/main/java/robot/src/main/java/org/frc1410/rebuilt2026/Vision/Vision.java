@@ -3,7 +3,6 @@ package robot.src.main.java.org.frc1410.rebuilt2026.Vision;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonUtils;
-
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -17,14 +16,10 @@ import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.kSingleTagStdDevs;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.CAM_NAME1;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.EoC1_OFFSET;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.VISION_TURN_kD;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.VISION_TURN_kI;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.VISION_TURN_kP;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.kMultiTagStdDevs;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.simulation.PhotonCameraSim;
@@ -32,33 +27,22 @@ import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import edu.wpi.first.math.controller.PIDController;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.Constants;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning;
 
 
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.Timer;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 public class Vision implements TickedSubsystem{
     private Cam[] eyesOfCthulu;
     private Drivetrain dt;
     private Matrix<N3, N1> curStdDevs;
     private final EstimateConsumer estConsumer;
-
-    private PIDController pIDController;
-
     public Vision(Cam[] cams, Drivetrain dt, EstimateConsumer estConsumer){
         eyesOfCthulu = cams;
         this.dt = dt;
         this.estConsumer = estConsumer;
-        this.pIDController = new PIDController(
-            VISION_TURN_kP, 
-            VISION_TURN_kI, 
-            VISION_TURN_kD
-        );
-        this.pIDController.setSetpoint(0);
 
     }
     public void periodic(){
@@ -71,8 +55,7 @@ public class Vision implements TickedSubsystem{
                 c.lookForTag(7);
                 if (c.returnCamYaw() != 0) {
                     this.dt.setTurnRate(
-                            (-this.pIDController.calculate(c.returnCamYaw()))
-                            * (Tuning.VISION_TURN_kP * (Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.in(DegreesPerSecond)/360))//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
+                            (-1.0 * c.returnCamYaw() * Tuning.VISION_TURN_kP * (Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.in(DegreesPerSecond)/360))//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
                     );
                 }
             }
