@@ -33,7 +33,8 @@ public final class IDs {
 	public static final int LED_ID = 17;
 
 	//Storage
-	public static final int BELT_MOTOR = 18;
+	public static final int BELT_MOTOR = 1;
+	public static final int TRANSFER_MOTOR = 2;
 
 
 }
