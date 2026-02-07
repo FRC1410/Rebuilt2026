@@ -37,4 +37,5 @@ public final class IDs {
 	public static final int TRANSFER_MOTOR = 2;
 
 
+	public static final int INTAKE_SPARK = 3;
 }

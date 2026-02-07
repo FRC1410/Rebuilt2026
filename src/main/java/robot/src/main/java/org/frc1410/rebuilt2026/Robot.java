@@ -19,24 +19,32 @@ import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageTransferRun;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleGuardModeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleSlowmodeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
+
+import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Intake;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeForwardCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeReverseCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Storage;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOLONOMIC_AUTO_CONFIG;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.ROBOT_CONFIG;
+
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public final class Robot extends PhaseDrivenRobot {
 
+    public Robot() {
+    }
 
-	private final Controller driverController = new Controller(this.scheduler, DRIVER_CONTROLLER, 0.1);
-	private final Controller operatorController = new Controller(this.scheduler, OPERATOR_CONTROLLER,  0.1);
-	private final Drivetrain drivetrain = subsystems.track(new Drivetrain(this.subsystems));
+    private final Controller driverController = new Controller(this.scheduler, DRIVER_CONTROLLER, 0.1);
+    private final Controller operatorController = new Controller(this.scheduler, OPERATOR_CONTROLLER, 0.1);
+    private final Drivetrain drivetrain = subsystems.track(new Drivetrain(this.subsystems));
 	private final Storage storage = new Storage();
 
-	private final StorageToggleCommand intake = new StorageToggleCommand(storage, Storage.StorageStates.INTAKE);
-	private final StorageToggleCommand neutral = new StorageToggleCommand(storage, Storage.StorageStates.NEUTRAL);
-	private final StorageToggleCommand outtake = new StorageToggleCommand(storage, Storage.StorageStates.OUTTAKE);
+	private final StorageToggleCommand storageIntake = new StorageToggleCommand(storage, Storage.StorageStates.INTAKE);
+	private final StorageToggleCommand storageNeutral = new StorageToggleCommand(storage, Storage.StorageStates.NEUTRAL);
+	private final StorageToggleCommand storageOuttake = new StorageToggleCommand(storage, Storage.StorageStates.OUTTAKE);
 
 	private final StorageTransferRun transfer = new StorageTransferRun(storage);
 
@@ -92,6 +100,10 @@ public final class Robot extends PhaseDrivenRobot {
 
 	private final StringSubscriber autoSubscriber = NetworkTables.SubscriberFactory(this.table, this.autoPublisher.getTopic());
 
+    private final Intake intake = subsystems.track(new Intake());
+
+    private final IntakeForwardCommand intakeForwardCommand = new IntakeForwardCommand(intake, this.driverController.LEFT_TRIGGER);
+    private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake, this.driverController.RIGHT_TRIGGER);
 
 	@Override
 	public void autonomousSequence() {
@@ -111,9 +123,9 @@ public final class Robot extends PhaseDrivenRobot {
 	}
 
 
-	@Override
-	public void teleopSequence() {
-		this.scheduler.scheduleDefaultCommand(
+    @Override
+    public void teleopSequence() {
+        this.scheduler.scheduleDefaultCommand(
 			new DriveLooped(
 					this.drivetrain, 
 					this.driverController.LEFT_X_AXIS, 
@@ -124,9 +136,9 @@ public final class Robot extends PhaseDrivenRobot {
 			TaskPersistence.GAMEPLAY, 
 			LockPriority.HIGH
 		);
-		this.operatorController.A.whileHeldOnce(intake, TaskPersistence.GAMEPLAY);
-		this.operatorController.B.whileHeldOnce(neutral, TaskPersistence.GAMEPLAY);
-		this.operatorController.X.whileHeldOnce(outtake, TaskPersistence.GAMEPLAY);
+		this.operatorController.A.whileHeldOnce(storageIntake, TaskPersistence.GAMEPLAY);
+		this.operatorController.B.whileHeldOnce(storageNeutral, TaskPersistence.GAMEPLAY);
+		this.operatorController.X.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
 		this.operatorController.Y.whileHeld(transfer, TaskPersistence.GAMEPLAY);
 
 		// Add slowmode toggle on left bumper
@@ -140,15 +152,16 @@ public final class Robot extends PhaseDrivenRobot {
 			new ToggleGuardModeCommand(this.drivetrain), 
 			TaskPersistence.GAMEPLAY
 		);
-	}
+        this.scheduler.scheduleDefaultCommand(intakeForwardCommand, TaskPersistence.GAMEPLAY);
+        this.scheduler.scheduleDefaultCommand(intakeReverseCommand, TaskPersistence.GAMEPLAY);
+    }
 
+    @Override
+    public void testSequence() {
+    }
 
-	@Override
-	public void testSequence() {
-	}
+    @Override
+    protected void disabledSequence() {
 
-	@Override
-	protected void disabledSequence() {
-
-	}
+    }
 }
