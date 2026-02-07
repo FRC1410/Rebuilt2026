@@ -1,73 +1,75 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.Vision;
 
-import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonUtils;
+import com.revrobotics.servohub.ServoHub;
+
 import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
-
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.kSingleTagStdDevs;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.CAM_NAME1;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.EoC1_OFFSET;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.kMultiTagStdDevs;
-
-import java.util.List;
-import java.util.Optional;
-import org.photonvision.EstimatedRobotPose;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.simulation.PhotonCameraSim;
-import org.photonvision.simulation.SimCameraProperties;
-import org.photonvision.simulation.VisionSystemSim;
-import org.photonvision.targeting.PhotonTrackedTarget;
-
+import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
+import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.Constants;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning;
 
+public class Vision implements TickedSubsystem {
 
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
-public class Vision implements TickedSubsystem{
-    private Cam[] eyesOfCthulu;
-    private Drivetrain dt;
-    private Matrix<N3, N1> curStdDevs;
-    private final EstimateConsumer estConsumer;
-    public Vision(Cam[] cams, Drivetrain dt, EstimateConsumer estConsumer){
+    private final Cam[] eyesOfCthulu;
+    private final Drivetrain dt;
+    @SuppressWarnings("unused")
+    private Matrix<N3, N1> curStdDevs; //unsued
+    @SuppressWarnings("unused")
+    private final EstimateConsumer estConsumer; //unused
+
+    public Vision(Cam[] cams, Drivetrain dt, EstimateConsumer estConsumer) {
         eyesOfCthulu = cams;
         this.dt = dt;
         this.estConsumer = estConsumer;
 
     }
-    public void periodic(){
-        for(Cam c : eyesOfCthulu){
+
+    /**
+     * Function to calculate maximum angle error
+     * @param distance Distance from tag in inches
+     * @return Maximum angle error in degrees
+     */
+    public double calcMaxAngleError(double distance) {
+        return (-0.0625293 * distance) + 9.15583;
+    }
+
+
+    public void periodic() {
+        for (Cam c : eyesOfCthulu) {
             c.update();
         }
     }
-    public void autoAlign(){
+
+    public void autoAlign() {
+        boolean found = false;
         for (Cam c : eyesOfCthulu) {
-                c.lookForTag(7);
-                if (c.returnCamYaw() != 0) {
-                    if(c.returnCamYaw() < 0.25 && c.returnCamYaw() > -0.25){
-                         this.dt.setTurnRate(
-                            (-1.0 * c.returnCamYaw() * (Tuning.VISION_TURN_kP - 0.065) * (Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.in(DegreesPerSecond)/360))//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
-                    );
-                    }else{
+            c.lookForTag(7);
+            if (Math.abs(c.returnCamYaw()) > Math.abs(calcMaxAngleError(c.returnCamDist())/5)) {
+                found = true;
+                // if (c.returnCamYaw() < 0.25 && c.returnCamYaw() > -0.25) {
+                //     this.dt.setTurnRate(
+                //             (-1.0 * c.returnCamYaw() * (Tuning.VISION_TURN_kP - 0.065) * (Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.in(DegreesPerSecond) / 360))//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
+                //     );
+                // } else {
                     this.dt.setTurnRate(
-                            (-1.0 * c.returnCamYaw() * Tuning.VISION_TURN_kP * (Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.in(DegreesPerSecond)/360))//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
+                            (-1.0 * c.returnCamYaw() * Tuning.VISION_TURN_kP * (Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.in(DegreesPerSecond) / 360))//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
                     );
-                    }
-                }
+                // }
+            } else if (!found) {
+                this.dt.setTurnRate(
+                        (0)//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
+                );
+                System.out.println(calcMaxAngleError(c.returnCamDist()));
+
             }
+        }
         //System.out.println("Command Running");
     }
-    
+
     // public Optional<EstimatedRobotPose> poseEst(){
     //     return Optional;
     // }
@@ -76,13 +78,11 @@ public class Vision implements TickedSubsystem{
     //     if (estimatedPose.isEmpty()) {
     //         // No pose input. Default to single-tag std devs
     //         curStdDevs = kSingleTagStdDevs;
-
     //     } else {
     //         // Pose present. Start running Heuristic
     //         var estStdDevs = kSingleTagStdDevs;
     //         int numTags = 0;
     //         double avgDist = 0;
-
     //         // Precalculation - see how many tags we found, and calculate an average-distance metric
     //         for (var tgt : targets) {
     //             var tagPose = photonEstimator.getFieldTags().getTagPose(tgt.getFiducialId());
@@ -95,7 +95,6 @@ public class Vision implements TickedSubsystem{
     //                             .getTranslation()
     //                             .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
     //         }
-
     //         if (numTags == 0) {
     //             // No tags visible. Default to single-tag std devs
     //             curStdDevs = kSingleTagStdDevs;
@@ -112,9 +111,9 @@ public class Vision implements TickedSubsystem{
     //         }
     //     }
     // }
-    
     @FunctionalInterface
     public static interface EstimateConsumer {
+
         public void accept(Pose2d pose, double timestamp, Matrix<N3, N1> estimationStdDevs);
     }
 }

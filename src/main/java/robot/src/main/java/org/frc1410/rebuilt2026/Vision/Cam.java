@@ -5,7 +5,6 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.APRIL_T
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
@@ -20,7 +19,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
-public class Cam{
+public class Cam {
+
     //The Eye of Cthulu knows all
     private final PhotonCamera cam;
     private final Transform3d offset;
@@ -31,74 +31,93 @@ public class Cam{
     private final DoublePublisher camYaw = NetworkTables.PublisherFactory(this.table, "Current Cam Yaw", 0);
     boolean targetVisible = false;
     double targetYaw = 0.0;
+    double targetDist = 0.0;
     int tagName;
-            //
-    
-        public Cam(String name, Transform3d offset){
-            this.cam = new PhotonCamera(name);
-            this.offset = offset;
-             poseEst = new PhotonPoseEstimator(
-                    APRIL_TAG_FIELD_LAYOUT,
-                    this.offset
-            );
-        }
+    //
+
+    public Cam(String name, Transform3d offset) {
+        this.cam = new PhotonCamera(name);
+        this.offset = offset;
+        poseEst = new PhotonPoseEstimator(
+            APRIL_TAG_FIELD_LAYOUT,
+            this.offset
+        );
+    }
+
     public void update() {
         // RANDOM BS GOOOOOOOOOOOOOO
         this.tagName = 0;
         this.targetYaw = 0;
+        this.targetDist = 0;
         this.targetVisible = true;
         camYaw.set(0);
         results = cam.getAllUnreadResults();
     }
-    public void lookForTag(int id){
+
+    public void lookForTag(int id) {
         if (!results.isEmpty()) {
-                // Camera processed a new frame since last
-                // Get the last one in the list.
-                var result = results.get(results.size() - 1);
-                if (result.hasTargets()) {
-                    // At least one AprilTag was seen by the camera
-                    for (var target : result.getTargets()) {
-                        if (target.getFiducialId() == id) {
-                            // Found Tag, record its information
-                            this.tagName = target.getFiducialId();
-                            this.targetYaw = target.getYaw();
-                            this.targetVisible = true;
-                            camYaw.set(this.targetYaw);
-                        }
+            // Camera processed a new frame since last
+            // Get the last one in the list.
+            var result = results.get(results.size() - 1);
+            if (result.hasTargets()) {
+                // At least one AprilTag was seen by the camera
+                for (var target : result.getTargets()) {
+                    if (target.getFiducialId() == id) {
+                        // Found Tag, record its information
+                        this.tagName = target.getFiducialId();
+                        this.targetYaw = target.getYaw();
+                        this.targetDist = (target.getBestCameraToTarget().getX() * 39.3701); //conversion from meters to inches
+                        this.targetVisible = true;
+                        camYaw.set(this.targetYaw);
                     }
                 }
-            }else{
-                    this.tagName = 0;
-                    this.targetYaw = 0;
-                    this.targetVisible = true;
-                    camYaw.set(0);
-                }
+            }
+        } else {
+            this.tagName = 0;
+            this.targetYaw = 0;
+            this.targetDist = 0;
+            this.targetVisible = true;
+            camYaw.set(0);
+        }
     }
-    public List<PhotonPipelineResult> getUnreadResults(){
+
+    public List<PhotonPipelineResult> getUnreadResults() {
         return results;
     }
 
     /**
      * Returns the Cam yaw
+     *
      * @return Target yaw in degrees
      */
-    public double returnCamYaw(){
+    public double returnCamYaw() {
+        return targetYaw;
+    }
+
+    /**
+     * Returns the Cam distance
+     *
+     * @return Target distance in degrees
+     */
+    public double returnCamDist() {
         return targetYaw;
     }
 
     /**
      * Returns the whether the camera has the target
+     *
      * @return If the target is visible
      */
-    public boolean hasTarget(){
+    public boolean hasTarget() {
         return targetVisible;
     }
 
     /**
      * Returns the Tag ID
+     *
      * @return ID of tag
      */
-    public int returnTagID(){
+    public int returnTagID() {
         return tagName;
     }
 }
