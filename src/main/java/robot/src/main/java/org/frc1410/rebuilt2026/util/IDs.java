@@ -6,11 +6,11 @@ public final class IDs {
 	public static final int OPERATOR_CONTROLLER = 1;
 
 	//Can Bus
-	public static final String CAN_BUS_NAME = "Hammy";
+	public static final String CAN_BUS_NAME = "rio";
 
 	//Drivetrain
-	public static final int FRONT_LEFT_DRIVE_MOTOR = 1;
-	public static final int FRONT_LEFT_STEER_MOTOR = 2;
+	public static final int FRONT_LEFT_DRIVE_MOTOR = 10;
+	public static final int FRONT_LEFT_STEER_MOTOR = 3;
 
 	public static final int BACK_LEFT_DRIVE_MOTOR = 3;
 	public static final int BACK_LEFT_STEER_MOTOR = 4;
