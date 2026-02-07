@@ -42,7 +42,7 @@ public class AutoAlign extends Command {
     @Override
     public void end(boolean interrupted) {
         this.drivetrain.aligning = false;
-        System.out.println("Command Finish");
+        //System.out.println("Command Finish");
     }
 
     @Override

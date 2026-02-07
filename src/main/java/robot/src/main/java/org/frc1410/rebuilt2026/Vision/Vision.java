@@ -59,7 +59,7 @@ public class Vision implements TickedSubsystem{
                     );
                 }
             }
-        System.out.println("Command Running");
+        //System.out.println("Command Running");
     }
     
     // public Optional<EstimatedRobotPose> poseEst(){
