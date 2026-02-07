@@ -41,7 +41,7 @@ public class Shoot implements TickedSubsystem {
         // shooterMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         // shooterMotorConfig.smartCurrentLimit(30);
         
-        ServoHub servoHub = new ServoHub(SERVO_HUB);
+        this.servoHub = new ServoHub(SERVO_HUB);
 
         this.hoodActuator = new LinearServo(HOOD_ACTUATOR, 1, 1);
         // this.shooterMotor.configure(
