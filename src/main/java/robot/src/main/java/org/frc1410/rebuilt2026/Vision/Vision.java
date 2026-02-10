@@ -46,6 +46,7 @@ public class Vision implements TickedSubsystem {
     public void periodic() {
         for (Cam c : eyesOfCthulu) {
             c.update();
+            c.updateEstimator();
         }
     }
 
