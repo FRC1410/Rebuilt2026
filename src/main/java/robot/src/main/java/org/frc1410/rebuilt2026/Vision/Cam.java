@@ -26,6 +26,7 @@ import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
+import robot.src.main.java.org.frc1410.rebuilt2026.Robot;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public class Cam {
@@ -67,9 +68,26 @@ public class Cam {
         this.targetVisible = true;
         camYaw.set(0);
         results = cam.getAllUnreadResults();
+        
     }
     public void updateEstimator(){
         //HAHA BOOM
+        Optional<EstimatedRobotPose> visionEst = Optional.empty();
+        for (var result : cam.getAllUnreadResults()) {
+            visionEst = poseEst.estimateCoprocMultiTagPose(result);
+            if (visionEst.isEmpty()) {
+                visionEst = poseEst.estimateLowestAmbiguityPose(result);
+            }
+            updateEstimationStdDevs(visionEst, result.getTargets());
+
+            visionEst.ifPresent(
+                    est -> {
+                        // Change our trust in the measurement based on the tags we can see
+                        var estStdDevs = getEstimationStdDevs();
+
+                        estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+                    });
+        }
     }
 
     public void lookForTag(int id) {
@@ -138,9 +156,9 @@ public class Cam {
     public int returnTagID() {
         return tagName;
     }
-    // public Optional<EstimatedRobotPose> poseEst(){
-    //     return Optional;
-    // }
+    public Matrix<N3, N1> getEstimationStdDevs() {
+        return curStdDevs;
+    }
     private void updateEstimationStdDevs(
             Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
         if (estimatedPose.isEmpty()) {

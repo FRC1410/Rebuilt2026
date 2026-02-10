@@ -42,8 +42,8 @@ public final class Robot extends PhaseDrivenRobot {
 	private final Drivetrain drivetrain = subsystems.track(new Drivetrain(this.subsystems));
 	
 	
-	Cam[] eyesOfCthulu = new Cam[]{new Cam(CAM_NAME1, EoC1_OFFSET), new Cam(CAM_NAME2, EoC2_OFFSET)};
-	Vision kv = subsystems.track(new Vision(eyesOfCthulu, drivetrain, drivetrain::addVisionMeasurement));
+	Cam[] eyesOfCthulu = new Cam[]{new Cam(CAM_NAME1, EoC1_OFFSET, drivetrain::addVisionMeasurement), new Cam(CAM_NAME2, EoC2_OFFSET, drivetrain::addVisionMeasurement)};
+	Vision kv = subsystems.track(new Vision(eyesOfCthulu, drivetrain));
 	
 	
 	public Robot() {
