@@ -84,8 +84,6 @@ public class SwerveModule implements TickedSubsystem {
         
         CANBus canBus = CANBus.roboRIO();
 
-        CANBus canBus = new CANBus("Hammy");
-
         // Drive config
         this.driveMotor = new TalonFX(driveMotorID, canBus);
         var driveMotorConfig = new TalonFXConfiguration();
