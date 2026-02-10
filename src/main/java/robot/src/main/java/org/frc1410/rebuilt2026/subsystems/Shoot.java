@@ -1,7 +1,5 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
-import com.revrobotics.servohub.ServoChannel;
-
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -11,9 +9,6 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOOD_LO
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOOD_LOW_RIGHT_SETPOINT;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.HOOD_ACTUATOR;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.SERVO_HUB;
-
-import com.revrobotics.servohub.ServoHub;
-
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public class Shoot implements TickedSubsystem {
@@ -25,7 +20,10 @@ public class Shoot implements TickedSubsystem {
     }
 
     // private final SparkMax shooterMotor;
-    private final ServoHub servoHub;
+    // Initialize the servo hub
+    // ServoHub m_servoHub = new ServoHub(SERVO_HUB);
+
+    // Obtain a servo channel controller
     private final LinearServo hoodActuator;
 
     private double currentTick = 0;
@@ -41,9 +39,9 @@ public class Shoot implements TickedSubsystem {
         // shooterMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         // shooterMotorConfig.smartCurrentLimit(30);
         
-        this.servoHub = new ServoHub(SERVO_HUB);
+        // this.servoHub = new ServoHub(SERVO_HUB);
 
-        this.hoodActuator = new LinearServo(HOOD_ACTUATOR, 1, 1);
+        this.hoodActuator = new LinearServo(SERVO_HUB, HOOD_ACTUATOR, 1, 1);
         // this.shooterMotor.configure(
         //     shooterMotorConfig, 
         //     com.revrobotics.ResetMode.kNoResetSafeParameters, 

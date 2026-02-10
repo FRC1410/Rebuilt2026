@@ -1,16 +1,40 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
+import com.revrobotics.servohub.ServoChannel;
+import com.revrobotics.servohub.ServoHub;
+
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Timer;
 
-public class LinearServo extends Servo {
+// public class LinearServo extends Servo {
 
-    double m_speed;
-    double m_length;
+//     double m_speed;
+//     double m_length;
+//     double setPos;
+//     double curPos;
+
+//     /**
+//      * Parameters for L16-R Actuonix Linear Actuators
+//      *
+//      * @param channel PWM channel used to control the servo
+//      * @param length max length of the servo [mm]
+//      * @param speed max speed of the servo [mm/second]
+//      */
+//     public LinearServo(int channel, int length, int speed) {
+//         super(channel);
+//         setBoundsMicroseconds(2000, 1800, 1500, 1200, 1000);
+//         m_length = length;
+//         m_speed = speed;
+//     }
+
+
+public class LinearServo extends ServoHub {
     double setPos;
     double curPos;
+    double m_speed;
+    double m_length;
 
+    ServoChannel actuator;
     /**
      * Parameters for L16-R Actuonix Linear Actuators
      *
@@ -18,9 +42,13 @@ public class LinearServo extends Servo {
      * @param length max length of the servo [mm]
      * @param speed max speed of the servo [mm/second]
      */
-    public LinearServo(int channel, int length, int speed) {
-        super(channel);
-        setBoundsMicroseconds(2000, 1800, 1500, 1200, 1000);
+    public LinearServo(int hubChannel, int servoChannel, int length, int speed) {
+        super(hubChannel);
+        this.actuator = this.getServoChannel(ServoChannel.ChannelId.fromInt(servoChannel));
+
+        this.actuator.setEnabled(true);
+        this.actuator.setPowered(true);
+        // seconds(2000, 1800, 1500, 1200, 1000);
         m_length = length;
         m_speed = speed;
     }
@@ -33,7 +61,7 @@ public class LinearServo extends Servo {
      */
     public void setPosition(double setpoint) {
         setPos = MathUtil.clamp(setpoint, 0, m_length);
-        setSpeed((setPos / m_length * 2) - 1);
+        this.actuator.setPulseWidth((int) (((((setPos / m_length * 2) - 1) * 2000) + 500)));
     }
     double lastTime = 0;
 
@@ -55,13 +83,12 @@ public class LinearServo extends Servo {
     }
 
     /**
-     * Current position of the servo, must be calling {@link #updateCurPos()
-     * updateCurPos()} periodically
+     * Current position of the servo
      *
      * @return Servo Position [mm]
      */
     public double getPosition() {
-        return curPos;
+        return (int) (((((setPos / m_length * 2) - 1) * 2000) + 500));
     }
 
     public double getSetPos() {
