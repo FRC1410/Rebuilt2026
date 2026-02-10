@@ -182,13 +182,13 @@ public class Drivetrain implements TickedSubsystem {
         // estimate converges to the vision measurement. This should depend on the vision measurement
         // noise
         // and how many or how frequently vision measurements are applied to the pose estimator.
-        var stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
-        var visionStdDevs = VecBuilder.fill(1, 1, 1);
+         Matrix<N3,N1> stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
+        Matrix<N3,N1> visionStdDevs = VecBuilder.fill(1, 1, 1);
         this.poseEstimator = new SwerveDrivePoseEstimator(
                 SWERVE_DRIVE_KINEMATICS,
                 this.getGyroYaw(),
                 this.getSwerveModulePositions(),
-                new Pose2d()
+                new Pose2d(),
                 stateStdDevs,
                 visionStdDevs
         );
