@@ -46,16 +46,17 @@ public class Cam {
     @SuppressWarnings("unused")
     private Matrix<N3, N1> curStdDevs; //unsued
     @SuppressWarnings("unused")
-    private final EstimateConsumer estConsumer = null; //unused
+    private final EstimateConsumer estConsumer; //unused
     //
 
-    public Cam(String name, Transform3d offset) {
+    public Cam(String name, Transform3d offset, EstimateConsumer e) {
         this.cam = new PhotonCamera(name);
         this.offset = offset;
         poseEst = new PhotonPoseEstimator(
             APRIL_TAG_FIELD_LAYOUT,
             this.offset
         );
+        estConsumer = e;
     }
 
     public void update() {
@@ -69,7 +70,6 @@ public class Cam {
     }
     public void updateEstimator(){
         //HAHA BOOM
-        poseEst.estimateCoprocMultiTagPose(results);
     }
 
     public void lookForTag(int id) {
@@ -138,7 +138,7 @@ public class Cam {
     public int returnTagID() {
         return tagName;
     }
-     // public Optional<EstimatedRobotPose> poseEst(){
+    // public Optional<EstimatedRobotPose> poseEst(){
     //     return Optional;
     // }
     private void updateEstimationStdDevs(
@@ -153,7 +153,7 @@ public class Cam {
             double avgDist = 0;
             // Precalculation - see how many tags we found, and calculate an average-distance metric
             for (var tgt : targets) {
-                var tagPose = photonEstimator.getFieldTags().getTagPose(tgt.getFiducialId());
+                var tagPose = poseEst.getFieldTags().getTagPose(tgt.getFiducialId());
                 if (tagPose.isEmpty()) continue;
                 numTags++;
                 avgDist +=
