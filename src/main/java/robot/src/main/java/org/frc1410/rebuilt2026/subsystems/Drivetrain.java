@@ -6,6 +6,7 @@ import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -177,12 +178,21 @@ public class Drivetrain implements TickedSubsystem {
 
         this.gyro.getConfigurator().apply(bird);
 
+        // Define the standard deviations for the pose estimator, which determine how fast the pose
+        // estimate converges to the vision measurement. This should depend on the vision measurement
+        // noise
+        // and how many or how frequently vision measurements are applied to the pose estimator.
+         Matrix<N3,N1> stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
+        Matrix<N3,N1> visionStdDevs = VecBuilder.fill(1, 1, 1);
         this.poseEstimator = new SwerveDrivePoseEstimator(
                 SWERVE_DRIVE_KINEMATICS,
                 this.getGyroYaw(),
                 this.getSwerveModulePositions(),
-                new Pose2d()
+                new Pose2d(),
+                stateStdDevs,
+                visionStdDevs
         );
+        
     }
 
     public void drive(ChassisSpeeds chassisSpeeds) {

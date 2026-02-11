@@ -1,10 +1,14 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.Vision;
 
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.APRIL_TAG_FIELD_LAYOUT;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.kMultiTagStdDevs;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.kSingleTagStdDevs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
@@ -12,11 +16,17 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
+import robot.src.main.java.org.frc1410.rebuilt2026.Robot;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public class Cam {
@@ -27,21 +37,27 @@ public class Cam {
     private final PhotonPoseEstimator poseEst;
     private List<PhotonPipelineResult> results = new ArrayList<>();
     private final NetworkTable table = NetworkTableInstance.getDefault().getTable("THE ORB");
-
     private final DoublePublisher camYaw = NetworkTables.PublisherFactory(this.table, "Current Cam Yaw", 0);
     boolean targetVisible = false;
     double targetYaw = 0.0;
     double targetDist = 0.0;
     int tagName;
+    
+    
+    @SuppressWarnings("unused")
+    private Matrix<N3, N1> curStdDevs; //unsued
+    @SuppressWarnings("unused")
+    private final EstimateConsumer estConsumer; //unused
     //
 
-    public Cam(String name, Transform3d offset) {
+    public Cam(String name, Transform3d offset, EstimateConsumer e) {
         this.cam = new PhotonCamera(name);
         this.offset = offset;
         poseEst = new PhotonPoseEstimator(
             APRIL_TAG_FIELD_LAYOUT,
             this.offset
         );
+        estConsumer = e;
     }
 
     public void update() {
@@ -52,6 +68,26 @@ public class Cam {
         this.targetVisible = true;
         camYaw.set(0);
         results = cam.getAllUnreadResults();
+        
+    }
+    public void updateEstimator(){
+        //HAHA BOOM
+        Optional<EstimatedRobotPose> visionEst = Optional.empty();
+        for (var result : cam.getAllUnreadResults()) {
+            visionEst = poseEst.estimateCoprocMultiTagPose(result);
+            if (visionEst.isEmpty()) {
+                visionEst = poseEst.estimateLowestAmbiguityPose(result);
+            }
+            updateEstimationStdDevs(visionEst, result.getTargets());
+
+            visionEst.ifPresent(
+                    est -> {
+                        // Change our trust in the measurement based on the tags we can see
+                        var estStdDevs = getEstimationStdDevs();
+
+                        estConsumer.accept(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+                    });
+        }
     }
 
     public void lookForTag(int id) {
@@ -119,5 +155,51 @@ public class Cam {
      */
     public int returnTagID() {
         return tagName;
+    }
+    public Matrix<N3, N1> getEstimationStdDevs() {
+        return curStdDevs;
+    }
+    private void updateEstimationStdDevs(
+            Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
+        if (estimatedPose.isEmpty()) {
+            // No pose input. Default to single-tag std devs
+            curStdDevs = kSingleTagStdDevs;
+        } else {
+            // Pose present. Start running Heuristic
+            var estStdDevs = kSingleTagStdDevs;
+            int numTags = 0;
+            double avgDist = 0;
+            // Precalculation - see how many tags we found, and calculate an average-distance metric
+            for (var tgt : targets) {
+                var tagPose = poseEst.getFieldTags().getTagPose(tgt.getFiducialId());
+                if (tagPose.isEmpty()) continue;
+                numTags++;
+                avgDist +=
+                        tagPose
+                                .get()
+                                .toPose2d()
+                                .getTranslation()
+                                .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
+            }
+            if (numTags == 0) {
+                // No tags visible. Default to single-tag std devs
+                curStdDevs = kSingleTagStdDevs;
+            } else {
+                // One or more tags visible, run the full heuristic.
+                avgDist /= numTags;
+                // Decrease std devs if multiple targets are visible
+                if (numTags > 1) estStdDevs = kMultiTagStdDevs;
+                // Increase std devs based on (average) distance
+                if (numTags == 1 && avgDist > 4)
+                    estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+                else estStdDevs = estStdDevs.times(1 + (avgDist * avgDist / 30));
+                curStdDevs = estStdDevs;
+            }
+        }
+    }
+    @FunctionalInterface
+    public static interface EstimateConsumer {
+
+        public void accept(Pose2d pose, double timestamp, Matrix<N3, N1> estimationStdDevs);
     }
 }
