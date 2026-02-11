@@ -1,5 +1,6 @@
 package robot.src.main.java.org.frc1410.rebuilt2026;
 
+import com.fasterxml.jackson.databind.annotation.JsonAppend.Attr;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
