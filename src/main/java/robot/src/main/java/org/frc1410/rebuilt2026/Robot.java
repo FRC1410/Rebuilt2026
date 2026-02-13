@@ -18,10 +18,7 @@ import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Cam;
 import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Vision;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.AutoAlign;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameRaiseCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeForwardCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeReverseCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameTestCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.*;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ReadyToRumbleCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageToggleCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageTransferRun;
@@ -63,6 +60,7 @@ public final class Robot extends PhaseDrivenRobot {
     private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake, this.driverController.RIGHT_TRIGGER);
     private final FrameTestCommand FrameTestCommand = new FrameTestCommand(intake, this.operatorController.DPAD_LEFT, this.operatorController.DPAD_RIGHT);
 	private final FrameRaiseCommand FrameRaiseCommand = new FrameRaiseCommand(intake, this.operatorController.DPAD_UP);
+	private final FrameLowerCommand FrameLowerCommand = new FrameLowerCommand(intake, this.operatorController.DPAD_DOWN);
 
 	private final StorageTransferRun transfer = new StorageTransferRun(storage);
 
