@@ -1,6 +1,5 @@
 package robot.src.main.java.org.frc1410.rebuilt2026;
 
-import com.fasterxml.jackson.databind.annotation.JsonAppend.Attr;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -19,9 +18,9 @@ import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Vision;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.AutoAlign;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameRaiseCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameTestCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeForwardCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeReverseCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameTestCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ReadyToRumbleCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageToggleCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageTransferRun;
@@ -144,31 +143,31 @@ public final class Robot extends PhaseDrivenRobot {
         this.scheduler.scheduleDefaultCommand(
 			new DriveLooped(
 					this.drivetrain, 
-					this.driverController.LEFT_X_AXIS, 
-					this.driverController.LEFT_Y_AXIS, 
-					this.driverController.RIGHT_X_AXIS, 
-					this.driverController.RIGHT_TRIGGER
+					this.scheme.DRIVE_SIDEWAYS, 
+					this.scheme.DRIVE_FORWARD, 
+					this.scheme.DRIVE_TURN, 
+					this.scheme.ROBOT_RELATIVE_TOGGLE
 				), 
 			TaskPersistence.GAMEPLAY, 
 			LockPriority.HIGH
 		);
+
 		this.operatorController.A.whileHeldOnce(storageIntake, TaskPersistence.GAMEPLAY);
-        this.scheduler.scheduleDefaultCommand(FrameTestCommand, TaskPersistence.GAMEPLAY);
-		this.scheduler.scheduleDefaultCommand(FrameRaiseCommand, TaskPersistence.GAMEPLAY);
 		this.operatorController.B.whileHeldOnce(storageNeutral, TaskPersistence.GAMEPLAY);
 		this.operatorController.X.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
 		this.operatorController.Y.whileHeld(transfer, TaskPersistence.GAMEPLAY);
 
 		// Add slowmode toggle on left bumper
-		this.driverController.LEFT_BUMPER.whenPressed(
+		this.scheme.SLOWMODE_TOGGLE.whenPressed(
 			new ToggleSlowmodeCommand(this.drivetrain), 
 			TaskPersistence.GAMEPLAY
 		);
 		
 		// Add guard mode toggle on right bumper
-		this.driverController.RIGHT_BUMPER.whenPressed(
+		this.scheme.GUARDMODE_TOGGLE.whenPressed(
 			new ToggleGuardModeCommand(this.drivetrain), 
 			TaskPersistence.GAMEPLAY
+
 		);
         this.scheduler.scheduleDefaultCommand(intakeForwardCommand, TaskPersistence.GAMEPLAY);
         this.scheduler.scheduleDefaultCommand(intakeReverseCommand, TaskPersistence.GAMEPLAY);

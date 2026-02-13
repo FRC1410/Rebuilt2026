@@ -1,9 +1,8 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.util;
 
-import framework.src.main.java.org.frc1410.framework.control.Controller;
-
 import framework.src.main.java.org.frc1410.framework.control.Axis;
 import framework.src.main.java.org.frc1410.framework.control.Button;
+import framework.src.main.java.org.frc1410.framework.control.Controller;
 
 public class ControlScheme {
 
@@ -14,6 +13,8 @@ public class ControlScheme {
     public Axis DRIVE_SIDEWAYS;
     public Axis DRIVE_TURN;
     public Axis ROBOT_RELATIVE_TOGGLE;
+
+    public Axis INTAKE_FORWARD;
 
     public Button SLOWMODE_TOGGLE;
     public Button GUARDMODE_TOGGLE;
