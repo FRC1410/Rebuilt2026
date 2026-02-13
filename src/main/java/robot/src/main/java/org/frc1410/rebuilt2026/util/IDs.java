@@ -41,4 +41,6 @@ public final class IDs {
 
 
 	public static final int INTAKE_SPARK = 3;
+	public static final int INTAKE_FRAME_SPARK_LEFT = 4;
+	public static final int INTAKE_FRAME_SPARK_RIGHT = 5;
 }

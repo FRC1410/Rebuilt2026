@@ -9,18 +9,24 @@ import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.INTAKE_SPARK;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.*;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public class Intake implements TickedSubsystem {
 
     private final SparkMax intakeMotor;
+    private final SparkMax intakeFrameLeft;
+    private final SparkMax intakeFrameRight;
 
     private double currentSpeed = 0;
+    private double currentFrameSpeedLeft = 0;
+    private double currentFrameSpeedRight = 0;
 
-    private final NetworkTable networkTable = NetworkTableInstance.getDefault().getTable("Intake Spark");
+    private final NetworkTable networkTable = NetworkTableInstance.getDefault().getTable("Intake Sparks");
 
-    private final DoublePublisher currentSpeedPublisher = NetworkTables.PublisherFactory(networkTable, "Motor Power", currentSpeed);
+    private final DoublePublisher currentSpeedPublisher = NetworkTables.PublisherFactory(networkTable, "Intake Power", currentSpeed);
+    private final DoublePublisher currentFrameLeftPublisher = NetworkTables.PublisherFactory(networkTable, "Frame Left Power", currentSpeed);
+    private final DoublePublisher currentFrameRightPublisher = NetworkTables.PublisherFactory(networkTable, "Frame Right", currentSpeed);
 
     public Intake() {
         this.intakeMotor = new SparkMax(INTAKE_SPARK, SparkLowLevel.MotorType.kBrushless);
@@ -29,7 +35,22 @@ public class Intake implements TickedSubsystem {
         intakeMotorConfig.smartCurrentLimit(30);
 
         this.intakeMotor.configure(intakeMotorConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
+
+        this.intakeFrameLeft = new SparkMax(INTAKE_FRAME_SPARK_LEFT, SparkLowLevel.MotorType.kBrushless);
+        SparkMaxConfig intakeFrameLeftConfig = new SparkMaxConfig();
+        intakeFrameLeftConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
+        intakeFrameLeftConfig.smartCurrentLimit(30);
+
+        this.intakeFrameLeft.configure(intakeFrameLeftConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
+
+        this.intakeFrameRight = new SparkMax(INTAKE_FRAME_SPARK_RIGHT, SparkLowLevel.MotorType.kBrushless);
+        SparkMaxConfig intakeFrameRightConfig = new SparkMaxConfig();
+        intakeFrameRightConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
+        intakeFrameRightConfig.smartCurrentLimit(30);
+
+        this.intakeFrameRight.configure(intakeFrameRightConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
     }
+    
 
     public void setSpeed(double speed) {
         currentSpeed = speed;
@@ -39,9 +60,26 @@ public class Intake implements TickedSubsystem {
         return this.intakeMotor.get();
     }
 
+    public double getLeftFrame() {
+        return this.intakeFrameLeft.get();
+    }
+
+    public double getRightFrame() {
+        return this.intakeFrameRight.get();
+    }
+
+    public void raiseLowerIntakeFrame(double leftSpeed, double rightSpeed){
+        currentFrameSpeedLeft = leftSpeed;
+        currentFrameSpeedRight = rightSpeed;
+    }
+
     @Override
     public void periodic() {
         this.intakeMotor.set(currentSpeed);
         this.currentSpeedPublisher.set(currentSpeed);
+        this.intakeFrameLeft.set(currentFrameSpeedLeft);
+        this.currentFrameLeftPublisher.set(currentFrameSpeedLeft);
+        this.intakeFrameRight.set(currentFrameSpeedRight);
+        this.currentFrameRightPublisher.set(currentFrameSpeedRight);
     }
 }

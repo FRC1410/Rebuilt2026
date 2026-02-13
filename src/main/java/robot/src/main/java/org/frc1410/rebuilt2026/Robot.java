@@ -18,8 +18,10 @@ import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Cam;
 import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Vision;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.AutoAlign;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameRaiseCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeForwardCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeReverseCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameTestCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ReadyToRumbleCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageToggleCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageTransferRun;
@@ -59,7 +61,7 @@ public final class Robot extends PhaseDrivenRobot {
 
     private final IntakeForwardCommand intakeForwardCommand = new IntakeForwardCommand(intake, this.driverController.LEFT_TRIGGER);
     private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake, this.driverController.RIGHT_TRIGGER);
-
+    private final FrameTestCommand FrameTestCommand = new FrameTestCommand(intake, this.operatorController.DPAD_LEFT, this.operatorController.DPAD_RIGHT);
 
 	private final StorageTransferRun transfer = new StorageTransferRun(storage);
 
@@ -150,6 +152,7 @@ public final class Robot extends PhaseDrivenRobot {
 			LockPriority.HIGH
 		);
 		this.operatorController.A.whileHeldOnce(storageIntake, TaskPersistence.GAMEPLAY);
+        this.scheduler.scheduleDefaultCommand(FrameTestCommand, TaskPersistence.GAMEPLAY);
 		this.operatorController.B.whileHeldOnce(storageNeutral, TaskPersistence.GAMEPLAY);
 		this.operatorController.X.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
 		this.operatorController.Y.whileHeld(transfer, TaskPersistence.GAMEPLAY);
@@ -170,12 +173,13 @@ public final class Robot extends PhaseDrivenRobot {
 
 
         this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
+        this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
 
 		this.scheduler.scheduleDefaultCommand(
 			new AutoAlign(
 				drivetrain, 
 				kv, 
-				driverController.RIGHT_BUMPER
+				driverController.LEFT_BUMPER
 			), 
 			TaskPersistence.GAMEPLAY
 		);
