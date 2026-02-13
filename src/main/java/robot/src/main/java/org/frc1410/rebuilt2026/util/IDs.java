@@ -35,6 +35,11 @@ public final class IDs {
 	//LED's
 	public static final int LED_ID = 17;
 
+	//Shooter
+	public static final int SERVO_HUB = 3;
+	public static final int SHOOTER_SPARK = 2;
+	public static final int HOOD_ACTUATOR = 1;
+
 	//Storage
 	public static final int BELT_MOTOR = 1;
 	public static final int TRANSFER_MOTOR = 2;
