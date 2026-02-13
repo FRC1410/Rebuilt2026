@@ -4,6 +4,7 @@ import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
@@ -17,6 +18,9 @@ public class Intake implements TickedSubsystem {
     private final SparkMax intakeMotor;
     private final SparkMax intakeFrameLeft;
     private final SparkMax intakeFrameRight;
+    
+    private final RelativeEncoder frameLeftEncoder;
+    private final RelativeEncoder frameRightEncoder;
 
     private double currentSpeed = 0;
     private double currentFrameSpeedLeft = 0;
@@ -26,7 +30,9 @@ public class Intake implements TickedSubsystem {
 
     private final DoublePublisher currentSpeedPublisher = NetworkTables.PublisherFactory(networkTable, "Intake Power", currentSpeed);
     private final DoublePublisher currentFrameLeftPublisher = NetworkTables.PublisherFactory(networkTable, "Frame Left Power", currentSpeed);
-    private final DoublePublisher currentFrameRightPublisher = NetworkTables.PublisherFactory(networkTable, "Frame Right", currentSpeed);
+    private final DoublePublisher currentFrameRightPublisher = NetworkTables.PublisherFactory(networkTable, "Frame Right Power", currentSpeed);
+    private final DoublePublisher frameLeftPositionPublisher = NetworkTables.PublisherFactory(networkTable, "Frame Left Position", 0.0);
+    private final DoublePublisher frameRightPositionPublisher = NetworkTables.PublisherFactory(networkTable, "Frame Right Position", 0.0);
 
     public Intake() {
         this.intakeMotor = new SparkMax(INTAKE_SPARK, SparkLowLevel.MotorType.kBrushless);
@@ -49,6 +55,9 @@ public class Intake implements TickedSubsystem {
         intakeFrameRightConfig.smartCurrentLimit(30);
 
         this.intakeFrameRight.configure(intakeFrameRightConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
+        
+        this.frameLeftEncoder = this.intakeFrameLeft.getEncoder();
+        this.frameRightEncoder = this.intakeFrameRight.getEncoder();
     }
     
 
@@ -72,6 +81,19 @@ public class Intake implements TickedSubsystem {
         currentFrameSpeedLeft = leftSpeed;
         currentFrameSpeedRight = rightSpeed;
     }
+    
+    public double getFrameLeftPosition() {
+        return this.frameLeftEncoder.getPosition();
+    }
+    
+    public double getFrameRightPosition() {
+        return this.frameRightEncoder.getPosition();
+    }
+    
+    public void resetFrameEncoders() {
+        this.frameLeftEncoder.setPosition(0);
+        this.frameRightEncoder.setPosition(0);
+    }
 
     @Override
     public void periodic() {
@@ -81,5 +103,7 @@ public class Intake implements TickedSubsystem {
         this.currentFrameLeftPublisher.set(currentFrameSpeedLeft);
         this.intakeFrameRight.set(currentFrameSpeedRight);
         this.currentFrameRightPublisher.set(currentFrameSpeedRight);
+        this.frameLeftPositionPublisher.set(this.frameLeftEncoder.getPosition());
+        this.frameRightPositionPublisher.set(this.frameRightEncoder.getPosition());
     }
 }

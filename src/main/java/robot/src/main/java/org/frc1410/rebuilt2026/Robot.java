@@ -62,6 +62,7 @@ public final class Robot extends PhaseDrivenRobot {
     private final IntakeForwardCommand intakeForwardCommand = new IntakeForwardCommand(intake, this.driverController.LEFT_TRIGGER);
     private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake, this.driverController.RIGHT_TRIGGER);
     private final FrameTestCommand FrameTestCommand = new FrameTestCommand(intake, this.operatorController.DPAD_LEFT, this.operatorController.DPAD_RIGHT);
+	private final FrameRaiseCommand FrameRaiseCommand = new FrameRaiseCommand(intake, this.operatorController.DPAD_UP);
 
 	private final StorageTransferRun transfer = new StorageTransferRun(storage);
 
@@ -153,6 +154,7 @@ public final class Robot extends PhaseDrivenRobot {
 		);
 		this.operatorController.A.whileHeldOnce(storageIntake, TaskPersistence.GAMEPLAY);
         this.scheduler.scheduleDefaultCommand(FrameTestCommand, TaskPersistence.GAMEPLAY);
+		this.scheduler.scheduleDefaultCommand(FrameRaiseCommand, TaskPersistence.GAMEPLAY);
 		this.operatorController.B.whileHeldOnce(storageNeutral, TaskPersistence.GAMEPLAY);
 		this.operatorController.X.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
 		this.operatorController.Y.whileHeld(transfer, TaskPersistence.GAMEPLAY);

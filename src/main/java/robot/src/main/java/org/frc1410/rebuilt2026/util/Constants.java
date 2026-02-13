@@ -116,8 +116,11 @@ public final class Constants {
             PATH_FOLLOWING_ROTATION_CONSTRAINTS
     );
 
-    //Vision
-    //These are fake values for now, we will have to manually tune them.
+
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
+    
+
+    public static final double INTAKE_FRAME_RAISED_POSITION = 10.0;
+    public static final double INTAKE_FRAME_LOWERED_POSITION = 0.0;
 }
