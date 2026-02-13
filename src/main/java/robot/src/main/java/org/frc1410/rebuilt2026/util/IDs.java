@@ -30,7 +30,7 @@ public final class IDs {
 	public static final int LED_ID = 17;
 
 	//Shooter
-	public static final int SERVO_HUB = 1410;
+	public static final int SERVO_HUB = 3;
 	public static final int SHOOTER_SPARK = 2;
 	public static final int HOOD_ACTUATOR = 1;
 }

@@ -48,7 +48,7 @@ public class LinearServo extends ServoHub {
 
         this.actuator.setEnabled(true);
         this.actuator.setPowered(true);
-        // seconds(2000, 1800, 1500, 1200, 1000);
+        this.setBankPulsePeriod(ServoHub.Bank.kBank0_2, 20000);
         m_length = length;
         m_speed = speed;
     }
@@ -61,7 +61,7 @@ public class LinearServo extends ServoHub {
      */
     public void setPosition(double setpoint) {
         setPos = MathUtil.clamp(setpoint, 0, m_length);
-        this.actuator.setPulseWidth((int) (((((setPos / m_length * 2) - 1) * 2000) + 500)));
+        this.actuator.setPulseWidth((int) (((((setPos / m_length)) * 1000) + 1000)));
     }
     double lastTime = 0;
 
@@ -88,7 +88,7 @@ public class LinearServo extends ServoHub {
      * @return Servo Position [mm]
      */
     public double getPosition() {
-        return (int) (((((setPos / m_length * 2) - 1) * 2000) + 500));
+        return (int) (((((setPos / m_length)) * 1000) + 1000));
     }
 
     public double getSetPos() {
