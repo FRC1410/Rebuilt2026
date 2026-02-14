@@ -9,8 +9,14 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOOD_LO
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOOD_LOW_RIGHT_SETPOINT;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.HOOD_ACTUATOR;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.SERVO_HUB;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.SHOOTER_SPARK;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig;
 
+import com.revrobotics.servohub.ServoHub;
 public class Shoot implements TickedSubsystem {
 
     public enum HoodStates {
@@ -19,9 +25,9 @@ public class Shoot implements TickedSubsystem {
         LOW_LEFT
     }
 
-    // private final SparkMax shooterMotor;
+    private final SparkMax shooterMotor;
     // Initialize the servo hub
-    // ServoHub m_servoHub = new ServoHub(SERVO_HUB);
+    ServoHub m_servoHub = new ServoHub(SERVO_HUB);
 
     // Obtain a servo channel controller
     private final LinearServo hoodActuator;
@@ -34,19 +40,19 @@ public class Shoot implements TickedSubsystem {
     private final DoublePublisher hoodPosPublisher = NetworkTables.PublisherFactory(networkTable, "Hood Pose", 0);
 
     public Shoot() {
-        // this.shooterMotor = new SparkMax(SHOOTER_SPARK, SparkLowLevel.MotorType.kBrushless);
-        // SparkMaxConfig shooterMotorConfig = new SparkMaxConfig();
-        // shooterMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
-        // shooterMotorConfig.smartCurrentLimit(30);
+        this.shooterMotor = new SparkMax(SHOOTER_SPARK, SparkLowLevel.MotorType.kBrushless);
+        SparkMaxConfig shooterMotorConfig = new SparkMaxConfig();
+        shooterMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
+        shooterMotorConfig.smartCurrentLimit(30);
         
-        // this.servoHub = new ServoHub(SERVO_HUB);
+        this.m_servoHub = new ServoHub(SERVO_HUB);
 
         this.hoodActuator = new LinearServo(SERVO_HUB, HOOD_ACTUATOR, 1, 1);
-        // this.shooterMotor.configure(
-        //     shooterMotorConfig, 
-        //     com.revrobotics.ResetMode.kNoResetSafeParameters, 
-        //     com.revrobotics.PersistMode.kPersistParameters
-        // );
+        this.shooterMotor.configure(
+            shooterMotorConfig, 
+            com.revrobotics.ResetMode.kNoResetSafeParameters, 
+            com.revrobotics.PersistMode.kPersistParameters
+        );
     }
 
     public void setSpeed(boolean up) {
@@ -105,7 +111,7 @@ public class Shoot implements TickedSubsystem {
 
     @Override
     public void periodic() {
-        // this.shooterMotor.set(currentTick);
+        this.shooterMotor.set(currentTick);
         this.hoodActuator.updateCurPos();
         this.hoodPosPublisher.set(this.hoodActuator.getPosition());
         this.currentSpeedPublisher.set(currentTick);
