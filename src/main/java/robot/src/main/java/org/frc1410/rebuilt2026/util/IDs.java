@@ -45,7 +45,8 @@ public final class IDs {
 	public static final int TRANSFER_MOTOR = 2;
 
 
-	public static final int INTAKE_SPARK = 3;
-	public static final int INTAKE_FRAME_SPARK_LEFT = 4;
-	public static final int INTAKE_FRAME_SPARK_RIGHT = 5;
+	public static final int INTAKE_SPARK = 11;
+	public static final int INTAKE_FRAME_SPARK_LEFT = 12;
+	public static final int INTAKE_FRAME_SPARK_RIGHT = 5; //TODO: figure out id and fix
+	
 }
