@@ -123,4 +123,8 @@ public final class Constants {
 
     public static final double INTAKE_FRAME_RAISED_POSITION = 10.0;
     public static final double INTAKE_FRAME_LOWERED_POSITION = 0.0;
+
+    public static final double HOOD_LOW_LEFT_SETPOINT = 0.0;
+    public static final double HOOD_LOW_RIGHT_SETPOINT = 0.5;
+    public static final double HOOD_HIGH_LEFT_SETPOINT = 1.0;
 }
