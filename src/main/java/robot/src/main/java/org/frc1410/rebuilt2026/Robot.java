@@ -17,17 +17,23 @@ import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Cam;
 import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Vision;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.AutoAlign;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameLowerCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameRaiseCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameTestCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeForwardCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeReverseCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.MoveHoodCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ReadyToRumbleCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterStepDownCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterStepUpCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageToggleCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageTransferRun;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleGuardModeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleSlowmodeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Intake;
+import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Shoot;
+import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Shoot.HoodStates;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Storage;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOLONOMIC_AUTO_CONFIG;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.ROBOT_CONFIG;
@@ -47,6 +53,16 @@ public final class Robot extends PhaseDrivenRobot {
     private final Controller operatorController = new Controller(this.scheduler, OPERATOR_CONTROLLER, 0.1);
     private final Drivetrain drivetrain = subsystems.track(new Drivetrain(this.subsystems));
 
+    private ControlScheme scheme = new ControlScheme(driverController, operatorController);
+
+	private final Shoot shooter = subsystems.track(new Shoot());
+    private final ShooterStepUpCommand shooterStepUpCommand = new ShooterStepUpCommand(shooter, 1);
+    private final ShooterStepDownCommand shooterStepDownCommand = new ShooterStepDownCommand(shooter, 1);
+    private final MoveHoodCommand moveHoodLowLeftCommand = new MoveHoodCommand(shooter, HoodStates.LOW_LEFT);
+    private final MoveHoodCommand moveHoodLowRightCommand = new MoveHoodCommand(shooter, HoodStates.LOW_RIGHT);
+    private final MoveHoodCommand moveHoodHighLeftCommand = new MoveHoodCommand(shooter, HoodStates.HIGH_LEFT);
+
+
     Cam[] eyesOfCthulu = new Cam[]{new Cam(CAM_NAME1, EoC1_OFFSET, drivetrain::addVisionMeasurement), new Cam(CAM_NAME2, EoC2_OFFSET, drivetrain::addVisionMeasurement)};
 	Vision kv = subsystems.track(new Vision(eyesOfCthulu, drivetrain));
 
@@ -58,14 +74,13 @@ public final class Robot extends PhaseDrivenRobot {
 
     private final Intake intake = subsystems.track(new Intake());
 
-    private final IntakeForwardCommand intakeForwardCommand = new IntakeForwardCommand(intake, this.driverController.LEFT_TRIGGER);
-    private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake, this.driverController.RIGHT_TRIGGER);
-    private final FrameTestCommand FrameTestCommand = new FrameTestCommand(intake, this.operatorController.DPAD_LEFT, this.operatorController.DPAD_RIGHT);
-	private final FrameRaiseCommand FrameRaiseCommand = new FrameRaiseCommand(intake, this.operatorController.DPAD_UP);
+    private final IntakeForwardCommand intakeForwardCommand = new IntakeForwardCommand(intake, this.scheme.INTAKE_FORWARD);
+    private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake, this.scheme.INTAKE_REVERSE);
+    private final FrameTestCommand FrameTestCommand = new FrameTestCommand(intake, this.scheme.FRAME_TEST_1, this.scheme.FRAME_TEST_2);
+	private final FrameRaiseCommand FrameRaiseCommand = new FrameRaiseCommand(intake, this.scheme.FRAME_RAISE);
+	private final FrameLowerCommand FrameLowerCommand = new FrameLowerCommand(intake, this.scheme.FRAME_LOWER);
 
 	private final StorageTransferRun transfer = new StorageTransferRun(storage);
-
-    private ControlScheme scheme = new ControlScheme(driverController, operatorController);
 
     private final ReadyToRumbleCommand readyToRumbleCommand = new ReadyToRumbleCommand(driverController);
 
@@ -152,10 +167,10 @@ public final class Robot extends PhaseDrivenRobot {
 			LockPriority.HIGH
 		);
 
-		this.operatorController.A.whileHeldOnce(storageIntake, TaskPersistence.GAMEPLAY);
-		this.operatorController.B.whileHeldOnce(storageNeutral, TaskPersistence.GAMEPLAY);
-		this.operatorController.X.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
-		this.operatorController.Y.whileHeld(transfer, TaskPersistence.GAMEPLAY);
+		this.scheme.STORAGE_INTAKE.whileHeldOnce(storageIntake, TaskPersistence.GAMEPLAY);
+		this.scheme.STORAGE_NEUTRAL.whileHeldOnce(storageNeutral, TaskPersistence.GAMEPLAY);
+		this.scheme.STORAGE_OUTTAKE.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
+		this.scheme.TRANSFER.whileHeld(transfer, TaskPersistence.GAMEPLAY);
 
 		// Add slowmode toggle on left bumper
 		this.scheme.SLOWMODE_TOGGLE.whenPressed(
@@ -176,11 +191,18 @@ public final class Robot extends PhaseDrivenRobot {
         this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
         this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
 
+        this.scheme.SHOOTER_UP.whileHeldOnce(shooterStepUpCommand, TaskPersistence.GAMEPLAY);
+        this.scheme.SHOOTER_DOWN.whileHeldOnce(shooterStepDownCommand, TaskPersistence.GAMEPLAY);
+
+        this.scheme.HOOD_LOW_LEFT.whileHeldOnce(moveHoodLowLeftCommand, TaskPersistence.GAMEPLAY);
+        this.scheme.HOOD_LOW_RIGHT.whileHeldOnce(moveHoodLowRightCommand, TaskPersistence.GAMEPLAY);
+        this.scheme.HOOD_HIGH_LEFT.whileHeldOnce(moveHoodHighLeftCommand, TaskPersistence.GAMEPLAY);
+
 		this.scheduler.scheduleDefaultCommand(
 			new AutoAlign(
 				drivetrain, 
 				kv, 
-				driverController.LEFT_BUMPER
+				scheme.AUTO_ALIGN
 			), 
 			TaskPersistence.GAMEPLAY
 		);

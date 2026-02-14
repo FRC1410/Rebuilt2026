@@ -48,6 +48,7 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_STE
 
 public class SwerveModule implements TickedSubsystem {
 
+
     private final TalonFX driveMotor;
     private final SparkFlex steerMotor;
 
@@ -112,7 +113,6 @@ public class SwerveModule implements TickedSubsystem {
         sparkConfig.inverted(steerInverted);
 
         this.steerMotor = new SparkFlex(steerMotorID, MotorType.kBrushless);
-        this.steerMotor.configure(sparkConfig, com.revrobotics.ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
         this.steerMotor.configure(sparkConfig, com.revrobotics.ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
 
         // Steer encoder config

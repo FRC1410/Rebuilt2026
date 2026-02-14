@@ -58,6 +58,7 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.PIGEON_ID;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public class Drivetrain implements TickedSubsystem {
+
     private final NetworkTable table = NetworkTableInstance.getDefault().getTable("Drivetrain");
 
     private final DoublePublisher frontLeftVelocitySetpoint = NetworkTables.PublisherFactory(this.table, "Front Left Velocity Setpoint", 0);
@@ -295,11 +296,11 @@ public class Drivetrain implements TickedSubsystem {
     
 
     private SwerveModulePosition[] getSwerveModulePositions() {
-        return new SwerveModulePosition[] {
-                this.frontLeftModule.getPosition(),
-                this.frontRightModule.getPosition(),
-                this.backLeftModule.getPosition(),
-                this.backRightModule.getPosition()
+        return new SwerveModulePosition[]{
+            this.frontLeftModule.getPosition(),
+            this.frontRightModule.getPosition(),
+            this.backLeftModule.getPosition(),
+            this.backRightModule.getPosition()
         };
     }
 
@@ -328,6 +329,7 @@ public class Drivetrain implements TickedSubsystem {
     public boolean isSlowModeEnabled() {
         return slowmode;
     }
+
     public void switchOrientation() {
         fieldOriented = !fieldOriented;
     }
