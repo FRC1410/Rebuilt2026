@@ -9,8 +9,8 @@ public final class IDs {
 	public static final String CAN_BUS_NAME = "rio";
 
 	//Drivetrain
-	public static final int FRONT_LEFT_DRIVE_MOTOR = 10;
-	public static final int FRONT_LEFT_STEER_MOTOR = 3;
+	public static final int FRONT_LEFT_DRIVE_MOTOR = 1;
+	public static final int FRONT_LEFT_STEER_MOTOR = 2;
 
 	public static final int BACK_LEFT_DRIVE_MOTOR = 3;
 	public static final int BACK_LEFT_STEER_MOTOR = 4;
@@ -37,15 +37,15 @@ public final class IDs {
 
 	//Shooter
 	public static final int SERVO_HUB = 3;
-	public static final int SHOOTER_SPARK = 2;
+	public static final int SHOOTER_KRAKEN = 9; //todo rewrite
 	public static final int HOOD_ACTUATOR = 1;
 
 	//Storage
-	public static final int BELT_MOTOR = 1;
-	public static final int TRANSFER_MOTOR = 2;
+	public static final int BELT_MOTOR = 19;
+	public static final int TRANSFER_MOTOR = 7;
 
 
-	public static final int INTAKE_SPARK = 3;
-	public static final int INTAKE_FRAME_SPARK_LEFT = 4;
-	public static final int INTAKE_FRAME_SPARK_RIGHT = 5;
+	public static final int INTAKE_SPARK = 11;
+	public static final int INTAKE_FRAME_SPARK_LEFT = 12;
+	public static final int INTAKE_FRAME_SPARK_RIGHT = 20;
 }

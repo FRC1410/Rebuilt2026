@@ -34,7 +34,6 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.PATH_AUTO_
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.PATH_FOLLOWING_ROTATION_CONSTRAINTS;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.PATH_FOLLOWING_TRANSLATION_CONSTRAINTS;
 
-
 public final class Constants {
 
     //LED's
@@ -44,14 +43,14 @@ public final class Constants {
     public static double driveAccelerationProportionalLimitationMultiplier = 0;
 
     public static RobotConfig ROBOT_CONFIG;
-    
+
     static {
         try {
             ROBOT_CONFIG = RobotConfig.fromGUISettings();
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
-        
+
     }
 
     // Robot constants
@@ -62,20 +61,20 @@ public final class Constants {
     public static final Distance TRACKWIDTH_METERS = Meters.of(0.6032627);
 
     // Drive constants
-    public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(15.029297); 
-    public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(0.351562); //-179.648438
-    public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(-25.136699); //154.863281
-    public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(-27.861328); 
+    public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(88.769531);
+    public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(53.349609); //-179.648438
+    public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(155.039062-180); //154.863281
+    public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(37.265625);
 
     public static final boolean FRONT_LEFT_DRIVE_MOTOR_INVERTED = true;
-    public static final boolean FRONT_RIGHT_DRIVE_MOTOR_INVERTED = true;
+    public static final boolean FRONT_RIGHT_DRIVE_MOTOR_INVERTED = false;
     public static final boolean BACK_LEFT_DRIVE_MOTOR_INVERTED = false;
     public static final boolean BACK_RIGHT_DRIVE_MOTOR_INVERTED = false;
 
-    public static final boolean FRONT_LEFT_STEER_MOTOR_INVERTED = true;
-    public static final boolean FRONT_RIGHT_STEER_MOTOR_INVERTED = true;
-    public static final boolean BACK_LEFT_STEER_MOTOR_INVERTED = true;
-    public static final boolean BACK_RIGHT_STEER_MOTOR_INVERTED = true;
+    public static final boolean FRONT_LEFT_STEER_MOTOR_INVERTED = false;
+    public static final boolean FRONT_RIGHT_STEER_MOTOR_INVERTED = false;
+    public static final boolean BACK_LEFT_STEER_MOTOR_INVERTED = false;
+    public static final boolean BACK_RIGHT_STEER_MOTOR_INVERTED = false;
 
     public static final Translation2d FRONT_LEFT_SWERVE_MODULE_LOCATION = new Translation2d(0.301625, 0.301625);
     public static final Translation2d FRONT_RIGHT_SWERVE_MODULE_LOCATION = new Translation2d(0.301625, -0.301625);
@@ -116,10 +115,8 @@ public final class Constants {
             PATH_FOLLOWING_ROTATION_CONSTRAINTS
     );
 
-
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
-    
 
     public static final double INTAKE_FRAME_RAISED_POSITION = 10.0;
     public static final double INTAKE_FRAME_LOWERED_POSITION = 0.0;

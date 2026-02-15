@@ -1,14 +1,27 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
+import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.spark.SparkLowLevel;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
+
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.DRIVE_MOTOR_CURRENT_LIMIT;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOOD_HIGH_LEFT_SETPOINT;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOOD_LOW_LEFT_SETPOINT;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOOD_LOW_RIGHT_SETPOINT;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.HOOD_ACTUATOR;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.SERVO_HUB;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.SHOOTER_KRAKEN;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public class Shoot implements TickedSubsystem {
@@ -19,7 +32,7 @@ public class Shoot implements TickedSubsystem {
         LOW_LEFT
     }
 
-    // private final SparkMax shooterMotor;
+    private final TalonFX shooterMotor;
     // Initialize the servo hub
     // ServoHub m_servoHub = new ServoHub(SERVO_HUB);
 
@@ -34,19 +47,20 @@ public class Shoot implements TickedSubsystem {
     private final DoublePublisher hoodPosPublisher = NetworkTables.PublisherFactory(networkTable, "Hood Pose", 0);
 
     public Shoot() {
-        // this.shooterMotor = new SparkMax(SHOOTER_SPARK, SparkLowLevel.MotorType.kBrushless);
-        // SparkMaxConfig shooterMotorConfig = new SparkMaxConfig();
-        // shooterMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
-        // shooterMotorConfig.smartCurrentLimit(30);
+        this.shooterMotor = new TalonFX(SHOOTER_KRAKEN, CANBus.roboRIO());
+        TalonFXConfiguration shooterMotorConfig = new TalonFXConfiguration();
+        shooterMotorConfig.CurrentLimits.SupplyCurrentLimit = 40;
+        shooterMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+
+        shooterMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        shooterMotorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
+        this.shooterMotor.getConfigurator().apply(shooterMotorConfig);
+
         
         // this.servoHub = new ServoHub(SERVO_HUB);
 
         this.hoodActuator = new LinearServo(SERVO_HUB, HOOD_ACTUATOR, 1, 1);
-        // this.shooterMotor.configure(
-        //     shooterMotorConfig, 
-        //     com.revrobotics.ResetMode.kNoResetSafeParameters, 
-        //     com.revrobotics.PersistMode.kPersistParameters
-        // );
     }
 
     public void setSpeed(boolean up) {
@@ -105,7 +119,7 @@ public class Shoot implements TickedSubsystem {
 
     @Override
     public void periodic() {
-        // this.shooterMotor.set(currentTick);
+        this.shooterMotor.set(currentTick);
         this.hoodActuator.updateCurPos();
         this.hoodPosPublisher.set(this.hoodActuator.getPosition());
         this.currentSpeedPublisher.set(currentTick);

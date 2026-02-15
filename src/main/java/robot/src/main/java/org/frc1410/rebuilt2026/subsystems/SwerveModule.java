@@ -205,6 +205,10 @@ public class SwerveModule implements TickedSubsystem {
         return Meters.of(this.driveMotor.getPosition().getValue().in(Rotations) * WHEEL_CIRCUMFERENCE.in(Meters) / DRIVE_GEAR_RATIO);
     }
 
+    private double motorEncoderAngle() {
+        return this.steerMotor.getEncoder().getPosition();
+    }
+
     @Override
     public void periodic() {
         double steerPIDOutput = this.steerPIDController.calculate(

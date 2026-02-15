@@ -41,9 +41,6 @@ public class ControlScheme {
     public ControlScheme(Controller C1, Controller C2) {
         driverController = C1;
         operatorController = C2;
-    }
-
-    public void init() {
         DRIVE_FORWARD = this.driverController.LEFT_Y_AXIS;
         DRIVE_SIDEWAYS = this.driverController.LEFT_X_AXIS;
         DRIVE_TURN = this.driverController.RIGHT_X_AXIS;
