@@ -31,11 +31,11 @@ public final class Tuning {
     
     public static final Transform3d EoC1_OFFSET = new Transform3d(new Translation3d(
         //How forward or backward the came is from robot center
-        0, //0.5
+        -0.209, //0
         //How left or right cam is from robot center
         0, //0
         //Measures how far up or down from the robot center the cam is
-        0.5 //0.5
+        0.494 //0.5
         ),
     new Rotation3d(
         0,
@@ -44,11 +44,11 @@ public final class Tuning {
         ));
     public static final Transform3d EoC2_OFFSET = new Transform3d(new Translation3d(
         //How forward or backward the came is from robot center
-        0, //0.5
+        -0.209, //0
         //How left or right cam is from robot center
         0, //0
         //Measures how far up or down from the robot center the cam is
-        0.5 //0.5
+        0.494 //0.5
         ),
     new Rotation3d(
         0,
