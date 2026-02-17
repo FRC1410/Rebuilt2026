@@ -23,7 +23,12 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.HOOD_ACTUATOR
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.SERVO_HUB;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.SHOOTER_KRAKEN;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig;
 
+import com.revrobotics.servohub.ServoHub;
 public class Shoot implements TickedSubsystem {
 
     public enum HoodStates {
@@ -34,7 +39,7 @@ public class Shoot implements TickedSubsystem {
 
     private final TalonFX shooterMotor;
     // Initialize the servo hub
-    // ServoHub m_servoHub = new ServoHub(SERVO_HUB);
+    ServoHub m_servoHub = new ServoHub(SERVO_HUB);
 
     // Obtain a servo channel controller
     private final LinearServo hoodActuator;
@@ -58,7 +63,7 @@ public class Shoot implements TickedSubsystem {
         this.shooterMotor.getConfigurator().apply(shooterMotorConfig);
 
         
-        // this.servoHub = new ServoHub(SERVO_HUB);
+        this.m_servoHub = new ServoHub(SERVO_HUB);
 
         this.hoodActuator = new LinearServo(SERVO_HUB, HOOD_ACTUATOR, 1, 1);
     }
@@ -119,6 +124,7 @@ public class Shoot implements TickedSubsystem {
 
     @Override
     public void periodic() {
+        this.shooterMotor.set(currentTick);
         this.shooterMotor.set(currentTick);
         this.hoodActuator.updateCurPos();
         this.hoodPosPublisher.set(this.hoodActuator.getPosition());
