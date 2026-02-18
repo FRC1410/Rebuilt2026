@@ -72,13 +72,13 @@ public final class Robot extends PhaseDrivenRobot {
 	// private final StorageToggleCommand storageNeutral = new StorageToggleCommand(storage, Storage.StorageStates.NEUTRAL);
 	// private final StorageToggleCommand storageOuttake = new StorageToggleCommand(storage, Storage.StorageStates.OUTTAKE);
 
-    // private final Intake intake = subsystems.track(new Intake());
+    private final Intake intake = subsystems.track(new Intake());
 
-    // private final IntakeForwardCommand intakeForwardCommand = new IntakeForwardCommand(intake, this.scheme.INTAKE_FORWARD);
-    // private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake, this.scheme.INTAKE_REVERSE);
-    // private final FrameTestCommand FrameTestCommand = new FrameTestCommand(intake, this.scheme.FRAME_TEST_1, this.scheme.FRAME_TEST_2);
-	// private final FrameRaiseCommand FrameRaiseCommand = new FrameRaiseCommand(intake, this.scheme.FRAME_RAISE);
-	// private final FrameLowerCommand FrameLowerCommand = new FrameLowerCommand(intake, this.scheme.FRAME_LOWER);
+    private final IntakeForwardCommand intakeForwardCommand = new IntakeForwardCommand(intake, this.scheme.INTAKE_FORWARD);
+    private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake, this.scheme.INTAKE_REVERSE);
+    private final FrameTestCommand FrameTestCommand = new FrameTestCommand(intake, this.scheme.FRAME_TEST_1, this.scheme.FRAME_TEST_2);
+	private final FrameRaiseCommand FrameRaiseCommand = new FrameRaiseCommand(intake, this.scheme.FRAME_RAISE);
+	private final FrameLowerCommand FrameLowerCommand = new FrameLowerCommand(intake, this.scheme.FRAME_LOWER);
 
 	// private final StorageTransferRun transfer = new StorageTransferRun(storage);
 

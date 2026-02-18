@@ -118,7 +118,7 @@ public final class Constants {
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
 
-    public static final double INTAKE_FRAME_RAISED_POSITION = 10.0;
+    public static final double INTAKE_FRAME_RAISED_POSITION = 10.0; // FL: -12.595281, FR 5.404755
     public static final double INTAKE_FRAME_LOWERED_POSITION = 0.0;
 
     public static final double HOOD_LOW_LEFT_SETPOINT = 0.0;
