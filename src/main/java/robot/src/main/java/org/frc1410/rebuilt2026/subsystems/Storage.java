@@ -71,15 +71,15 @@ public class Storage implements TickedSubsystem {
     }
     public void setSpeedState(StorageStates storageState) {
         switch (storageState) {
-            case INTAKE -> this.beltSpeed = 1;
+            case INTAKE -> this.beltSpeed = 0.5;
             case NEUTRAL -> this.beltSpeed = 0;
-            case OUTTAKE -> this.beltSpeed = -0.5;
+            case OUTTAKE -> this.beltSpeed = -0.25;
         }
     }
 
     @Override
     public void periodic() {
-        this.beltMotor.set(beltSpeed);
+        this.beltMotor.set(this.beltSpeed);
         this.speedPub.set(this.beltSpeed);
         this.transferMotor.set(transferSpeed);
     }

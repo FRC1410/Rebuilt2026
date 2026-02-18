@@ -13,7 +13,7 @@ public class StorageTransferRun extends Command{
 
     @Override
     public void initialize() {
-        this.storage.setTransferSpeed(1.0);
+        this.storage.setTransferSpeed(0.25);
     }
 
     @Override

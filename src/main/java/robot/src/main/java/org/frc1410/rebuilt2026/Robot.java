@@ -55,32 +55,32 @@ public final class Robot extends PhaseDrivenRobot {
 
     private final ControlScheme scheme = new ControlScheme(driverController, operatorController);
 
-	// private final Shoot shooter = subsystems.track(new Shoot());
-    // private final ShooterStepUpCommand shooterStepUpCommand = new ShooterStepUpCommand(shooter, 1);
-    // private final ShooterStepDownCommand shooterStepDownCommand = new ShooterStepDownCommand(shooter, 1);
-    // private final MoveHoodCommand moveHoodLowLeftCommand = new MoveHoodCommand(shooter, HoodStates.LOW_LEFT);
-    // private final MoveHoodCommand moveHoodLowRightCommand = new MoveHoodCommand(shooter, HoodStates.LOW_RIGHT);
-    // private final MoveHoodCommand moveHoodHighLeftCommand = new MoveHoodCommand(shooter, HoodStates.HIGH_LEFT);
+	private final Shoot shooter = subsystems.track(new Shoot());
+    private final ShooterStepUpCommand shooterStepUpCommand = new ShooterStepUpCommand(shooter, 1);
+    private final ShooterStepDownCommand shooterStepDownCommand = new ShooterStepDownCommand(shooter, 1);
+    private final MoveHoodCommand moveHoodLowLeftCommand = new MoveHoodCommand(shooter, HoodStates.LOW_LEFT);
+    private final MoveHoodCommand moveHoodLowRightCommand = new MoveHoodCommand(shooter, HoodStates.LOW_RIGHT);
+    private final MoveHoodCommand moveHoodHighLeftCommand = new MoveHoodCommand(shooter, HoodStates.HIGH_LEFT);
 
 
-    // Cam[] eyesOfCthulu = new Cam[]{new Cam(CAM_NAME1, EoC1_OFFSET, drivetrain::addVisionMeasurement), new Cam(CAM_NAME2, EoC2_OFFSET, drivetrain::addVisionMeasurement)};
-	// Vision kv = subsystems.track(new Vision(eyesOfCthulu, drivetrain));
+    Cam[] eyesOfCthulu = new Cam[]{new Cam(CAM_NAME1, EoC1_OFFSET, drivetrain::addVisionMeasurement), new Cam(CAM_NAME2, EoC2_OFFSET, drivetrain::addVisionMeasurement)};
+	Vision kv = subsystems.track(new Vision(eyesOfCthulu, drivetrain));
 
-	// private final Storage storage = new Storage();
+	private final Storage storage = subsystems.track(new Storage());
 
-	// private final StorageToggleCommand storageIntake = new StorageToggleCommand(storage, Storage.StorageStates.INTAKE);
-	// private final StorageToggleCommand storageNeutral = new StorageToggleCommand(storage, Storage.StorageStates.NEUTRAL);
-	// private final StorageToggleCommand storageOuttake = new StorageToggleCommand(storage, Storage.StorageStates.OUTTAKE);
+	private final StorageToggleCommand storageIntake = new StorageToggleCommand(storage, Storage.StorageStates.INTAKE);
+	private final StorageToggleCommand storageNeutral = new StorageToggleCommand(storage, Storage.StorageStates.NEUTRAL);
+	private final StorageToggleCommand storageOuttake = new StorageToggleCommand(storage, Storage.StorageStates.OUTTAKE);
 
-    // private final Intake intake = subsystems.track(new Intake());
+    private final Intake intake = subsystems.track(new Intake());
 
-    // private final IntakeForwardCommand intakeForwardCommand = new IntakeForwardCommand(intake, this.scheme.INTAKE_FORWARD);
-    // private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake, this.scheme.INTAKE_REVERSE);
-    // private final FrameTestCommand FrameTestCommand = new FrameTestCommand(intake, this.scheme.FRAME_TEST_1, this.scheme.FRAME_TEST_2);
-	// private final FrameRaiseCommand FrameRaiseCommand = new FrameRaiseCommand(intake, this.scheme.FRAME_RAISE);
-	// private final FrameLowerCommand FrameLowerCommand = new FrameLowerCommand(intake, this.scheme.FRAME_LOWER);
+    private final IntakeForwardCommand intakeForwardCommand = new IntakeForwardCommand(intake, this.scheme.INTAKE_FORWARD);
+    private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake, this.scheme.INTAKE_REVERSE);
+    private final FrameTestCommand FrameTestCommand = new FrameTestCommand(intake, this.scheme.FRAME_TEST_1, this.scheme.FRAME_TEST_2);
+	private final FrameRaiseCommand FrameRaiseCommand = new FrameRaiseCommand(intake, this.scheme.FRAME_RAISE);
+	private final FrameLowerCommand FrameLowerCommand = new FrameLowerCommand(intake, this.scheme.FRAME_LOWER);
 
-	// private final StorageTransferRun transfer = new StorageTransferRun(storage);
+	private final StorageTransferRun transfer = new StorageTransferRun(storage);
 
     // private final ReadyToRumbleCommand readyToRumbleCommand = new ReadyToRumbleCommand(driverController);
 
@@ -167,10 +167,10 @@ public final class Robot extends PhaseDrivenRobot {
 			LockPriority.HIGH
 		);
 
-		// this.scheme.STORAGE_INTAKE.whileHeldOnce(storageIntake, TaskPersistence.GAMEPLAY);
-		// this.scheme.STORAGE_NEUTRAL.whileHeldOnce(storageNeutral, TaskPersistence.GAMEPLAY);
-		// this.scheme.STORAGE_OUTTAKE.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
-		// this.scheme.TRANSFER.whileHeld(transfer, TaskPersistence.GAMEPLAY);
+		this.scheme.STORAGE_INTAKE.whileHeldOnce(storageIntake, TaskPersistence.GAMEPLAY);
+		this.scheme.STORAGE_NEUTRAL.whileHeldOnce(storageNeutral, TaskPersistence.GAMEPLAY);
+		this.scheme.STORAGE_OUTTAKE.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
+		this.scheme.TRANSFER.whileHeld(transfer, TaskPersistence.GAMEPLAY);
 
 		// Add slowmode toggle on left bumper
 		this.scheme.SLOWMODE_TOGGLE.whenPressed(
@@ -182,29 +182,31 @@ public final class Robot extends PhaseDrivenRobot {
 		this.scheme.GUARDMODE_TOGGLE.whenPressed(
 			new ToggleGuardModeCommand(this.drivetrain), 
 			TaskPersistence.GAMEPLAY
-
 		);
-        // this.scheduler.scheduleDefaultCommand(intakeForwardCommand, TaskPersistence.GAMEPLAY);
-        // this.scheduler.scheduleDefaultCommand(intakeReverseCommand, TaskPersistence.GAMEPLAY);
+
+		this.scheduler.scheduleDefaultCommand(FrameRaiseCommand, TaskPersistence.GAMEPLAY);
+		this.scheduler.scheduleDefaultCommand(FrameLowerCommand, TaskPersistence.GAMEPLAY);
+        this.scheduler.scheduleDefaultCommand(intakeForwardCommand, TaskPersistence.GAMEPLAY);
+        this.scheduler.scheduleDefaultCommand(intakeReverseCommand, TaskPersistence.GAMEPLAY);
 
 
         // this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
 
-        // this.scheme.SHOOTER_UP.whileHeldOnce(shooterStepUpCommand, TaskPersistence.GAMEPLAY);
-        // this.scheme.SHOOTER_DOWN.whileHeldOnce(shooterStepDownCommand, TaskPersistence.GAMEPLAY);
+        this.scheme.SHOOTER_UP.whileHeldOnce(shooterStepUpCommand, TaskPersistence.GAMEPLAY);
+        this.scheme.SHOOTER_DOWN.whileHeldOnce(shooterStepDownCommand, TaskPersistence.GAMEPLAY);
 
-        // this.scheme.HOOD_LOW_LEFT.whileHeldOnce(moveHoodLowLeftCommand, TaskPersistence.GAMEPLAY);
-        // this.scheme.HOOD_LOW_RIGHT.whileHeldOnce(moveHoodLowRightCommand, TaskPersistence.GAMEPLAY);
-        // this.scheme.HOOD_HIGH_LEFT.whileHeldOnce(moveHoodHighLeftCommand, TaskPersistence.GAMEPLAY);
+        this.scheme.HOOD_LOW_LEFT.whileHeldOnce(moveHoodLowLeftCommand, TaskPersistence.GAMEPLAY);
+        this.scheme.HOOD_LOW_RIGHT.whileHeldOnce(moveHoodLowRightCommand, TaskPersistence.GAMEPLAY);
+        this.scheme.HOOD_HIGH_LEFT.whileHeldOnce(moveHoodHighLeftCommand, TaskPersistence.GAMEPLAY);
 
-		// this.scheduler.scheduleDefaultCommand(
-		// 	new AutoAlign(
-		// 		drivetrain, 
-		// 		kv, 
-		// 		scheme.AUTO_ALIGN
-		// 	), 
-		// 	TaskPersistence.GAMEPLAY
-		// );
+		this.scheduler.scheduleDefaultCommand(
+			new AutoAlign(
+				drivetrain, 
+				kv, 
+				scheme.AUTO_ALIGN
+			), 
+			TaskPersistence.GAMEPLAY
+		);
     }
 
     @Override

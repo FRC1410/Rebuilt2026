@@ -38,8 +38,6 @@ public class Shoot implements TickedSubsystem {
     }
 
     private final TalonFX shooterMotor;
-    // Initialize the servo hub
-    ServoHub m_servoHub = new ServoHub(SERVO_HUB);
 
     // Obtain a servo channel controller
     private final LinearServo hoodActuator;
@@ -52,6 +50,7 @@ public class Shoot implements TickedSubsystem {
     private final DoublePublisher hoodPosPublisher = NetworkTables.PublisherFactory(networkTable, "Hood Pose", 0);
 
     public Shoot() {
+        this.currentTick = 0;
         this.shooterMotor = new TalonFX(SHOOTER_KRAKEN, CANBus.roboRIO());
         TalonFXConfiguration shooterMotorConfig = new TalonFXConfiguration();
         shooterMotorConfig.CurrentLimits.SupplyCurrentLimit = 40;
@@ -61,9 +60,6 @@ public class Shoot implements TickedSubsystem {
         shooterMotorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
         this.shooterMotor.getConfigurator().apply(shooterMotorConfig);
-
-        
-        this.m_servoHub = new ServoHub(SERVO_HUB);
 
         this.hoodActuator = new LinearServo(SERVO_HUB, HOOD_ACTUATOR, 1, 1);
     }

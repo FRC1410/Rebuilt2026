@@ -61,10 +61,10 @@ public final class Constants {
     public static final Distance TRACKWIDTH_METERS = Meters.of(0.6032627);
 
     // Drive constants
-    public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(88.769531);
-    public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(53.349609); //-179.648438
-    public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(155.039062-180); //154.863281
-    public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(37.265625);
+    public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(0); //88.769531
+    public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(0); //53.349609
+    public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(0); //155.039062-180
+    public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(0); //37.265625
 
     public static final boolean FRONT_LEFT_DRIVE_MOTOR_INVERTED = true;
     public static final boolean FRONT_RIGHT_DRIVE_MOTOR_INVERTED = false;

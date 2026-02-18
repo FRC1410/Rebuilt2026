@@ -33,7 +33,7 @@ public class FrameTestCommand extends Command{
         if (this.toggleButton2.isActive()) {
             this.intake.raiseLowerIntakeFrame(0, 1);
             System.out.println(this.intake.getRightFrame());
-        } else if (!this.toggleButton2.isActive()) {
+        } else if (!this.toggleButton1.isActive()) {
             this.intake.raiseLowerIntakeFrame(0, 0);
         }
     }
