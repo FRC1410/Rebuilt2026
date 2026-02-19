@@ -57,7 +57,7 @@ public class Shoot implements TickedSubsystem {
         shooterMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
         shooterMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-        shooterMotorConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        shooterMotorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
         this.shooterMotor.getConfigurator().apply(shooterMotorConfig);
 
@@ -76,6 +76,10 @@ public class Shoot implements TickedSubsystem {
         } else if (currentTick < 0) {
             currentTick = 0;
         }
+    }
+
+    public void resetSpeed() {
+        this.currentTick = 0;
     }
 
     public void tickUp(int multiplier) {

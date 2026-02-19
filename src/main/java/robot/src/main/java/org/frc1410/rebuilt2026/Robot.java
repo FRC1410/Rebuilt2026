@@ -16,20 +16,21 @@ import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPri
 import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Cam;
 import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Vision;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.AutoAlign;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveLooped;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameLowerCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameRaiseCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameTestCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeForwardCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeReverseCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.MoveHoodCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.MoveHoodCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.ShooterStepDownCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.ShooterStepUpCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageCommands.StorageToggleCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageCommands.StorageTransferRun;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ReadyToRumbleCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterStepDownCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterStepUpCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageToggleCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageTransferRun;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleGuardModeCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ToggleSlowmodeCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.DriveLooped;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleGuardModeCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleSlowmodeCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.ResetCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Intake;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Shoot;
@@ -81,6 +82,8 @@ public final class Robot extends PhaseDrivenRobot {
 	private final FrameLowerCommand FrameLowerCommand = new FrameLowerCommand(intake, this.scheme.FRAME_LOWER);
 
 	private final StorageTransferRun transfer = new StorageTransferRun(storage);
+
+	private final ResetCommand resetCommand = new ResetCommand(drivetrain, intake, shooter, storage);
 
     // private final ReadyToRumbleCommand readyToRumbleCommand = new ReadyToRumbleCommand(driverController);
 
@@ -155,6 +158,8 @@ public final class Robot extends PhaseDrivenRobot {
 
     @Override
     public void teleopSequence() {
+		// this.scheduler.scheduleDefaultCommand(resetCommand, TaskPersistence.GAMEPLAY);
+
         this.scheduler.scheduleDefaultCommand(
 			new DriveLooped(
 					this.drivetrain, 
@@ -211,6 +216,60 @@ public final class Robot extends PhaseDrivenRobot {
 
     @Override
     public void testSequence() {
+		this.scheme.STORAGE_NEUTRAL.whileHeldOnce(resetCommand, TaskPersistence.GAMEPLAY);
+
+        this.scheduler.scheduleDefaultCommand(
+			new DriveLooped(
+					this.drivetrain, 
+					this.scheme.DRIVE_SIDEWAYS, 
+					this.scheme.DRIVE_FORWARD, 
+					this.scheme.DRIVE_TURN, 
+					this.scheme.ROBOT_RELATIVE_TOGGLE
+				), 
+			TaskPersistence.GAMEPLAY, 
+			LockPriority.HIGH
+		);
+
+		this.scheme.STORAGE_INTAKE.whileHeldOnce(storageIntake, TaskPersistence.GAMEPLAY);
+		this.scheme.STORAGE_NEUTRAL.whileHeldOnce(storageNeutral, TaskPersistence.GAMEPLAY);
+		this.scheme.STORAGE_OUTTAKE.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
+		this.scheme.TRANSFER.whileHeld(transfer, TaskPersistence.GAMEPLAY);
+
+		// Add slowmode toggle on left bumper
+		this.scheme.SLOWMODE_TOGGLE.whenPressed(
+			new ToggleSlowmodeCommand(this.drivetrain), 
+			TaskPersistence.GAMEPLAY
+		);
+		
+		// Add guard mode toggle on right bumper
+		this.scheme.GUARDMODE_TOGGLE.whenPressed(
+			new ToggleGuardModeCommand(this.drivetrain), 
+			TaskPersistence.GAMEPLAY
+		);
+
+		this.scheduler.scheduleDefaultCommand(FrameRaiseCommand, TaskPersistence.GAMEPLAY);
+		this.scheduler.scheduleDefaultCommand(FrameLowerCommand, TaskPersistence.GAMEPLAY);
+        this.scheduler.scheduleDefaultCommand(intakeForwardCommand, TaskPersistence.GAMEPLAY);
+        this.scheduler.scheduleDefaultCommand(intakeReverseCommand, TaskPersistence.GAMEPLAY);
+
+
+        // this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
+
+        this.scheme.SHOOTER_UP.whileHeldOnce(shooterStepUpCommand, TaskPersistence.GAMEPLAY);
+        this.scheme.SHOOTER_DOWN.whileHeldOnce(shooterStepDownCommand, TaskPersistence.GAMEPLAY);
+
+        this.scheme.HOOD_LOW_LEFT.whileHeldOnce(moveHoodLowLeftCommand, TaskPersistence.GAMEPLAY);
+        this.scheme.HOOD_LOW_RIGHT.whileHeldOnce(moveHoodLowRightCommand, TaskPersistence.GAMEPLAY);
+        this.scheme.HOOD_HIGH_LEFT.whileHeldOnce(moveHoodHighLeftCommand, TaskPersistence.GAMEPLAY);
+
+		this.scheduler.scheduleDefaultCommand(
+			new AutoAlign(
+				drivetrain, 
+				kv, 
+				scheme.AUTO_ALIGN
+			), 
+			TaskPersistence.GAMEPLAY
+		);
     }
 
     @Override
