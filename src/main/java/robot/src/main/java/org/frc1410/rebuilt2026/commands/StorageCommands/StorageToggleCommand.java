@@ -1,4 +1,4 @@
-package robot.src.main.java.org.frc1410.rebuilt2026.commands;
+package robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Storage;
@@ -15,11 +15,7 @@ public class StorageToggleCommand extends Command {
 
     @Override
     public void initialize() {
-        this.storage.setSpeedState(storageState);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return true;
+        this.storage.setSpeedState(this.storageState);
+        System.out.println("Trying storage thing to " + this.storageState);
     }
 }

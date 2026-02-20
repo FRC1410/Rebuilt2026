@@ -10,11 +10,10 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.*;
+import com.revrobotics.spark.config.SparkFlexConfig;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -46,11 +45,12 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_DRI
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_STEER_D;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_STEER_I;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWERVE_STEER_P;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.CAN_BUS_NAME;
 
 public class SwerveModule implements TickedSubsystem {
+
+
     private final TalonFX driveMotor;
-    private final SparkMax steerMotor;
+    private final SparkFlex steerMotor;
 
     private final CANcoder steerEncoder;
 
@@ -82,8 +82,8 @@ public class SwerveModule implements TickedSubsystem {
             DoublePublisher actualVelocity,
             DoublePublisher actualAngle
     ) {
-
-        CANBus canBus = new CANBus("Hammy");
+        
+        CANBus canBus = CANBus.roboRIO();
 
         // Drive config
         this.driveMotor = new TalonFX(driveMotorID, canBus);
@@ -99,21 +99,20 @@ public class SwerveModule implements TickedSubsystem {
         driveMotorConfig.CurrentLimits.SupplyCurrentLimit = DRIVE_MOTOR_CURRENT_LIMIT;
         driveMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        driveMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake; 
-        driveMotorConfig.MotorOutput.Inverted =
-                driveInverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        driveMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        driveMotorConfig.MotorOutput.Inverted
+                = driveInverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
 
         this.driveMotor.getConfigurator().apply(driveMotorConfig);
 
         // Steer config
-        var sparkConfig = new SparkMaxConfig();
+        var sparkConfig = new SparkFlexConfig();
 
         sparkConfig.smartCurrentLimit(STEER_MOTOR_CURRENT_LIMIT);
-        sparkConfig.idleMode(SparkBaseConfig.IdleMode.kBrake); 
+        sparkConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         sparkConfig.inverted(steerInverted);
 
-        this.steerMotor = new SparkMax(steerMotorID, MotorType.kBrushless);
-        this.steerMotor.configure(sparkConfig, com.revrobotics.ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
+        this.steerMotor = new SparkFlex(steerMotorID, MotorType.kBrushless);
         this.steerMotor.configure(sparkConfig, com.revrobotics.ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
 
         // Steer encoder config
@@ -144,7 +143,7 @@ public class SwerveModule implements TickedSubsystem {
 //        Random rand = new Random();
 //        var randomNum = rand.nextInt(3);
         StatusCode result = this.orchestra.loadMusic("Fox.chrp");
-        if(!result.isOK()) {
+        if (!result.isOK()) {
             System.out.println("Error loading orchestra music: " + result);
         } else {
             System.out.println("playing");
@@ -204,6 +203,10 @@ public class SwerveModule implements TickedSubsystem {
 
     private Distance getDrivePosition() {
         return Meters.of(this.driveMotor.getPosition().getValue().in(Rotations) * WHEEL_CIRCUMFERENCE.in(Meters) / DRIVE_GEAR_RATIO);
+    }
+
+    private double motorEncoderAngle() {
+        return this.steerMotor.getEncoder().getPosition();
     }
 
     @Override
