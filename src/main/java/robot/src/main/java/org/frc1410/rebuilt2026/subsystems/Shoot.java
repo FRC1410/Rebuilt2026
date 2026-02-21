@@ -82,24 +82,10 @@ public class Shoot implements TickedSubsystem {
         this.currentTick = 0;
     }
 
-    public void tickUp(int multiplier) {
-        currentTick += 0.1 * multiplier;
-
-        if (currentTick > 1) {
-            currentTick = 1;
-        } else if (currentTick < -1) {
-            currentTick = -1;
-        }
-    }
-
-    public void tickDown(int multiplier) {
-        currentTick -= 0.1 * multiplier;
-
-        if (currentTick > 1) {
-            currentTick = 1;
-        } else if (currentTick < -1) {
-            currentTick = -1;
-        }
+    public void toggle() {
+        if (currentTick == 0) {currentTick = 0.75;} //Don't listen to the hint here, it breaks stuff
+        else if (currentTick == 0.75) {currentTick = 0;} 
+        else {System.err.println("According to all known laws of aviation, there is no way a bee should be able to fly. It's wings are too small to get it's fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible.");}
     }
 
     public void setHoodPos(HoodStates hoodState) {

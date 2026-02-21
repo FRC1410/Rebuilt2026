@@ -25,9 +25,8 @@ public class ControlScheme {
     public Button STORAGE_NEUTRAL;
     public Button STORAGE_OUTTAKE;
     public Button TRANSFER;
- 
-    public Button SHOOTER_UP;
-    public Button SHOOTER_DOWN;
+
+    public Button SHOOTER_TOGGLE;
 
     public Button HOOD_LOW_LEFT;
     public Button HOOD_LOW_RIGHT;
@@ -41,8 +40,8 @@ public class ControlScheme {
     public ControlScheme(Controller C1, Controller C2) {
         driverController = C1;
         operatorController = C2;
-        DRIVE_FORWARD = this.driverController.LEFT_Y_AXIS;
-        DRIVE_SIDEWAYS = this.driverController.LEFT_X_AXIS;
+        DRIVE_FORWARD = this.driverController.LEFT_X_AXIS;
+        DRIVE_SIDEWAYS = this.driverController.LEFT_Y_AXIS;
         DRIVE_TURN = this.driverController.RIGHT_X_AXIS;
         ROBOT_RELATIVE_TOGGLE = this.driverController.RIGHT_BUMPER;
 
@@ -57,16 +56,14 @@ public class ControlScheme {
         STORAGE_NEUTRAL = this.operatorController.B;
         STORAGE_OUTTAKE = this.operatorController.X;
         TRANSFER = this.operatorController.Y;
-    
-        SHOOTER_UP = this.operatorController.RIGHT_BUMPER;
-        SHOOTER_DOWN = this.operatorController.LEFT_BUMPER;
+
+        SHOOTER_TOGGLE = this.operatorController.LEFT_BUMPER;
 
         HOOD_LOW_LEFT = this.operatorController.RIGHT_TRIGGER.button();
         HOOD_LOW_RIGHT = this.operatorController.LEFT_TRIGGER.button();
         HOOD_HIGH_LEFT = this.operatorController.RIGHT_STICK;
 
         AUTO_ALIGN = this.driverController.LEFT_STICK;
-
 
         SLOWMODE_TOGGLE = this.driverController.X;
         GUARDMODE_TOGGLE = this.driverController.Y;

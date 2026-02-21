@@ -9,11 +9,15 @@ import edu.wpi.first.math.geometry.Translation3d;
 public final class Tuning {
 
     // Drivetrain
-    public static final double SWERVE_DRIVE_P = 0.401;
-    public static final double SWERVE_DRIVE_I = 0;
-    public static final double SWERVE_DRIVE_D = 0.000;
+    public static final double SWERVE_DRIVE_P = 0.001;
+    public static final double SWERVE_DRIVE_I = 0.0;
+    public static final double SWERVE_DRIVE_D = 0.0;
 
-    public static final double SWERVE_STEER_P = 1.0; //4.7
+//     public static final double SWERVE_DRIVE_P = 0.0;
+//     public static final double SWERVE_DRIVE_I = 0.0;
+//     public static final double SWERVE_DRIVE_D = 0.0;
+
+    public static final double SWERVE_STEER_P = 6.0; //4.7
     public static final double SWERVE_STEER_I = 0.0;
     public static final double SWERVE_STEER_D = 0.009;
 
@@ -70,4 +74,9 @@ public final class Tuning {
     // public static final double INTAKE_FRAME_I = 0.0;
     // public static final double INTAKE_FRAME_D = 0.0;
     public static final double INTAKE_FRAME_TOLERANCE = 0.5;
+
+    public static final double INDEXER_P = 0.1;
+    public static final double INDEXER_I = 0.0;
+    public static final double INDEXER_D = 0.0;
+
 }
