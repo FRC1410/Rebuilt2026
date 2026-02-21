@@ -61,4 +61,9 @@ public final class Tuning {
 
     public static final PIDConstants PATH_FOLLOWING_TRANSLATION_CONSTRAINTS = new PIDConstants(4, 0, 0);
     public static final PIDConstants PATH_FOLLOWING_ROTATION_CONSTRAINTS = new PIDConstants(0.6, 0, 0.05);
+
+    public static final double INTAKE_FRAME_P = 0;
+    public static final double INTAKE_FRAME_I = 0;
+    public static final double INTAKE_FRAME_D = 0;
+    public static final double INTAKE_FRAME_TOLERANCE = 0;
 }

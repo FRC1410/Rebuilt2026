@@ -43,11 +43,8 @@ public class Cam {
     double targetDist = 0.0;
     int tagName;
     
-    
-    @SuppressWarnings("unused")
-    private Matrix<N3, N1> curStdDevs; //unsued
-    @SuppressWarnings("unused")
-    private final EstimateConsumer estConsumer; //unused
+    private Matrix<N3, N1> curStdDevs;
+    private final EstimateConsumer estConsumer;
     //
 
     public Cam(String name, Transform3d offset, EstimateConsumer e) {
