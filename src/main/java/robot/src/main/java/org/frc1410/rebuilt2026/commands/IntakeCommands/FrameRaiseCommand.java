@@ -13,16 +13,14 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.INTAKE_FRA
 
 public class FrameRaiseCommand extends Command {
     private final Intake intake;
-    private final Button raiseButton;
     
     private final PIDController leftPID;
     private final PIDController rightPID;
     
     private boolean isRaised = false;
     
-    public FrameRaiseCommand(Intake intake, Button raiseButton) {
+    public FrameRaiseCommand(Intake intake) {
         this.intake = intake;
-        this.raiseButton = raiseButton;
         
         this.leftPID = new PIDController(INTAKE_FRAME_P, INTAKE_FRAME_I, INTAKE_FRAME_D);
         this.rightPID = new PIDController(INTAKE_FRAME_P, INTAKE_FRAME_I, INTAKE_FRAME_D);
@@ -41,19 +39,19 @@ public class FrameRaiseCommand extends Command {
 
     @Override
     public void execute() {
-        if (raiseButton.isActive()) {
-            if (!isRaised) {
-                isRaised = true;
-                leftPID.setSetpoint(INTAKE_FRAME_RAISED_POSITION);
-                rightPID.setSetpoint(INTAKE_FRAME_RAISED_POSITION);
-            }
-        } else {
-            if (isRaised) {
-                isRaised = false;
-                leftPID.setSetpoint(INTAKE_FRAME_LOWERED_POSITION);
-                rightPID.setSetpoint(INTAKE_FRAME_LOWERED_POSITION);
-            }
+        // if (raiseButton.isActive()) {
+        if (!isRaised) {
+            isRaised = true;
+            leftPID.setSetpoint(INTAKE_FRAME_RAISED_POSITION);
+            rightPID.setSetpoint(INTAKE_FRAME_RAISED_POSITION);
         }
+        // } else {
+            // if (isRaised) {
+            //     isRaised = false;
+            //     leftPID.setSetpoint(INTAKE_FRAME_LOWERED_POSITION);
+            //     rightPID.setSetpoint(INTAKE_FRAME_LOWERED_POSITION);
+            // }
+        // }
         
         double leftPosition = intake.getFrameLeftPosition();
         double rightPosition = intake.getFrameRightPosition();
@@ -69,12 +67,23 @@ public class FrameRaiseCommand extends Command {
     }
 
     @Override
-    public boolean isFinished() {
-        return false;
-    }
-
-    @Override
     public void end(boolean interrupted) {
-        intake.raiseLowerIntakeFrame(0, 0);
+        if (isRaised) {
+            isRaised = false;
+            leftPID.setSetpoint(INTAKE_FRAME_LOWERED_POSITION);
+            rightPID.setSetpoint(INTAKE_FRAME_LOWERED_POSITION);
+        }
+
+        double leftPosition = intake.getFrameLeftPosition();
+        double rightPosition = intake.getFrameRightPosition();
+        
+        double leftOutput = leftPID.calculate(leftPosition);
+        double rightOutput = rightPID.calculate(rightPosition);
+        
+        leftOutput = Math.max(-1.0, Math.min(1.0, leftOutput));
+        rightOutput = Math.max(-1.0, Math.min(1.0, rightOutput));
+        
+        intake.raiseLowerIntakeFrame(leftOutput, rightOutput);
+
     }
 }

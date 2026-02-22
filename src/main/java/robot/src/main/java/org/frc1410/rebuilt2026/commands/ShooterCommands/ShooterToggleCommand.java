@@ -6,11 +6,9 @@ import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Shoot;
 
 public class ShooterToggleCommand extends Command {
     private final Shoot shooter;
-    private final int multiplier;
 
-    public ShooterToggleCommand(Shoot shooter, int multiplier) {
+    public ShooterToggleCommand(Shoot shooter) {
         this.shooter = shooter;
-        this.multiplier = multiplier;
         addRequirements(shooter);
     }
 

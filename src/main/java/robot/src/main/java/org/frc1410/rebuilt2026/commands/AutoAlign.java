@@ -10,12 +10,10 @@ public class AutoAlign extends Command {
 
     private final Drivetrain drivetrain;
     private final Vision kv;
-    private final Button toggle;
 
-    public AutoAlign(Drivetrain dt, Vision kv, Button toggle) {
+    public AutoAlign(Drivetrain dt, Vision kv) {
         this.drivetrain = dt;
         this.kv = kv;
-        this.toggle = toggle;
     }
 
     @Override
@@ -26,10 +24,7 @@ public class AutoAlign extends Command {
     public void execute() {
         // Read in relevant data from the Camera
         // SmartDashboard.putBoolean("AutoAlign EXEC", true);
-        this.drivetrain.aligning = this.toggle.isActive();
-        if (this.drivetrain.aligning) {
-    ;       kv.autoAlign();
-        }
+        kv.autoAlign();
         // System.out.println("Command Running");
     }
 

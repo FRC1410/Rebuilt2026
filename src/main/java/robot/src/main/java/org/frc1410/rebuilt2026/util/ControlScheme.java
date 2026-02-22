@@ -14,8 +14,8 @@ public class ControlScheme {
     public Axis DRIVE_TURN;
     public Button ROBOT_RELATIVE_TOGGLE;
 
-    public Axis INTAKE_FORWARD;
-    public Axis INTAKE_REVERSE;
+    public Button INTAKE_FORWARD;
+    public Button INTAKE_REVERSE;
     public Button FRAME_TEST_1;
     public Button FRAME_TEST_2;
     public Button FRAME_RAISE;
@@ -45,8 +45,8 @@ public class ControlScheme {
         DRIVE_TURN = this.driverController.RIGHT_X_AXIS;
         ROBOT_RELATIVE_TOGGLE = this.driverController.RIGHT_BUMPER;
 
-        INTAKE_FORWARD = this.driverController.LEFT_TRIGGER;
-        INTAKE_REVERSE = this.driverController.RIGHT_TRIGGER;
+        INTAKE_FORWARD = this.driverController.LEFT_TRIGGER.button();
+        INTAKE_REVERSE = this.driverController.RIGHT_TRIGGER.button();
         FRAME_TEST_1 = this.operatorController.DPAD_LEFT;
         FRAME_TEST_2 = this.operatorController.DPAD_RIGHT;
         FRAME_RAISE = this.operatorController.DPAD_UP;

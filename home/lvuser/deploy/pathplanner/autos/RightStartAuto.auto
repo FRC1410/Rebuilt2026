@@ -17,6 +17,62 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot Toggle"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Storage Pass"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 5.0
+                }
+              },
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Transfer"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Storage Stop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Toggle"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "CenterAZ to IntakeRight"

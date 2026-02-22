@@ -7,12 +7,9 @@ import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Intake;
 
 public class IntakeForwardCommand extends Command{
     private final Intake intake;
-
-    private final Axis toggleButton;
     
-    public IntakeForwardCommand(Intake intake, Axis axis) {
+    public IntakeForwardCommand(Intake intake) {
         this.intake = intake;
-        this.toggleButton = axis;
     }
 
     @Override
@@ -22,14 +19,11 @@ public class IntakeForwardCommand extends Command{
 
     @Override
     public void execute() {
-        if (this.toggleButton.button().isActive()) {
-            this.intake.setSpeed(1);
-            System.out.println(this.intake.getSpeed());
-        } else {
-            if (this.intake.getSpeed() == 1) {
-                this.intake.setSpeed(0);
-            }
-        }
+        // if (this.toggleButton.button().isActive()) {
+        this.intake.setSpeed(1);
+        System.out.println(this.intake.getSpeed());
+        // } else {
+        // }
     }
 
     // @Override
@@ -40,6 +34,8 @@ public class IntakeForwardCommand extends Command{
 
     @Override
     public void end(boolean interrupted) {
-        this.intake.setSpeed(0);
+        if (this.intake.getSpeed() == 1) {
+            this.intake.setSpeed(0);
+        }
     }
 }
