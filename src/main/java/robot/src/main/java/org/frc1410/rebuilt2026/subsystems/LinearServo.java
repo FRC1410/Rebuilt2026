@@ -85,7 +85,7 @@ public class LinearServo extends ServoHub {
     /**
      * Current position of the servo
      *
-     * @return Servo Position [mm]
+     * @return Servo Position [pulse length]
      */
     public double getPosition() {
         return (int) (((((setPos / m_length)) * 1000) + 1000));

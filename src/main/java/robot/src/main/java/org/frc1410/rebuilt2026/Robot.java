@@ -32,7 +32,7 @@ import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.Toggle
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleSlowmodeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ResetCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
-// import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Intake;
+import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Intake;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Shoot;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Shoot.HoodStates;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Storage;
@@ -69,18 +69,17 @@ public final class Robot extends PhaseDrivenRobot {
     private final StorageToggleCommand storageNeutral = new StorageToggleCommand(storage, Storage.StorageStates.NEUTRAL);
     private final StorageToggleCommand storageOuttake = new StorageToggleCommand(storage, Storage.StorageStates.OUTTAKE);
 
-    // private final Intake intake = subsystems.track(new Intake());
+    private final Intake intake = subsystems.track(new Intake());
 
-    // private final IntakeForwardCommand intakeForwardCommand = new IntakeForwardCommand(intake);
-    // private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake);
-    // private final FrameTestCommand FrameTestCommand = new FrameTestCommand(intake, this.scheme.FRAME_TEST_1, this.scheme.FRAME_TEST_2);
-    // private final FrameRaiseCommand FrameRaiseCommand = new FrameRaiseCommand(intake);
-    // private final FrameLowerCommand FrameLowerCommand = new FrameLowerCommand(intake);
+    private final IntakeForwardCommand intakeForwardCommand = new IntakeForwardCommand(intake);
+    private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake);
+    private final FrameTestCommand FrameTestCommand = new FrameTestCommand(intake, this.scheme.FRAME_TEST_1, this.scheme.FRAME_TEST_2);
+    private final FrameRaiseCommand FrameRaiseCommand = new FrameRaiseCommand(intake);
+    private final FrameLowerCommand FrameLowerCommand = new FrameLowerCommand(intake);
 
     private final StorageTransferRun transfer = new StorageTransferRun(storage);
 
     // private final ResetCommand resetCommand = new ResetCommand(drivetrain, intake, shooter, storage);
-
     // private final ReadyToRumbleCommand readyToRumbleCommand = new ReadyToRumbleCommand(driverController);
     private final NetworkTableInstance nt = NetworkTableInstance.getDefault();
     private final NetworkTable table = this.nt.getTable("Auto");
@@ -245,7 +244,6 @@ public final class Robot extends PhaseDrivenRobot {
         // this.scheme.FRAME_LOWER.whileHeld(FrameLowerCommand, TaskPersistence.GAMEPLAY);
         // this.scheme.INTAKE_FORWARD.whileHeld(intakeForwardCommand, TaskPersistence.GAMEPLAY);
         // this.scheme.INTAKE_REVERSE.whileHeld(intakeReverseCommand, TaskPersistence.GAMEPLAY);
-
         // this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
         this.scheme.SHOOTER_TOGGLE.whileHeldOnce(shooterToggleCommand, TaskPersistence.GAMEPLAY);
 

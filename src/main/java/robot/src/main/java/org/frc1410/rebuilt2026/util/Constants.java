@@ -65,10 +65,11 @@ public final class Constants {
     public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(54.052734375); //53.349609
     public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(50.712890625); //155.039062-180
     public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(37.44140625); //37.265625
-    // public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(88.76953125); //88.769531
-    // public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(56.953125); //53.349609
-    // public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(49.5703125); //155.039062-180
-    // public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(37.265625); //37.265625
+
+    // public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(0); //88.769531
+    // public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(0); //53.349609
+    // public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(0); //155.039062-180
+    // public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(0); //37.265625
 
     public static final boolean FRONT_LEFT_DRIVE_MOTOR_INVERTED = !false;
     public static final boolean FRONT_RIGHT_DRIVE_MOTOR_INVERTED = !true;

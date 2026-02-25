@@ -41,6 +41,7 @@ public class Shoot implements TickedSubsystem {
 
     // Obtain a servo channel controller
     private final LinearServo hoodActuator;
+    private double actuatorSetPos;
 
     private double currentTick = 0;
 
@@ -64,13 +65,7 @@ public class Shoot implements TickedSubsystem {
         this.hoodActuator = new LinearServo(SERVO_HUB, HOOD_ACTUATOR, 1, 1);
     }
 
-    public void setSpeed(boolean up) {
-        if (up) {
-            currentTick += 0.1;
-        } else {
-            currentTick -= 0.1;
-        }
-
+    public void toggleSpeed(boolean up) {
         if (currentTick > 1) {
             currentTick = 1;
         } else if (currentTick < 0) {
@@ -83,19 +78,19 @@ public class Shoot implements TickedSubsystem {
     }
 
     public void toggle() {
-        if (currentTick == 0) {currentTick = 0.25;} //Don't listen to the hint here, it breaks stuff
-        else if (currentTick == 0.25) {currentTick = 0;} 
+        if (currentTick == 0) {currentTick = 0.7;} //Don't listen to the hint here, it breaks stuff
+        else if (currentTick == 0.7) {currentTick = 0;} 
         else {System.err.println("According to all known laws of aviation, there is no way a bee should be able to fly. It's wings are too small to get it's fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible.");}
     }
 
     public void setHoodPos(HoodStates hoodState) {
         switch (hoodState) {
             case LOW_LEFT ->
-                this.hoodActuator.setPosition(HOOD_LOW_LEFT_SETPOINT);
+                this.actuatorSetPos = (HOOD_LOW_LEFT_SETPOINT);
             case LOW_RIGHT ->
-                this.hoodActuator.setPosition(HOOD_LOW_RIGHT_SETPOINT);
+                this.actuatorSetPos = (HOOD_LOW_RIGHT_SETPOINT);
             case HIGH_LEFT ->
-                this.hoodActuator.setPosition(HOOD_HIGH_LEFT_SETPOINT);
+                this.actuatorSetPos = (HOOD_HIGH_LEFT_SETPOINT);
 
         }
     }
@@ -111,7 +106,7 @@ public class Shoot implements TickedSubsystem {
     @Override
     public void periodic() {
         this.shooterMotor.set(currentTick);
-        this.shooterMotor.set(currentTick);
+        this.hoodActuator.setPosition(this.actuatorSetPos);
         this.hoodActuator.updateCurPos();
         this.hoodPosPublisher.set(this.hoodActuator.getPosition());
         this.currentSpeedPublisher.set(currentTick);

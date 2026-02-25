@@ -12,6 +12,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
@@ -50,7 +51,7 @@ public class SwerveModule implements TickedSubsystem {
 
 
     private final TalonFX driveMotor;
-    private final SparkFlex steerMotor;
+    private final SparkMax steerMotor;
 
     private final CANcoder steerEncoder;
 
@@ -112,7 +113,7 @@ public class SwerveModule implements TickedSubsystem {
         sparkConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         sparkConfig.inverted(steerInverted);
 
-        this.steerMotor = new SparkFlex(steerMotorID, MotorType.kBrushless);
+        this.steerMotor = new SparkMax(steerMotorID, MotorType.kBrushless);
         this.steerMotor.configure(sparkConfig, com.revrobotics.ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
 
         // Steer encoder config
