@@ -10,7 +10,6 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
@@ -168,9 +167,13 @@ public class SwerveModule implements TickedSubsystem {
         desiredState.optimize(this.getSteerPosition());
         this.desiredState = desiredState;
 
+        double steerError = desiredState.angle.minus(this.getSteerPosition()).getRadians();
+        double cosineScalar = Math.cos(steerError);
+        double scaledSpeedMetersPerSecond = desiredState.speedMetersPerSecond * cosineScalar;
+
         var request = new VelocityVoltage(
                 SwerveModule.moduleVelocityToMotorAngularVelocity(
-                        MetersPerSecond.of(desiredState.speedMetersPerSecond)
+                        MetersPerSecond.of(scaledSpeedMetersPerSecond)
                 ).in(RotationsPerSecond)
         );
 
