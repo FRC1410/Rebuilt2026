@@ -54,10 +54,14 @@ public class DriveLooped extends Command {
             angularVelocity = SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.times(-this.rotationAxis.get());
         }
 
-//        drivetrain.drive(new ChassisSpeeds(xVelocity, yVelocity, angularVelocity));
-
         if(robotRelativeTrigger.isActive()) { 
-            drivetrain.drive(new ChassisSpeeds(xVelocity.times(-1), yVelocity.times(-1), angularVelocity)); //This maybe needs tuning at comp??
+            drivetrain.drive(
+                new ChassisSpeeds(
+                    (xVelocity.in(MetersPerSecond).times(-1)),
+                    (yVelocity.in(MetersPerSecond).times(-1)),
+                    (angularVelocity.in(RadiansPerSecond))
+                )
+            );
         } else {
             this.drivetrain.fieldOrientedDrive(
                 new ChassisSpeeds(
