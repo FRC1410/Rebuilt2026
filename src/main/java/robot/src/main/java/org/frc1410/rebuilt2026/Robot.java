@@ -17,11 +17,8 @@ import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPri
 import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Cam;
 import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Vision;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.AutoAlign;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameLowerCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameRaiseCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameTestCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeForwardCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeReverseCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.HoodTestCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.MoveHoodCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.ShooterToggleCommand;
@@ -73,11 +70,7 @@ public final class Robot extends PhaseDrivenRobot {
 
     private final Intake intake = subsystems.track(new Intake());
 
-    private final IntakeForwardCommand intakeForwardCommand = new IntakeForwardCommand(intake);
-    // private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake);
-    // private final FrameTestCommand FrameTestCommand = new FrameTestCommand(intake, this.scheme.FRAME_TEST_1, this.scheme.FRAME_TEST_2);
-    // private final FrameRaiseCommand FrameRaiseCommand = new FrameRaiseCommand(intake);
-    // private final FrameLowerCommand FrameLowerCommand = new FrameLowerCommand(intake);
+    private final IntakeCommand intakeCommand = new IntakeCommand(intake);
 
     private final StorageTransferRun transfer = new StorageTransferRun(storage);
 
@@ -122,7 +115,7 @@ public final class Robot extends PhaseDrivenRobot {
                 drivetrain
         );
 
-        // NamedCommands.registerCommand("Intake", new IntakeForwardCommand(intake));
+        // NamedCommands.registerCommand("Intake", new intakeCommand(intake));
         NamedCommands.registerCommand("Shoot Toggle", shootingToggleCommand);
         NamedCommands.registerCommand("Storage Pass", storageIntake);
         NamedCommands.registerCommand("Storage Stop", storageNeutral);
@@ -175,7 +168,7 @@ public final class Robot extends PhaseDrivenRobot {
         this.scheme.STORAGE_OUTTAKE.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
         this.scheme.TRANSFER.whileHeld(transfer, TaskPersistence.GAMEPLAY);
 
-        this.scheme.hood_RAISE.whileHeldOnce(new HoodTestCommand(shooter, .1), TaskPersistence.GAMEPLAY);
+        this.scheme.HOOD_RAISE.whileHeldOnce(new HoodTestCommand(shooter, .1), TaskPersistence.GAMEPLAY);
         this.scheme.HOOD_LOWER.whileHeldOnce(new HoodTestCommand(shooter, -.1), TaskPersistence.GAMEPLAY);
 
         // Add slowmode toggle on left bumper
@@ -192,7 +185,7 @@ public final class Robot extends PhaseDrivenRobot {
 
         // this.scheme.FRAME_RAISE.whileHeld(FrameRaiseCommand, TaskPersistence.GAMEPLAY);
         // this.scheme.FRAME_LOWER.whileHeld(FrameLowerCommand, TaskPersistence.GAMEPLAY);
-        // this.scheme.INTAKE_FORWARD.whileHeld(intakeForwardCommand, TaskPersistence.GAMEPLAY);
+        // this.scheme.INTAKE_FORWARD.whileHeld(intakeCommand, TaskPersistence.GAMEPLAY);
         // this.scheme.INTAKE_REVERSE.whileHeld(intakeReverseCommand, TaskPersistence.GAMEPLAY);
         // this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
         this.scheme.SHOOTING_TOGGLE.whileHeldOnce(shootingToggleCommand, TaskPersistence.GAMEPLAY);
@@ -249,7 +242,7 @@ public final class Robot extends PhaseDrivenRobot {
 
         // this.scheme.FRAME_RAISE.whileHeld(FrameRaiseCommand, TaskPersistence.GAMEPLAY);
         // this.scheme.FRAME_LOWER.whileHeld(FrameLowerCommand, TaskPersistence.GAMEPLAY);
-        // this.scheme.INTAKE_FORWARD.whileHeld(intakeForwardCommand, TaskPersistence.GAMEPLAY);
+        // this.scheme.INTAKE_FORWARD.whileHeld(intakeCommand, TaskPersistence.GAMEPLAY);
         // this.scheme.INTAKE_REVERSE.whileHeld(intakeReverseCommand, TaskPersistence.GAMEPLAY);
         // this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
         this.scheme.SHOOTING_TOGGLE.whileHeldOnce(shootingToggleCommand, TaskPersistence.GAMEPLAY);
