@@ -5,9 +5,11 @@
   "pathFolders": [
     "Auto Align Blue",
     "Auto Align Red",
+    "System",
     "New paths"
   ],
   "autoFolders": [
+    "System",
     "New autos"
   ],
   "defaultMaxVel": 4.0,
