@@ -45,12 +45,12 @@ public class DriveLooped extends Command {
         
 
         if(this.drivetrain.isSlowModeEnabled()) {
-            xVelocity = SWERVE_DRIVE_MAX_SPEED.times(-this.xAxis.get() * 0.6);
-            yVelocity = SWERVE_DRIVE_MAX_SPEED.times(-this.yAxis.get() * 0.6);
+            xVelocity = SWERVE_DRIVE_MAX_SPEED.times(this.xAxis.get() * 0.6);
+            yVelocity = SWERVE_DRIVE_MAX_SPEED.times(this.yAxis.get() * 0.6);
             angularVelocity = SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.times(-this.rotationAxis.get() * 0.6);
         } else {
-            xVelocity = SWERVE_DRIVE_MAX_SPEED.times(-this.xAxis.get());
-            yVelocity = SWERVE_DRIVE_MAX_SPEED.times(-this.yAxis.get());
+            xVelocity = SWERVE_DRIVE_MAX_SPEED.times(this.xAxis.get());
+            yVelocity = SWERVE_DRIVE_MAX_SPEED.times(this.yAxis.get());
             angularVelocity = SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.times(-this.rotationAxis.get());
         }
 
@@ -67,7 +67,7 @@ public class DriveLooped extends Command {
                 )
             );
         }
-        }
+    }
 
         @Override
         public boolean isFinished() {

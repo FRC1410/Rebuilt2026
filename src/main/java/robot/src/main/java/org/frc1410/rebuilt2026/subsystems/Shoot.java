@@ -29,6 +29,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig;
 
 import com.revrobotics.servohub.ServoHub;
+
 public class Shoot implements TickedSubsystem {
 
     public enum HoodStates {
@@ -77,10 +78,13 @@ public class Shoot implements TickedSubsystem {
         this.currentTick = 0;
     }
 
-    public void toggle() {
-        if (currentTick == 0) {currentTick = 0.7;} //Don't listen to the hint here, it breaks stuff
-        else if (currentTick == 0.7) {currentTick = 0;} 
-        else {System.err.println("According to all known laws of aviation, there is no way a bee should be able to fly. It's wings are too small to get it's fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible.");}
+    public void toggle(double speed) {
+        if (currentTick == 0) {
+            currentTick = speed;
+        } //Don't listen to the hint here, it breaks stuff
+        else {
+            currentTick = 0;
+        }
     }
 
     public void setHoodPos(HoodStates hoodState) {
@@ -95,8 +99,16 @@ public class Shoot implements TickedSubsystem {
         }
     }
 
+    public void bumpHoodPos(double tick) {
+        this.actuatorSetPos += (tick);
+    }
+
     public double getHoodPos() {
         return this.hoodActuator.getPosition();
+    }
+
+    public double getHoodVoltage() {
+        return this.hoodActuator.getServoVoltage();
     }
 
     public double getHoodSetPos() {
@@ -107,7 +119,7 @@ public class Shoot implements TickedSubsystem {
     public void periodic() {
         this.shooterMotor.set(currentTick);
         this.hoodActuator.setPosition(this.actuatorSetPos);
-        this.hoodActuator.updateCurPos();
+        // this.hoodActuator.updateCurPos();
         this.hoodPosPublisher.set(this.hoodActuator.getPosition());
         this.currentSpeedPublisher.set(currentTick);
     }

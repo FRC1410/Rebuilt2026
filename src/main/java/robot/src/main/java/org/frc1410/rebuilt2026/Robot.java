@@ -22,6 +22,7 @@ import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.Frame
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameTestCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeForwardCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeReverseCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.HoodTestCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.MoveHoodCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.ShooterToggleCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageCommands.StorageToggleCommand;
@@ -56,7 +57,8 @@ public final class Robot extends PhaseDrivenRobot {
     private final ControlScheme scheme = new ControlScheme(driverController, operatorController);
 
     private final Shoot shooter = subsystems.track(new Shoot());
-    private final ShooterToggleCommand shooterToggleCommand = new ShooterToggleCommand(shooter);
+    private final ShooterToggleCommand shootingToggleCommand = new ShooterToggleCommand(shooter, 0.6);
+    private final ShooterToggleCommand passingToggleCommand = new ShooterToggleCommand(shooter, 0.5);
     private final MoveHoodCommand moveHoodLowLeftCommand = new MoveHoodCommand(shooter, HoodStates.LOW_LEFT);
     private final MoveHoodCommand moveHoodLowRightCommand = new MoveHoodCommand(shooter, HoodStates.LOW_RIGHT);
     private final MoveHoodCommand moveHoodHighLeftCommand = new MoveHoodCommand(shooter, HoodStates.HIGH_LEFT);
@@ -72,14 +74,14 @@ public final class Robot extends PhaseDrivenRobot {
     private final Intake intake = subsystems.track(new Intake());
 
     private final IntakeForwardCommand intakeForwardCommand = new IntakeForwardCommand(intake);
-    private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake);
-    private final FrameTestCommand FrameTestCommand = new FrameTestCommand(intake, this.scheme.FRAME_TEST_1, this.scheme.FRAME_TEST_2);
-    private final FrameRaiseCommand FrameRaiseCommand = new FrameRaiseCommand(intake);
-    private final FrameLowerCommand FrameLowerCommand = new FrameLowerCommand(intake);
+    // private final IntakeReverseCommand intakeReverseCommand = new IntakeReverseCommand(intake);
+    // private final FrameTestCommand FrameTestCommand = new FrameTestCommand(intake, this.scheme.FRAME_TEST_1, this.scheme.FRAME_TEST_2);
+    // private final FrameRaiseCommand FrameRaiseCommand = new FrameRaiseCommand(intake);
+    // private final FrameLowerCommand FrameLowerCommand = new FrameLowerCommand(intake);
 
     private final StorageTransferRun transfer = new StorageTransferRun(storage);
 
-    // private final ResetCommand resetCommand = new ResetCommand(drivetrain, intake, shooter, storage);
+    private final ResetCommand resetCommand = new ResetCommand(drivetrain, intake, shooter, storage);
     // private final ReadyToRumbleCommand readyToRumbleCommand = new ReadyToRumbleCommand(driverController);
     private final NetworkTableInstance nt = NetworkTableInstance.getDefault();
     private final NetworkTable table = this.nt.getTable("Auto");
@@ -121,10 +123,10 @@ public final class Robot extends PhaseDrivenRobot {
         );
 
         // NamedCommands.registerCommand("Intake", new IntakeForwardCommand(intake));
-        NamedCommands.registerCommand("Shoot Toggle", new ShooterToggleCommand(shooter));
-        NamedCommands.registerCommand("Storage Pass", new StorageToggleCommand(storage, Storage.StorageStates.INTAKE));
-        NamedCommands.registerCommand("Storage Stop", new StorageToggleCommand(storage, Storage.StorageStates.NEUTRAL));
-        NamedCommands.registerCommand("Transfer", new StorageTransferRun(storage));
+        NamedCommands.registerCommand("Shoot Toggle", shootingToggleCommand);
+        NamedCommands.registerCommand("Storage Pass", storageIntake);
+        NamedCommands.registerCommand("Storage Stop", storageNeutral);
+        NamedCommands.registerCommand("Transfer", transfer);
     }
 
     private final StringPublisher autoPublisher = NetworkTables.PublisherFactory(
@@ -173,6 +175,9 @@ public final class Robot extends PhaseDrivenRobot {
         this.scheme.STORAGE_OUTTAKE.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
         this.scheme.TRANSFER.whileHeld(transfer, TaskPersistence.GAMEPLAY);
 
+        this.scheme.hood_RAISE.whileHeldOnce(new HoodTestCommand(shooter, .1), TaskPersistence.GAMEPLAY);
+        this.scheme.HOOD_LOWER.whileHeldOnce(new HoodTestCommand(shooter, -.1), TaskPersistence.GAMEPLAY);
+
         // Add slowmode toggle on left bumper
         this.scheme.SLOWMODE_TOGGLE.whenPressed(
                 new ToggleSlowmodeCommand(this.drivetrain),
@@ -189,9 +194,9 @@ public final class Robot extends PhaseDrivenRobot {
         // this.scheme.FRAME_LOWER.whileHeld(FrameLowerCommand, TaskPersistence.GAMEPLAY);
         // this.scheme.INTAKE_FORWARD.whileHeld(intakeForwardCommand, TaskPersistence.GAMEPLAY);
         // this.scheme.INTAKE_REVERSE.whileHeld(intakeReverseCommand, TaskPersistence.GAMEPLAY);
-
         // this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
-        this.scheme.SHOOTER_TOGGLE.whileHeldOnce(shooterToggleCommand, TaskPersistence.GAMEPLAY);
+        this.scheme.SHOOTING_TOGGLE.whileHeldOnce(shootingToggleCommand, TaskPersistence.GAMEPLAY);
+        this.scheme.PASSING_TOGGLE.whileHeldOnce(passingToggleCommand, TaskPersistence.GAMEPLAY);
 
         this.scheme.HOOD_LOW_LEFT.whileHeldOnce(moveHoodLowLeftCommand, TaskPersistence.GAMEPLAY);
         this.scheme.HOOD_LOW_RIGHT.whileHeldOnce(moveHoodLowRightCommand, TaskPersistence.GAMEPLAY);
@@ -209,8 +214,7 @@ public final class Robot extends PhaseDrivenRobot {
 
     @Override
     public void testSequence() {
-        // this.scheme.STORAGE_NEUTRAL.whileHeldOnce(resetCommand, TaskPersistence.GAMEPLAY);
-
+        this.scheduler.scheduleDefaultCommand(resetCommand, TaskPersistence.GAMEPLAY);
         this.scheduler.scheduleDefaultCommand(
                 new DriveLooped(
                         this.drivetrain,
@@ -226,7 +230,10 @@ public final class Robot extends PhaseDrivenRobot {
         this.scheme.STORAGE_INTAKE.whileHeldOnce(storageIntake, TaskPersistence.GAMEPLAY);
         this.scheme.STORAGE_NEUTRAL.whileHeldOnce(storageNeutral, TaskPersistence.GAMEPLAY);
         this.scheme.STORAGE_OUTTAKE.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
-        this.scheme.TRANSFER.whileHeld(transfer, TaskPersistence.GAMEPLAY);
+        this.operatorController.Y.whileHeld(transfer, TaskPersistence.GAMEPLAY);
+
+        this.scheme.HOOD_RAISE.whileHeldOnce(new HoodTestCommand(shooter, .1), TaskPersistence.GAMEPLAY);
+        this.scheme.HOOD_LOWER.whileHeldOnce(new HoodTestCommand(shooter, -.1), TaskPersistence.GAMEPLAY);
 
         // Add slowmode toggle on left bumper
         this.scheme.SLOWMODE_TOGGLE.whenPressed(
@@ -245,7 +252,8 @@ public final class Robot extends PhaseDrivenRobot {
         // this.scheme.INTAKE_FORWARD.whileHeld(intakeForwardCommand, TaskPersistence.GAMEPLAY);
         // this.scheme.INTAKE_REVERSE.whileHeld(intakeReverseCommand, TaskPersistence.GAMEPLAY);
         // this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
-        this.scheme.SHOOTER_TOGGLE.whileHeldOnce(shooterToggleCommand, TaskPersistence.GAMEPLAY);
+        this.scheme.SHOOTING_TOGGLE.whileHeldOnce(shootingToggleCommand, TaskPersistence.GAMEPLAY);
+        this.scheme.PASSING_TOGGLE.whileHeldOnce(passingToggleCommand, TaskPersistence.GAMEPLAY);
 
         this.scheme.HOOD_LOW_LEFT.whileHeldOnce(moveHoodLowLeftCommand, TaskPersistence.GAMEPLAY);
         this.scheme.HOOD_LOW_RIGHT.whileHeldOnce(moveHoodLowRightCommand, TaskPersistence.GAMEPLAY);
