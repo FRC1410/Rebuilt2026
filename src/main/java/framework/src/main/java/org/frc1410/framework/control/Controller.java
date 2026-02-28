@@ -14,10 +14,10 @@ public class Controller {
 	final TaskScheduler scheduler;
 	final XboxController backingController;
 
-	public final Button A = new StandardButton(this, kA.value);
-	public final Button B = new StandardButton(this, kB.value);
-	public final Button X = new StandardButton(this, kX.value);
-	public final Button Y = new StandardButton(this, kY.value);
+	public final Button A = new StandardButton(this, kB.value);
+	public final Button B = new StandardButton(this, kA.value);
+	public final Button X = new StandardButton(this, kY.value);
+	public final Button Y = new StandardButton(this, kX.value);
 
 	public final Button BACK = new StandardButton(this, kBack.value);
 	public final Button START = new StandardButton(this, kStart.value);

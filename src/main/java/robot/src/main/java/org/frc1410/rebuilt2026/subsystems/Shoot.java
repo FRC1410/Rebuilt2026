@@ -10,6 +10,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -101,7 +102,10 @@ public class Shoot implements TickedSubsystem {
 
     public void bumpHoodPos(double tick) {
         this.actuatorSetPos += (tick);
+        this.actuatorSetPos = MathUtil.clamp(this.actuatorSetPos, 0, 1);
     }
+
+
 
     public double getHoodPos() {
         return this.hoodActuator.getPosition();
@@ -112,7 +116,7 @@ public class Shoot implements TickedSubsystem {
     }
 
     public double getHoodSetPos() {
-        return this.hoodActuator.getSetPos();
+        return this.actuatorSetPos;
     }
 
     @Override

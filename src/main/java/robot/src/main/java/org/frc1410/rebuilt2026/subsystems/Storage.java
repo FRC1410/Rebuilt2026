@@ -80,9 +80,9 @@ public class Storage implements TickedSubsystem {
     }
     public void setSpeedState(StorageStates storageState) {
         switch (storageState) {
-            case INTAKE -> this.targetIndexerSpeed = 0.25;
+            case INTAKE -> this.targetIndexerSpeed = 0.5;
             case NEUTRAL -> this.targetIndexerSpeed = 0;
-            case OUTTAKE -> this.targetIndexerSpeed = -0.125;
+            case OUTTAKE -> this.targetIndexerSpeed = -0.25;
         }
     }
 

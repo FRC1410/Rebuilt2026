@@ -26,6 +26,7 @@ import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageCommands.Stor
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageCommands.StorageTransferRun;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ReadyToRumbleCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.DriveLooped;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.OrientationResetCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleGuardModeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleSlowmodeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ResetCommand;
@@ -194,6 +195,8 @@ public final class Robot extends PhaseDrivenRobot {
         this.scheme.HOOD_LOW_LEFT.whileHeldOnce(moveHoodLowLeftCommand, TaskPersistence.GAMEPLAY);
         this.scheme.HOOD_LOW_RIGHT.whileHeldOnce(moveHoodLowRightCommand, TaskPersistence.GAMEPLAY);
         this.scheme.HOOD_HIGH_LEFT.whileHeldOnce(moveHoodHighLeftCommand, TaskPersistence.GAMEPLAY);
+        
+        this.scheme.ORIENTATION_RESET.whileHeldOnce(new OrientationResetCommand(drivetrain), TaskPersistence.GAMEPLAY);
 
         // this.scheme.AUTO_ALIGN.whileHeld(
         //         new AutoAlign(
@@ -223,7 +226,7 @@ public final class Robot extends PhaseDrivenRobot {
         this.scheme.STORAGE_INTAKE.whileHeldOnce(storageIntake, TaskPersistence.GAMEPLAY);
         this.scheme.STORAGE_NEUTRAL.whileHeldOnce(storageNeutral, TaskPersistence.GAMEPLAY);
         this.scheme.STORAGE_OUTTAKE.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
-        this.operatorController.Y.whileHeld(transfer, TaskPersistence.GAMEPLAY);
+        this.scheme.TRANSFER.whileHeld(transfer, TaskPersistence.GAMEPLAY);
 
         this.scheme.HOOD_RAISE.whileHeldOnce(new HoodTestCommand(shooter, .1), TaskPersistence.GAMEPLAY);
         this.scheme.HOOD_LOWER.whileHeldOnce(new HoodTestCommand(shooter, -.1), TaskPersistence.GAMEPLAY);
@@ -251,6 +254,8 @@ public final class Robot extends PhaseDrivenRobot {
         this.scheme.HOOD_LOW_LEFT.whileHeldOnce(moveHoodLowLeftCommand, TaskPersistence.GAMEPLAY);
         this.scheme.HOOD_LOW_RIGHT.whileHeldOnce(moveHoodLowRightCommand, TaskPersistence.GAMEPLAY);
         this.scheme.HOOD_HIGH_LEFT.whileHeldOnce(moveHoodHighLeftCommand, TaskPersistence.GAMEPLAY);
+
+        this.scheme.ORIENTATION_RESET.whileHeldOnce(new OrientationResetCommand(drivetrain), TaskPersistence.GAMEPLAY);
 
         // this.scheme.AUTO_ALIGN.whileHeld(
         //         new AutoAlign(
