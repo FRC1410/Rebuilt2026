@@ -84,7 +84,7 @@ public final class Robot extends PhaseDrivenRobot {
             .add("Tst", () -> new PathPlannerAuto("Tst"))
             .add("RightStartAuto", () -> new PathPlannerAuto("RightStartAuto"))
             .add("LeftStartAuto", () -> new PathPlannerAuto("LeftStartAuto"))
-            .add("SysCheckSafe", () -> new PathPlannerAuto("SyscheckSafe"));
+            .add("SysCheck", () -> new PathPlannerAuto("SysCheck"));
 
     {
         {

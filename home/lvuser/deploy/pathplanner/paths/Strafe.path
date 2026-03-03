@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.525235378031383,
+        "x": 4.026119828815976,
         "y": 6.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.545863052781739,
+        "x": 4.0467475035663325,
         "y": 4.904636233951498
       },
       "isLocked": false,
@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.525235378031383,
-        "y": 5.1800713266761775
+        "x": 4.026119828815976,
+        "y": 1.6866333808844511
       },
       "prevControl": {
-        "x": 2.524784593437945,
-        "y": 6.085777460770329
+        "x": 4.025669044222538,
+        "y": 2.592339514978602
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "System",
+  "folder": "SysCheck",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
