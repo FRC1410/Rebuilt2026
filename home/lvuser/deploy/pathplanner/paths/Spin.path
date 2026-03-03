@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.525235378031383,
-        "y": 5.1800713266761775
+        "x": 4.026119828815976,
+        "y": 1.6866333808844511
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7750606163639113,
-        "y": 5.170725188859125
+        "x": 4.275945067148505,
+        "y": 1.6772872430673984
       },
       "isLocked": false,
       "linkedName": "STF End"
     },
     {
       "anchor": {
-        "x": 2.525235378031383,
-        "y": 5.1800713266761775
+        "x": 4.026119828815976,
+        "y": 1.6866333808844511
       },
       "prevControl": {
-        "x": 2.275289613849355,
-        "y": 5.185278530096636
+        "x": 3.776174064633948,
+        "y": 1.6918405843049098
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "System",
+  "folder": "SysCheck",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
