@@ -20,9 +20,7 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.DRIVE_M
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOOD_HIGH_LEFT_SETPOINT;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOOD_LOW_LEFT_SETPOINT;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOOD_LOW_RIGHT_SETPOINT;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.HOOD_ACTUATOR;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.SERVO_HUB;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.SHOOTER_KRAKEN;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.*;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel;
@@ -64,7 +62,7 @@ public class Shoot implements TickedSubsystem {
 
         this.shooterMotor.getConfigurator().apply(shooterMotorConfig);
 
-        this.hoodActuator = new LinearServo(SERVO_HUB, HOOD_ACTUATOR, 1, 1);
+        this.hoodActuator = new LinearServo(SERVO_HUB, HOOD_ACTUATOR_1, 1, 1);
     }
 
     public void toggleSpeed(boolean up) {

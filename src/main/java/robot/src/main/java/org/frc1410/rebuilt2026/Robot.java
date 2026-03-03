@@ -84,7 +84,7 @@ public final class Robot extends PhaseDrivenRobot {
             .add("Tst", () -> new PathPlannerAuto("Tst"))
             .add("RightStartAuto", () -> new PathPlannerAuto("RightStartAuto"))
             .add("LeftStartAuto", () -> new PathPlannerAuto("LeftStartAuto"))
-            .add("SysCheckSafe", () -> new PathPlannerAuto("SysCheckSafe"));
+            .add("SysCheckSafe", () -> new PathPlannerAuto("SyscheckSafe"));
 
     {
         {
@@ -136,6 +136,7 @@ public final class Robot extends PhaseDrivenRobot {
 
     @Override
     public void autonomousSequence() {
+        this.scheduler.scheduleDefaultCommand(resetCommand, TaskPersistence.GAMEPLAY);
         NetworkTables.SetPersistence(this.autoPublisher.getTopic(), true);
         String autoProfile = this.autoSubscriber.get();
 
@@ -153,6 +154,7 @@ public final class Robot extends PhaseDrivenRobot {
 
     @Override
     public void teleopSequence() {
+        this.scheduler.scheduleDefaultCommand(resetCommand, TaskPersistence.GAMEPLAY);
         this.scheduler.scheduleDefaultCommand(
                 new DriveLooped(
                         this.drivetrain,

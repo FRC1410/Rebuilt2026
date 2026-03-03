@@ -38,7 +38,8 @@ public final class IDs {
 	//Shooter
 	public static final int SERVO_HUB = 21;
 	public static final int SHOOTER_KRAKEN = 9; //todo rewrite
-	public static final int HOOD_ACTUATOR = 1;
+	public static final int HOOD_ACTUATOR_1 = 1;
+	public static final int HOOD_ACTUATOR_2 = 4;
 
 	//Storage
 	public static final int BELT_MOTOR = 19;
@@ -46,6 +47,7 @@ public final class IDs {
 
 
 	public static final int INTAKE_SPARK = 11;
+	public static final int INTAKE_SPARK_2 = 14;
 	public static final int INTAKE_FRAME_SPARK_LEFT = 12;
 	public static final int INTAKE_FRAME_SPARK_RIGHT = 20;
 }

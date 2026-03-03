@@ -34,7 +34,8 @@ public class LinearServo extends ServoHub {
     double m_speed;
     double m_length;
 
-    ServoChannel actuator;
+    ServoChannel actuator1;
+    ServoChannel actuator2;
     /**
      * Parameters for L16-R Actuonix Linear Actuators
      *
@@ -44,10 +45,13 @@ public class LinearServo extends ServoHub {
      */
     public LinearServo(int hubChannel, int servoChannel, int length, int speed) {
         super(hubChannel);
-        this.actuator = this.getServoChannel(ServoChannel.ChannelId.fromInt(servoChannel));
+        this.actuator1 = this.getServoChannel(ServoChannel.ChannelId.fromInt(servoChannel));
+        this.actuator2 = this.getServoChannel(ServoChannel.ChannelId.fromInt(servoChannel));
 
-        this.actuator.setEnabled(true);
-        this.actuator.setPowered(true);
+        this.actuator1.setEnabled(true);
+        this.actuator2.setPowered(true);
+        this.actuator1.setEnabled(true);
+        this.actuator2.setPowered(true);
         this.setBankPulsePeriod(ServoHub.Bank.kBank0_2, 20000);
         m_length = length;
         m_speed = speed;
@@ -61,7 +65,8 @@ public class LinearServo extends ServoHub {
      */
     public void setPosition(double setpoint) {
         setPos = MathUtil.clamp(setpoint, 0, m_length);
-        this.actuator.setPulseWidth((int) (((((setPos / m_length)) * 1000) + 1000)));
+        this.actuator1.setPulseWidth((int) (((((setPos / m_length)) * 1000) + 1000)));
+        this.actuator2.setPulseWidth((int) (((((setPos / m_length)) * 1000) + 1000)));
     }
     double lastTime = 0;
 

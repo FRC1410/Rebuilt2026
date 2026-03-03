@@ -41,21 +41,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "race",
           "data": {
-            "name": "Shoot Toggle"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot Toggle"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot Toggle"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.5
+                }
+              }
+            ]
           }
         },
         {
@@ -92,6 +93,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "System",
+  "folder": null,
   "choreoAuto": false
 }
