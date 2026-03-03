@@ -14,22 +14,21 @@ import framework.src.main.java.org.frc1410.framework.PhaseDrivenRobot;
 import framework.src.main.java.org.frc1410.framework.control.Controller;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskPersistence;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
-import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Cam;
-import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Vision;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.AutoAlign;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.FrameTestCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.DriveLooped;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.OrientationResetCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleGuardModeCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleSlowmodeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeLeftMotorCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeMotorCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeRightMotorCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeTestMotorCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.ResetCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.HoodTestCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.MoveHoodCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.ShooterToggleCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageCommands.StorageToggleCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageCommands.StorageTransferRun;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ReadyToRumbleCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.DriveLooped;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.OrientationResetCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleGuardModeCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleSlowmodeCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ResetCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Intake;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Shoot;
@@ -38,8 +37,6 @@ import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Storage;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOLONOMIC_AUTO_CONFIG;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.ROBOT_CONFIG;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.ControlScheme;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.CAM_NAME1;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.CAM_NAME2;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
@@ -259,6 +256,11 @@ public final class Robot extends PhaseDrivenRobot {
         this.scheme.HOOD_HIGH_LEFT.whileHeldOnce(moveHoodHighLeftCommand, TaskPersistence.GAMEPLAY);
 
         this.scheme.ORIENTATION_RESET.whileHeldOnce(new OrientationResetCommand(drivetrain), TaskPersistence.GAMEPLAY);
+
+        this.driverController.DPAD_UP.whileHeld(new IntakeMotorCommand(intake), TaskPersistence.GAMEPLAY);
+        this.driverController.DPAD_LEFT.whileHeld(new IntakeRightMotorCommand(intake), TaskPersistence.GAMEPLAY);
+        this.driverController.DPAD_RIGHT.whileHeld(new IntakeLeftMotorCommand(intake), TaskPersistence.GAMEPLAY);
+        this.driverController.DPAD_DOWN.whileHeld(new IntakeTestMotorCommand(intake), TaskPersistence.GAMEPLAY);
 
         // this.scheme.AUTO_ALIGN.whileHeld(
         //         new AutoAlign(
