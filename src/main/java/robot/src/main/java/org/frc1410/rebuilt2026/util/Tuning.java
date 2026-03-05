@@ -66,17 +66,23 @@ public final class Tuning {
     public static final PIDConstants PATH_FOLLOWING_TRANSLATION_CONSTRAINTS = new PIDConstants(4, 0, 0);
     public static final PIDConstants PATH_FOLLOWING_ROTATION_CONSTRAINTS = new PIDConstants(0.6, 0, 0.05);
 
-    public static final double INTAKE_FRAME_P = 0.1;
+    public static final double INTAKE_FRAME_P = 0.02    ;
     public static final double INTAKE_FRAME_I = 0.0;
     public static final double INTAKE_FRAME_D = 0.0;
 
-    // public static final double INTAKE_FRAME_P = 0.0;
-    // public static final double INTAKE_FRAME_I = 0.0;
-    // public static final double INTAKE_FRAME_D = 0.0;
+//     public static final double INTAKE_FRAME_P = 0.0;
+//     public static final double INTAKE_FRAME_I = 0.0;
+//     public static final double INTAKE_FRAME_D = 0.0;
     public static final double INTAKE_FRAME_TOLERANCE = 0.5;
 
     public static final double INDEXER_P = 0.1;
     public static final double INDEXER_I = 0.0;
     public static final double INDEXER_D = 0.0;
+
+    //frame left pos down: -0.23809510469436646
+    //frame right pos down: -0.21428579092025757
+
+    //frame left pos up: -21.71417999267578
+    //frame right pos up: -17.09520721435547
 
 }

@@ -14,15 +14,12 @@ import framework.src.main.java.org.frc1410.framework.PhaseDrivenRobot;
 import framework.src.main.java.org.frc1410.framework.control.Controller;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskPersistence;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.AutoCommands.ShooterAutoCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.DriveLooped;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.OrientationResetCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleGuardModeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleSlowmodeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeLeftMotorCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeMotorCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeRightMotorCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeTestMotorCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ResetCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.HoodTestCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.MoveHoodCommand;
@@ -68,7 +65,7 @@ public final class Robot extends PhaseDrivenRobot {
 
     private final Intake intake = subsystems.track(new Intake());
 
-    private final IntakeCommand intakeCommand = new IntakeCommand(intake);
+    private final IntakeCommand intakeCommand = new IntakeCommand(intake,this.scheme.INTAKE);
 
     private final StorageTransferRun transfer = new StorageTransferRun(storage);
 
@@ -78,10 +75,13 @@ public final class Robot extends PhaseDrivenRobot {
     private final NetworkTable table = this.nt.getTable("Auto");
 
     private final AutoSelector autoSelector = new AutoSelector()
+            .add("Shootah", () -> new PathPlannerAuto("Shootah"))
             .add("Tst", () -> new PathPlannerAuto("Tst"))
-            .add("RightStartAuto", () -> new PathPlannerAuto("RightStartAuto"))
-            .add("LeftStartAuto", () -> new PathPlannerAuto("LeftStartAuto"))
-            .add("SysCheck", () -> new PathPlannerAuto("SysCheck"));
+            .add("RightStartAuto (Not Updated)", () -> new PathPlannerAuto("RightStartAuto"))
+            .add("LeftStartAuto (Not Updated)", () -> new PathPlannerAuto("LeftStartAuto"))
+            .add("PreloadRight", () -> new PathPlannerAuto("ShootPreloadRight"))
+            .add("PreloadLeft", () -> new PathPlannerAuto("ShootPreloadLeft"))
+            .add("SysChecker", () -> new PathPlannerAuto("SysChecker"));
 
     {
         {
@@ -115,7 +115,9 @@ public final class Robot extends PhaseDrivenRobot {
         );
 
         // NamedCommands.registerCommand("Intake", new intakeCommand(intake));
-        NamedCommands.registerCommand("Shoot Toggle", shootingToggleCommand);
+        NamedCommands.registerCommand("Shoot Toggle", new ShooterAutoCommand(shooter));
+        NamedCommands.registerCommand("Hood Up", new MoveHoodCommand(shooter, HoodStates.HIGH_LEFT));
+        NamedCommands.registerCommand("Hood Down", new MoveHoodCommand(shooter, HoodStates.LOW_LEFT));
         NamedCommands.registerCommand("Storage Pass", storageIntake);
         NamedCommands.registerCommand("Storage Stop", storageNeutral);
         NamedCommands.registerCommand("Transfer", transfer);
@@ -186,7 +188,7 @@ public final class Robot extends PhaseDrivenRobot {
 
         // this.scheme.FRAME_RAISE.whileHeld(FrameRaiseCommand, TaskPersistence.GAMEPLAY);
         // this.scheme.FRAME_LOWER.whileHeld(FrameLowerCommand, TaskPersistence.GAMEPLAY);
-        // this.scheme.INTAKE_FORWARD.whileHeld(intakeCommand, TaskPersistence.GAMEPLAY);
+        // this.scheduler.scheduleDefaultCommand(intakeCommand, TaskPersistence.GAMEPLAY);
         // this.scheme.INTAKE_REVERSE.whileHeld(intakeReverseCommand, TaskPersistence.GAMEPLAY);
         // this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
         this.scheme.SHOOTING_TOGGLE.whileHeldOnce(shootingToggleCommand, TaskPersistence.GAMEPLAY);
@@ -245,7 +247,7 @@ public final class Robot extends PhaseDrivenRobot {
 
         // this.scheme.FRAME_RAISE.whileHeld(FrameRaiseCommand, TaskPersistence.GAMEPLAY);
         // this.scheme.FRAME_LOWER.whileHeld(FrameLowerCommand, TaskPersistence.GAMEPLAY);
-        // this.scheme.INTAKE_FORWARD.whileHeld(intakeCommand, TaskPersistence.GAMEPLAY);
+        this.scheduler.scheduleDefaultCommand(intakeCommand, TaskPersistence.GAMEPLAY);
         // this.scheme.INTAKE_REVERSE.whileHeld(intakeReverseCommand, TaskPersistence.GAMEPLAY);
         // this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
         this.scheme.SHOOTING_TOGGLE.whileHeldOnce(shootingToggleCommand, TaskPersistence.GAMEPLAY);
@@ -257,10 +259,10 @@ public final class Robot extends PhaseDrivenRobot {
 
         this.scheme.ORIENTATION_RESET.whileHeldOnce(new OrientationResetCommand(drivetrain), TaskPersistence.GAMEPLAY);
 
-        this.driverController.DPAD_UP.whileHeld(new IntakeMotorCommand(intake), TaskPersistence.GAMEPLAY);
-        this.driverController.DPAD_LEFT.whileHeld(new IntakeRightMotorCommand(intake), TaskPersistence.GAMEPLAY);
-        this.driverController.DPAD_RIGHT.whileHeld(new IntakeLeftMotorCommand(intake), TaskPersistence.GAMEPLAY);
-        this.driverController.DPAD_DOWN.whileHeld(new IntakeTestMotorCommand(intake), TaskPersistence.GAMEPLAY);
+        // this.driverController.DPAD_UP.whileHeld(new IntakeMotorCommand(intake), TaskPersistence.GAMEPLAY);
+        // this.driverController.DPAD_LEFT.whileHeld(new IntakeRightMotorCommand(intake), TaskPersistence.GAMEPLAY);
+        // this.driverController.DPAD_RIGHT.whileHeld(new IntakeLeftMotorCommand(intake), TaskPersistence.GAMEPLAY);
+        // this.driverController.DPAD_DOWN.whileHeld(new IntakeTestMotorCommand(intake), TaskPersistence.GAMEPLAY);
 
         // this.scheme.AUTO_ALIGN.whileHeld(
         //         new AutoAlign(
