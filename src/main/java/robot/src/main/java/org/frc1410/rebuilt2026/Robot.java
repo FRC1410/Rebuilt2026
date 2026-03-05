@@ -188,7 +188,7 @@ public final class Robot extends PhaseDrivenRobot {
 
         // this.scheme.FRAME_RAISE.whileHeld(FrameRaiseCommand, TaskPersistence.GAMEPLAY);
         // this.scheme.FRAME_LOWER.whileHeld(FrameLowerCommand, TaskPersistence.GAMEPLAY);
-        // this.scheduler.scheduleDefaultCommand(intakeCommand, TaskPersistence.GAMEPLAY);
+        this.scheduler.scheduleDefaultCommand(intakeCommand, TaskPersistence.GAMEPLAY);
         // this.scheme.INTAKE_REVERSE.whileHeld(intakeReverseCommand, TaskPersistence.GAMEPLAY);
         // this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
         this.scheme.SHOOTING_TOGGLE.whileHeldOnce(shootingToggleCommand, TaskPersistence.GAMEPLAY);
