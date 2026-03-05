@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.535954922894425,
-        "y": 5.471352313167261
+        "x": 4.026119828815976,
+        "y": 6.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9328351126927643,
-        "y": 6.063107947805458
+        "x": 4.0467475035663325,
+        "y": 4.904636233951498
       },
       "isLocked": false,
-      "linkedName": "LeftStart"
+      "linkedName": "FW End"
     },
     {
       "anchor": {
-        "x": 2.008149466192171,
-        "y": 4.072657176749703
+        "x": 4.026119828815976,
+        "y": 1.6866333808844511
       },
       "prevControl": {
-        "x": 1.8897983392645326,
-        "y": 5.7188137603795965
+        "x": 4.025669044222538,
+        "y": 2.592339514978602
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "CenterAZ"
+      "linkedName": "STF End"
     }
   ],
   "rotationTargets": [],
@@ -34,7 +34,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 256.5,
     "maxAngularAcceleration": 796.5,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -100.0
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "SysCheck",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

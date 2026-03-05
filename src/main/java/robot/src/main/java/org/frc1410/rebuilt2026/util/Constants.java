@@ -71,10 +71,10 @@ public final class Constants {
     // public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(0); //155.039062-180
     // public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(0); //37.265625
 
-    public static final boolean FRONT_LEFT_DRIVE_MOTOR_INVERTED = !false;
-    public static final boolean FRONT_RIGHT_DRIVE_MOTOR_INVERTED = !true;
-    public static final boolean BACK_LEFT_DRIVE_MOTOR_INVERTED = !true;
-    public static final boolean BACK_RIGHT_DRIVE_MOTOR_INVERTED = !true;
+    public static final boolean FRONT_LEFT_DRIVE_MOTOR_INVERTED = false;
+    public static final boolean FRONT_RIGHT_DRIVE_MOTOR_INVERTED = true;
+    public static final boolean BACK_LEFT_DRIVE_MOTOR_INVERTED = true;
+    public static final boolean BACK_RIGHT_DRIVE_MOTOR_INVERTED = true;
 
     public static final boolean FRONT_LEFT_STEER_MOTOR_INVERTED = false;
     public static final boolean FRONT_RIGHT_STEER_MOTOR_INVERTED = false;
@@ -127,8 +127,10 @@ public final class Constants {
     public static final int PIGEON_MOUNT_ROLL = 90;
     public static final int PIGEON_MOUNT_YAW = 0;
 
-    public static final double INTAKE_FRAME_RAISED_POSITION = 10.0;
-    public static final double INTAKE_FRAME_LOWERED_POSITION = 0.0;
+    public static final double INTAKE_LEFT_FRAME_RAISED_POSITION = 0;
+    public static final double INTAKE_RIGHT_FRAME_RAISED_POSITION = 0;
+    public static final double INTAKE_LEFT_FRAME_LOWERED_POSITION = 21.71417999267578;
+    public static final double INTAKE_RIGHT_FRAME_LOWERED_POSITION = 17.09520721435547;
 
     public static final double HOOD_LOW_LEFT_SETPOINT = 0.0;
     public static final double HOOD_LOW_RIGHT_SETPOINT = 0.8;

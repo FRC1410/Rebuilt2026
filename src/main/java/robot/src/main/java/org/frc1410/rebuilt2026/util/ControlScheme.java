@@ -14,7 +14,7 @@ public class ControlScheme {
     public Axis DRIVE_TURN;
     public Button ROBOT_RELATIVE_TOGGLE;
 
-    public Button INTAKE_FORWARD;
+    public Button INTAKE;
     // public Button INTAKE_REVERSE;
     // public Button FRAME_TEST_1;
     // public Button FRAME_TEST_2;
@@ -45,9 +45,9 @@ public class ControlScheme {
         DRIVE_FORWARD = this.driverController.LEFT_X_AXIS;
         DRIVE_SIDEWAYS = this.driverController.LEFT_Y_AXIS;
         DRIVE_TURN = this.driverController.RIGHT_X_AXIS;
-        ROBOT_RELATIVE_TOGGLE = this.driverController.RIGHT_TRIGGER.button();
+        ROBOT_RELATIVE_TOGGLE = this.driverController.LEFT_TRIGGER.button();
 
-        INTAKE_FORWARD = this.driverController.LEFT_TRIGGER.button(); //This to be condensed to one button
+        INTAKE = this.driverController.RIGHT_TRIGGER.button(); //This to be condensed to one button
         HOOD_RAISE = this.operatorController.DPAD_UP;
         HOOD_LOWER = this.operatorController.DPAD_DOWN;
 
@@ -59,9 +59,9 @@ public class ControlScheme {
         SHOOTING_TOGGLE = this.operatorController.RIGHT_TRIGGER.button();
         PASSING_TOGGLE = this.operatorController.LEFT_TRIGGER.button();
 
-        HOOD_LOW_LEFT = this.operatorController.X;
+        HOOD_LOW_LEFT = this.operatorController.B;
         HOOD_LOW_RIGHT = this.operatorController.A;
-        HOOD_HIGH_LEFT = this.operatorController.B;
+        HOOD_HIGH_LEFT = this.operatorController.X;
 
         AUTO_ALIGN = this.driverController.LEFT_STICK;
         ORIENTATION_RESET = this.driverController.X;
