@@ -201,3 +201,5 @@ framework/build/classes/java/main/org/frc1410/framework/AutoProfile.class
 
 # WPI Logs
 /home/lvuser/logs/
+
+/src/main/depoly/pathplanner/
