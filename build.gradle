@@ -100,14 +100,12 @@ jar {
 tasks.register('copyPathPlanner', Copy) {
     // Delete existing autos and paths folders first so it's a full replace
     doFirst {
-        delete "${projectDir}/src/main/deploy/pathplanner/autos"
-        delete "${projectDir}/src/main/deploy/pathplanner/paths"
+        delete "${projectDir}/src/main/deploy/pathplanner/**"
     }
-    from("${projectDir}/home/lvuser/deploy/pathplanner") {
-        include 'autos/**'
-        include 'paths/**'
+    from("${projectDir}/home/lvuser/deploy") {
+        include 'pathplanner/**'
     }
-    into "${projectDir}/src/main/deploy/pathplanner"
+    into "${projectDir}/src/main/deploy"
 }
 
 // Make sure copyPathPlanner runs before any compilation or resource processing
