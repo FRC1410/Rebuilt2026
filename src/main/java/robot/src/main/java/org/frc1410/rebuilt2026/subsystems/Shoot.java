@@ -62,7 +62,7 @@ public class Shoot implements TickedSubsystem {
 
         this.shooterMotor.getConfigurator().apply(shooterMotorConfig);
 
-        this.hoodActuator = new LinearServo(SERVO_HUB, HOOD_ACTUATOR_1, 1, 1);
+        this.hoodActuator = new LinearServo(SERVO_HUB, HOOD_ACTUATOR_1, HOOD_ACTUATOR_2, 1, 1);
     }
 
     public void toggleSpeed(boolean up) {

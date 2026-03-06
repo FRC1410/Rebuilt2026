@@ -96,24 +96,24 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
-// Copy PathPlanner autos and paths from home/lvuser into src/main/deploy before building
-tasks.register('copyPathPlanner', Copy) {
-    // Delete existing autos and paths folders first so it's a full replace
-    doFirst {
-        delete "${projectDir}/src/main/deploy/pathplanner/**"
-    }
-    from("${projectDir}/home/lvuser/deploy") {
-        include 'pathplanner/**'
-    }
-    into "${projectDir}/src/main/deploy"
-}
+// // Copy PathPlanner autos and paths from home/lvuser into src/main/deploy before building
+// tasks.register('copyPathPlanner', Copy) {
+//     // Delete existing autos and paths folders first so it's a full replace
+//     doFirst {
+//         delete "${projectDir}/src/main/deploy/pathplanner/**"
+//     }
+//     from("${projectDir}/home/lvuser/deploy") {
+//         include 'pathplanner/**'
+//     }
+//     into "${projectDir}/src/main/deploy"
+// }
 
-// Make sure copyPathPlanner runs before any compilation or resource processing
-tasks.configureEach { task ->
-    if (task.name == 'compileJava' || task.name == 'processResources' || task.name == 'jar' || task.name == 'classes') {
-        task.dependsOn copyPathPlanner
-    }
-}
+// // Make sure copyPathPlanner runs before any compilation or resource processing
+// tasks.configureEach { task ->
+//     if (task.name == 'compileJava' || task.name == 'processResources' || task.name == 'jar' || task.name == 'classes') {
+//         task.dependsOn copyPathPlanner
+//     }
+// }
 
 // Configure jar and deploy tasks
 deployArtifact.jarTask = jar

@@ -2,19 +2,15 @@ package robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
-import framework.src.main.java.org.frc1410.framework.control.Axis;
 import framework.src.main.java.org.frc1410.framework.control.Button;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Intake;
-
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.INTAKE_LEFT_FRAME_LOWERED_POSITION;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.INTAKE_LEFT_FRAME_RAISED_POSITION;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.INTAKE_RIGHT_FRAME_RAISED_POSITION;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.INTAKE_FRAME_D;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.INTAKE_FRAME_I;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.INTAKE_FRAME_P;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.INTAKE_FRAME_TOLERANCE;
-
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.INTAKE_LEFT_FRAME_LOWERED_POSITION;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.INTAKE_RIGHT_FRAME_LOWERED_POSITION;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.INTAKE_LEFT_FRAME_RAISED_POSITION;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.INTAKE_RIGHT_FRAME_RAISED_POSITION;
 
 
 public class IntakeCommand extends Command{
@@ -43,14 +39,12 @@ public class IntakeCommand extends Command{
 
     @Override
     public void initialize() {
-        leftPID.setSetpoint(INTAKE_LEFT_FRAME_LOWERED_POSITION);
-        rightPID.setSetpoint(INTAKE_LEFT_FRAME_LOWERED_POSITION);
+        leftPID.setSetpoint(INTAKE_LEFT_FRAME_RAISED_POSITION);
+        rightPID.setSetpoint(INTAKE_RIGHT_FRAME_RAISED_POSITION);
     }
 
     @Override
     public void execute() {
-        System.out.println(this.intake.getSpeed());
-
         if (this.button.isActive()){
             this.intake.setSpeed(1);
             this.intake.setTestSpeed(1);
