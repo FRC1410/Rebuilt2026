@@ -76,6 +76,12 @@
           "data": {
             "pathName": "Intake from IntakeRight"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ReAlignRight"
+          }
         }
       ]
     }

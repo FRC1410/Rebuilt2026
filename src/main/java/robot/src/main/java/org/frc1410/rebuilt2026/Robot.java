@@ -65,7 +65,7 @@ public final class Robot extends PhaseDrivenRobot {
 
     private final Intake intake = subsystems.track(new Intake());
 
-    private final IntakeCommand intakeCommand = new IntakeCommand(intake,this.scheme.INTAKE);
+    private final IntakeCommand intakeCommand = new IntakeCommand(intake,this.scheme.INTAKE, this.scheme.OUTTAKE);
 
     private final StorageTransferRun transfer = new StorageTransferRun(storage);
 
@@ -81,6 +81,8 @@ public final class Robot extends PhaseDrivenRobot {
             .add("LeftStartAuto (Not Updated)", () -> new PathPlannerAuto("LeftStartAuto"))
             .add("PreloadRight", () -> new PathPlannerAuto("ShootPreloadRight"))
             .add("PreloadLeft", () -> new PathPlannerAuto("ShootPreloadLeft"))
+            .add("SimpleRight", () -> new PathPlannerAuto("SimpleRight"))
+            .add("SimpleLeft", () -> new PathPlannerAuto("SimpleLeft"))
             .add("SysChecker", () -> new PathPlannerAuto("SysChecker"));
 
     {

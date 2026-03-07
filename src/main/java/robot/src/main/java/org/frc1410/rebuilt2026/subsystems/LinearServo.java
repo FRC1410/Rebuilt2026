@@ -43,16 +43,17 @@ public class LinearServo extends ServoHub {
      * @param length max length of the servo [mm]
      * @param speed max speed of the servo [mm/second]
      */
-    public LinearServo(int hubChannel, int servoChannel, int length, int speed) {
+    public LinearServo(int hubChannel, int servoChannel1, int servoChannel2, int length, int speed) {
         super(hubChannel);
-        this.actuator1 = this.getServoChannel(ServoChannel.ChannelId.fromInt(servoChannel));
-        this.actuator2 = this.getServoChannel(ServoChannel.ChannelId.fromInt(servoChannel));
+        this.actuator1 = this.getServoChannel(ServoChannel.ChannelId.fromInt(servoChannel1));
+        this.actuator2 = this.getServoChannel(ServoChannel.ChannelId.fromInt(servoChannel2));
 
         this.actuator1.setEnabled(true);
-        this.actuator2.setPowered(true);
-        this.actuator1.setEnabled(true);
+        this.actuator2.setEnabled(true);
+        this.actuator1.setPowered(true);
         this.actuator2.setPowered(true);
         this.setBankPulsePeriod(ServoHub.Bank.kBank0_2, 20000);
+        this.setBankPulsePeriod(ServoHub.Bank.kBank3_5, 20000);
         m_length = length;
         m_speed = speed;
     }
