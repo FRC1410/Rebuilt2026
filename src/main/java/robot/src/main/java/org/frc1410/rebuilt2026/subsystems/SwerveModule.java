@@ -218,7 +218,10 @@ public class SwerveModule implements TickedSubsystem {
         );
 
         this.steerMotor.setVoltage(steerPIDOutput);
+    }
 
+    @Override
+    public void telem() {
         this.desiredVelocity.set(this.desiredState.speedMetersPerSecond);
         this.desiredAngle.set(this.desiredState.angle.getDegrees());
 

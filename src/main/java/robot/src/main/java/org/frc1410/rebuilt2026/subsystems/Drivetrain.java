@@ -356,7 +356,10 @@ public class Drivetrain implements TickedSubsystem {
     }
 
     @Override
-    public void periodic() {
+    public void periodic() {}
+
+    @Override
+    public void telem(){
         this.poseEstimator.update(
                 this.getGyroYaw(),
                 this.getSwerveModulePositions()

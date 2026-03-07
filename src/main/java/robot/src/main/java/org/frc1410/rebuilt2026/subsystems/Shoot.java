@@ -122,6 +122,10 @@ public class Shoot implements TickedSubsystem {
         this.shooterMotor.set(currentTick);
         this.hoodActuator.setPosition(this.actuatorSetPos);
         // this.hoodActuator.updateCurPos();
+    }
+
+    @Override
+    public void telem() {
         this.hoodPosPublisher.set(this.hoodActuator.getPosition());
         this.currentSpeedPublisher.set(currentTick);
     }

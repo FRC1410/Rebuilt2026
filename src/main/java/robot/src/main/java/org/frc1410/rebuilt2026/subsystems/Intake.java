@@ -1,16 +1,19 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.*;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.INTAKE_FRAME_SPARK_LEFT;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.INTAKE_FRAME_SPARK_RIGHT;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.INTAKE_SPARK;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.INTAKE_TEST_SPARK;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public class Intake implements TickedSubsystem {
@@ -121,14 +124,18 @@ public class Intake implements TickedSubsystem {
     @Override
     public void periodic() {
         this.intakeMotor.set(currentSpeed);
-        this.currentSpeedPublisher.set(currentSpeed);
         this.intakeFrameLeft.set(currentFrameSpeedLeft);
-        this.currentFrameLeftPublisher.set(currentFrameSpeedLeft);
         this.intakeFrameRight.set(currentFrameSpeedRight);
+        this.intakeTestMotor.set(currentTestSpeed);
+    }
+
+    @Override
+    public void telem() {
+        this.currentSpeedPublisher.set(currentSpeed);
+        this.currentFrameLeftPublisher.set(currentFrameSpeedLeft);
         this.currentFrameRightPublisher.set(currentFrameSpeedRight);
         this.frameLeftPositionPublisher.set(this.frameLeftEncoder.getPosition());
         this.frameRightPositionPublisher.set(this.frameRightEncoder.getPosition());
-        this.intakeTestMotor.set(currentTestSpeed);
         this.currentTestSpeedPublisher.set(currentTestSpeed);
     }
 }

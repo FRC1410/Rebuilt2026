@@ -98,6 +98,9 @@ public class Storage implements TickedSubsystem {
             else if (this.indexerSpeed < 0) {this.indexerSpeed = -1;}
             else {System.err.println("According to all known laws of aviation, there is no way a bee should be able to fly. It's wings are too small to get it's fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible.");} //TODO: Finish
         }
+    }
+    @Override
+    public void telem(){
         this.indexerMotor.set(this.indexerSpeed);
         this.speedPub.set(this.targetIndexerSpeed);
         this.transferMotor.set(transferSpeed);
