@@ -52,7 +52,7 @@ public class ControlScheme {
 
         STORAGE_INTAKE = this.operatorController.LEFT_BUMPER;
         STORAGE_NEUTRAL = this.operatorController.Y;
-        STORAGE_OUTTAKE = this.operatorController.RIGHT_BUMPER;
+        STORAGE_OUTTAKE = this.operatorController.DPAD_LEFT;
         TRANSFER = this.driverController.RIGHT_BUMPER;
 
         SHOOTING_TOGGLE = this.operatorController.RIGHT_TRIGGER.button();
@@ -63,7 +63,7 @@ public class ControlScheme {
         HOOD_HIGH_LEFT = this.operatorController.X;
 
         AUTO_ALIGN = this.driverController.LEFT_STICK;
-        ORIENTATION_RESET = this.driverController.X;
+        ORIENTATION_RESET = this.driverController.B;
 
         SLOWMODE_TOGGLE = this.driverController.RIGHT_STICK;
         GUARDMODE_TOGGLE = this.driverController.DPAD_DOWN;
