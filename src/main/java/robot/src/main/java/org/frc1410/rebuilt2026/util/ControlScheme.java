@@ -43,7 +43,7 @@ public class ControlScheme {
         DRIVE_FORWARD = this.driverController.LEFT_X_AXIS;
         DRIVE_SIDEWAYS = this.driverController.LEFT_Y_AXIS;
         DRIVE_TURN = this.driverController.RIGHT_X_AXIS;
-        ROBOT_RELATIVE_TOGGLE = this.driverController.LEFT_BUMPER;
+        ROBOT_RELATIVE_TOGGLE = this.driverController.LEFT_TRIGGER.button();
 
         INTAKE = this.driverController.RIGHT_TRIGGER.button(); //This to be condensed to one button
         OUTTAKE = this.driverController.LEFT_TRIGGER.button(); //This to be condensed to one button
@@ -52,7 +52,7 @@ public class ControlScheme {
 
         STORAGE_INTAKE = this.operatorController.LEFT_BUMPER;
         STORAGE_NEUTRAL = this.operatorController.Y;
-        STORAGE_OUTTAKE = this.operatorController.DPAD_LEFT;
+        STORAGE_OUTTAKE = this.operatorController.RIGHT_BUMPER;
         TRANSFER = this.driverController.RIGHT_BUMPER;
 
         SHOOTING_TOGGLE = this.operatorController.RIGHT_TRIGGER.button();
@@ -63,7 +63,7 @@ public class ControlScheme {
         HOOD_HIGH_LEFT = this.operatorController.X;
 
         AUTO_ALIGN = this.driverController.LEFT_STICK;
-        ORIENTATION_RESET = this.driverController.B;
+        ORIENTATION_RESET = this.driverController.X;
 
         SLOWMODE_TOGGLE = this.driverController.RIGHT_STICK;
         GUARDMODE_TOGGLE = this.driverController.DPAD_DOWN;
