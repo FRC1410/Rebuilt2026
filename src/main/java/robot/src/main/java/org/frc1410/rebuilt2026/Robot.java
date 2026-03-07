@@ -14,7 +14,6 @@ import framework.src.main.java.org.frc1410.framework.PhaseDrivenRobot;
 import framework.src.main.java.org.frc1410.framework.control.Controller;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskPersistence;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.AutoCommands.OrientationResetAutoCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.AutoCommands.ShooterAutoCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.DriveLooped;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.OrientationResetCommand;
@@ -66,7 +65,7 @@ public final class Robot extends PhaseDrivenRobot {
 
     private final Intake intake = subsystems.track(new Intake());
 
-    private final IntakeCommand intakeCommand = new IntakeCommand(intake,this.scheme.INTAKE);
+    private final IntakeCommand intakeCommand = new IntakeCommand(intake,this.scheme.INTAKE, this.scheme.OUTTAKE);
 
     private final StorageTransferRun transfer = new StorageTransferRun(storage);
 
@@ -82,6 +81,8 @@ public final class Robot extends PhaseDrivenRobot {
             .add("LeftStartAuto (Not Updated)", () -> new PathPlannerAuto("LeftStartAuto"))
             .add("PreloadRight", () -> new PathPlannerAuto("ShootPreloadRight"))
             .add("PreloadLeft", () -> new PathPlannerAuto("ShootPreloadLeft"))
+            .add("SimpleRight", () -> new PathPlannerAuto("SimpleRight"))
+            .add("SimpleLeft", () -> new PathPlannerAuto("SimpleLeft"))
             .add("SysChecker", () -> new PathPlannerAuto("SysChecker"));
 
     {
@@ -137,7 +138,6 @@ public final class Robot extends PhaseDrivenRobot {
     @Override
     public void autonomousSequence() {
         this.scheduler.scheduleDefaultCommand(resetCommand, TaskPersistence.GAMEPLAY);
-        this.scheduler.scheduleDefaultCommand(new OrientationResetAutoCommand(drivetrain), TaskPersistence.GAMEPLAY);
         NetworkTables.SetPersistence(this.autoPublisher.getTopic(), true);
         String autoProfile = this.autoSubscriber.get();
 

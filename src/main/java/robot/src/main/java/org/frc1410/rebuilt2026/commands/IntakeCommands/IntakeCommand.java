@@ -16,17 +16,19 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.INTAKE_FRA
 public class IntakeCommand extends Command{
     private final Intake intake;
 
-    private final Button button;
+    private final Button intakeButton;
+    private final Button outtakeButton;
     
     private final PIDController leftPID;
     private final PIDController rightPID;
     
     private boolean isRaised = false;
 
-    public IntakeCommand(Intake intake, Button button) {
+    public IntakeCommand(Intake intake, Button intakeButton, Button outtakeButton) {
         this.intake = intake;
 
-        this.button = button;
+        this.intakeButton = intakeButton;
+        this.outtakeButton = outtakeButton;
 
         this.leftPID = new PIDController(INTAKE_FRAME_P, INTAKE_FRAME_I, INTAKE_FRAME_D);
         this.rightPID = new PIDController(INTAKE_FRAME_P, INTAKE_FRAME_I, INTAKE_FRAME_D);
@@ -45,7 +47,7 @@ public class IntakeCommand extends Command{
 
     @Override
     public void execute() {
-        if (this.button.isActive()){
+        if (this.intakeButton.isActive()){
             this.intake.setSpeed(1);
             this.intake.setTestSpeed(1);
             if (!isRaised) {
@@ -53,6 +55,15 @@ public class IntakeCommand extends Command{
                 leftPID.setSetpoint(INTAKE_LEFT_FRAME_LOWERED_POSITION);
                 rightPID.setSetpoint(INTAKE_LEFT_FRAME_LOWERED_POSITION);
             }
+        } else if (this.outtakeButton.isActive()) {
+            this.intake.setSpeed(-1);
+            this.intake.setTestSpeed(-1);
+            if (!isRaised) {
+                isRaised = true;
+                leftPID.setSetpoint(INTAKE_LEFT_FRAME_LOWERED_POSITION);
+                rightPID.setSetpoint(INTAKE_LEFT_FRAME_LOWERED_POSITION);
+            }
+
         } else {
             this.intake.setSpeed(0);
             this.intake.setTestSpeed(0);

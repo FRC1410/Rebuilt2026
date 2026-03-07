@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.721281138790035,
-        "y": 1.108
+        "x": 2.008149466192171,
+        "y": 4.072657176749703
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.721281138790035,
-        "y": 1.4341935250211089
+        "x": 2.008149466192171,
+        "y": 3.0726571767497033
       },
       "isLocked": false,
-      "linkedName": "IntakeRight"
+      "linkedName": "CenterAZ"
     },
     {
       "anchor": {
-        "x": 7.721,
-        "y": 3.228
+        "x": 1.0,
+        "y": 0.5
       },
       "prevControl": {
-        "x": 7.721,
-        "y": 2.196479066861419
+        "x": 1.9793230327320297,
+        "y": 0.4999999999999999
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "RightEnd"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 0.5,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 256.5,
     "maxAngularAcceleration": 796.5,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": -95.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }
