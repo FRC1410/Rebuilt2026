@@ -172,6 +172,7 @@ public final class Robot extends PhaseDrivenRobot {
         this.scheme.STORAGE_NEUTRAL.whileHeldOnce(storageNeutral, TaskPersistence.GAMEPLAY);
         this.scheme.STORAGE_OUTTAKE.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
         this.scheme.TRANSFER.whileHeld(transfer, TaskPersistence.GAMEPLAY);
+        this.scheme.TRANSFER2.whileHeld(transfer, TaskPersistence.GAMEPLAY);
 
         this.scheme.HOOD_RAISE.whileHeldOnce(new HoodTestCommand(shooter, .1), TaskPersistence.GAMEPLAY);
         this.scheme.HOOD_LOWER.whileHeldOnce(new HoodTestCommand(shooter, -.1), TaskPersistence.GAMEPLAY);
@@ -231,6 +232,7 @@ public final class Robot extends PhaseDrivenRobot {
         this.scheme.STORAGE_NEUTRAL.whileHeldOnce(storageNeutral, TaskPersistence.GAMEPLAY);
         this.scheme.STORAGE_OUTTAKE.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
         this.scheme.TRANSFER.whileHeld(transfer, TaskPersistence.GAMEPLAY);
+        this.scheme.TRANSFER2.whileHeld(transfer, TaskPersistence.GAMEPLAY);
 
         this.scheme.HOOD_RAISE.whileHeldOnce(new HoodTestCommand(shooter, .1), TaskPersistence.GAMEPLAY);
         this.scheme.HOOD_LOWER.whileHeldOnce(new HoodTestCommand(shooter, -.1), TaskPersistence.GAMEPLAY);

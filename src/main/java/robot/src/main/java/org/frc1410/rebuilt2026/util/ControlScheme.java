@@ -23,6 +23,7 @@ public class ControlScheme {
     public Button STORAGE_NEUTRAL;
     public Button STORAGE_OUTTAKE;
     public Button TRANSFER;
+    public Button TRANSFER2;
 
     public Button SHOOTING_TOGGLE;
     public Button PASSING_TOGGLE;
@@ -54,6 +55,7 @@ public class ControlScheme {
         STORAGE_NEUTRAL = this.operatorController.Y;
         STORAGE_OUTTAKE = this.operatorController.RIGHT_BUMPER;
         TRANSFER = this.driverController.RIGHT_BUMPER;
+        TRANSFER2 = this.operatorController.DPAD_RIGHT;
 
         SHOOTING_TOGGLE = this.operatorController.RIGHT_TRIGGER.button();
         PASSING_TOGGLE = this.operatorController.LEFT_TRIGGER.button();
