@@ -19,6 +19,7 @@ import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.DriveL
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.OrientationResetCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleGuardModeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleSlowmodeCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeAutoCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ResetCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.HoodTestCommand;
@@ -116,7 +117,7 @@ public final class Robot extends PhaseDrivenRobot {
                 drivetrain
         );
 
-        // NamedCommands.registerCommand("Intake", new intakeCommand(intake));
+        NamedCommands.registerCommand("Intake", new IntakeAutoCommand(intake, 1.0));
         NamedCommands.registerCommand("Shoot Toggle", new ShooterAutoCommand(shooter));
         NamedCommands.registerCommand("Hood Up", new MoveHoodCommand(shooter, HoodStates.HIGH_LEFT));
         NamedCommands.registerCommand("Hood Down", new MoveHoodCommand(shooter, HoodStates.LOW_LEFT));
