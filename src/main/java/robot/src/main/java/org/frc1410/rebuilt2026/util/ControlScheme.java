@@ -23,6 +23,7 @@ public class ControlScheme {
     public Button STORAGE_NEUTRAL;
     public Button STORAGE_OUTTAKE;
     public Button TRANSFER;
+    public Button TRANSFER2;
 
     public Button SHOOTING_TOGGLE;
     public Button PASSING_TOGGLE;
@@ -43,7 +44,7 @@ public class ControlScheme {
         DRIVE_FORWARD = this.driverController.LEFT_X_AXIS;
         DRIVE_SIDEWAYS = this.driverController.LEFT_Y_AXIS;
         DRIVE_TURN = this.driverController.RIGHT_X_AXIS;
-        ROBOT_RELATIVE_TOGGLE = this.driverController.LEFT_BUMPER;
+        ROBOT_RELATIVE_TOGGLE = this.driverController.LEFT_TRIGGER.button();
 
         INTAKE = this.driverController.RIGHT_TRIGGER.button(); //This to be condensed to one button
         OUTTAKE = this.driverController.LEFT_TRIGGER.button(); //This to be condensed to one button
@@ -54,6 +55,7 @@ public class ControlScheme {
         STORAGE_NEUTRAL = this.operatorController.Y;
         STORAGE_OUTTAKE = this.operatorController.RIGHT_BUMPER;
         TRANSFER = this.driverController.RIGHT_BUMPER;
+        TRANSFER2 = this.operatorController.DPAD_RIGHT;
 
         SHOOTING_TOGGLE = this.operatorController.RIGHT_TRIGGER.button();
         PASSING_TOGGLE = this.operatorController.LEFT_TRIGGER.button();
