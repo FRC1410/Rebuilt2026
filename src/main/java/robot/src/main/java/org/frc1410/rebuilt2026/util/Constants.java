@@ -54,8 +54,7 @@ public final class Constants {
     }
 
     // Robot constants
-    public static final double DRIVE_GEAR_RATIO = (50.0 / 16.0) * (17.0 / 27.0) * (45.0 / 15.0);
-//    public static final double DRIVE_L_TWO_GEAR_RATIO = (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0);
+    public static final double DRIVE_GEAR_RATIO = (54.0 / 16.0) * (25.0 / 32.0) * (30.0 / 15.0); //(Driven gear/Driving gear)
     public static final Distance WHEEL_RADIUS = Inches.of(2);
     public static final Distance WHEEL_CIRCUMFERENCE = WHEEL_RADIUS.times(2 * Math.PI);
     public static final Distance TRACKWIDTH_METERS = Meters.of(0.6032627);
