@@ -60,11 +60,10 @@ public final class Constants {
     public static final Distance TRACKWIDTH_METERS = Meters.of(0.6032627);
 
     // Drive constants
-    public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(87.535859375); //88.769531
-    public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(54.052734375); //53.349609
-    public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(50.712890625); //155.039062-180
-    public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(37.44140625); //37.265625
-
+    public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(87.71484375); //87.535859375
+    public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(167.87109375); //54.052734375
+    public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(48.955078125); //50.712890625
+    public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(37.6171875); //37.44140625
     // public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(0); //88.769531
     // public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(0); //53.349609
     // public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(0); //155.039062-180
@@ -86,10 +85,10 @@ public final class Constants {
     public static final Translation2d BACK_RIGHT_SWERVE_MODULE_LOCATION = new Translation2d(-0.3048, -0.3048);
 
     public static final SwerveDriveKinematics SWERVE_DRIVE_KINEMATICS = new SwerveDriveKinematics(
-        FRONT_LEFT_SWERVE_MODULE_LOCATION,
-        FRONT_RIGHT_SWERVE_MODULE_LOCATION,
-        BACK_LEFT_SWERVE_MODULE_LOCATION,
-        BACK_RIGHT_SWERVE_MODULE_LOCATION
+            FRONT_LEFT_SWERVE_MODULE_LOCATION,
+            FRONT_RIGHT_SWERVE_MODULE_LOCATION,
+            BACK_LEFT_SWERVE_MODULE_LOCATION,
+            BACK_RIGHT_SWERVE_MODULE_LOCATION
     );
 
     public static final double SLOW_MULTIPLIER = 1;
@@ -102,21 +101,21 @@ public final class Constants {
     public static final int STEER_MOTOR_CURRENT_LIMIT = 30;
 
     public static PPHolonomicDriveController HOLONOMIC_AUTO_CONFIG = new PPHolonomicDriveController(
-        PATH_AUTO_TRANSLATION_CONSTRAINTS,
-        PATH_AUTO_ROTATION_CONSTRAINTS
+            PATH_AUTO_TRANSLATION_CONSTRAINTS,
+            PATH_AUTO_ROTATION_CONSTRAINTS
     );
 
     public static PathConstraints PATH_FINDING_CONSTRAINTS = new PathConstraints(
-        SWERVE_DRIVE_MAX_SPEED,
-        SWERVE_DRIVE_MAX_ACCELERATION,
-        SWERVE_DRIVE_MAX_ANGULAR_VELOCITY,
-        SWERVE_DRIVE_MAX_ANGULAR_ACCELERATION
+            SWERVE_DRIVE_MAX_SPEED,
+            SWERVE_DRIVE_MAX_ACCELERATION,
+            SWERVE_DRIVE_MAX_ANGULAR_VELOCITY,
+            SWERVE_DRIVE_MAX_ANGULAR_ACCELERATION
     );
     public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
     public static PPHolonomicDriveController PATH_FOLLOWING_CONTROLLER = new PPHolonomicDriveController(
-        PATH_FOLLOWING_TRANSLATION_CONSTRAINTS,
-        PATH_FOLLOWING_ROTATION_CONSTRAINTS
+            PATH_FOLLOWING_TRANSLATION_CONSTRAINTS,
+            PATH_FOLLOWING_ROTATION_CONSTRAINTS
     );
 
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);

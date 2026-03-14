@@ -13,6 +13,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Hood Down"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Shoot Toggle"
           }
         },
@@ -20,6 +26,25 @@
           "type": "wait",
           "data": {
             "waitTime": 1.0
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Transfer"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 15.0
+                }
+              }
+            ]
           }
         },
         {
