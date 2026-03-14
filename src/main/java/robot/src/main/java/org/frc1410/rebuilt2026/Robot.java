@@ -84,6 +84,7 @@ public final class Robot extends PhaseDrivenRobot {
             .add("PreloadLeft", () -> new PathPlannerAuto("ShootPreloadLeft"))
             .add("SimpleRight", () -> new PathPlannerAuto("SimpleRight"))
             .add("SimpleLeft", () -> new PathPlannerAuto("SimpleLeft"))
+            .add("Escond", () -> new PathPlannerAuto("Escond"))
             .add("SysChecker", () -> new PathPlannerAuto("SysChecker"));
 
     {

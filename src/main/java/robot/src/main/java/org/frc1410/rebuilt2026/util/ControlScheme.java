@@ -15,6 +15,7 @@ public class ControlScheme {
     public Button ROBOT_RELATIVE_TOGGLE;
 
     public Button INTAKE;
+    public Button INTAKE2;
     public Button OUTTAKE;
     public Button HOOD_RAISE;
     public Button HOOD_LOWER;
@@ -46,8 +47,9 @@ public class ControlScheme {
         DRIVE_TURN = this.driverController.RIGHT_X_AXIS;
         ROBOT_RELATIVE_TOGGLE = this.driverController.LEFT_TRIGGER.button();
 
-        INTAKE = this.driverController.RIGHT_TRIGGER.button(); //This to be condensed to one button
-        OUTTAKE = this.driverController.LEFT_TRIGGER.button(); //This to be condensed to one button
+        INTAKE = this.driverController.RIGHT_TRIGGER.button();
+        INTAKE2 = this.operatorController.LEFT_TRIGGER.button();
+        OUTTAKE = this.driverController.LEFT_TRIGGER.button();
         HOOD_RAISE = this.operatorController.DPAD_UP;
         HOOD_LOWER = this.operatorController.DPAD_DOWN;
 
