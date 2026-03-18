@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import framework.src.main.java.org.frc1410.framework.AutoSelector;
 import framework.src.main.java.org.frc1410.framework.PhaseDrivenRobot;
 import framework.src.main.java.org.frc1410.framework.control.Controller;
+import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskPersistence;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.AutoCommands.ShooterAutoCommand;
@@ -22,6 +23,7 @@ import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.Toggle
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeAutoCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ResetCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.TelemCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.HoodTestCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.MoveHoodCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.ShooterToggleCommand;
@@ -72,6 +74,9 @@ public final class Robot extends PhaseDrivenRobot {
 
     private final ResetCommand resetCommand = new ResetCommand(drivetrain, intake, shooter, storage);
     // private final ReadyToRumbleCommand readyToRumbleCommand = new ReadyToRumbleCommand(driverController);
+
+    private final TelemCommand telemCommand = new TelemCommand(new TickedSubsystem[]{shooter, storage, intake, drivetrain});
+
     private final NetworkTableInstance nt = NetworkTableInstance.getDefault();
     private final NetworkTable table = this.nt.getTable("Auto");
 
@@ -217,6 +222,7 @@ public final class Robot extends PhaseDrivenRobot {
 
     @Override
     public void testSequence() {
+        this.scheduler.scheduleDefaultCommand(telemCommand, TaskPersistence.GAMEPLAY);
         this.scheduler.scheduleDefaultCommand(resetCommand, TaskPersistence.GAMEPLAY);
         this.scheduler.scheduleDefaultCommand(
                 new DriveLooped(

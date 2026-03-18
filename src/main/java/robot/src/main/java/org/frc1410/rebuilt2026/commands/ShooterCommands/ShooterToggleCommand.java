@@ -16,7 +16,7 @@ public class ShooterToggleCommand extends Command {
 
     @Override
     public void initialize() {
-        System.out.println("TOGGLE");
+        // System.out.println("TOGGLE");
         shooter.toggle(this.speed);
     }
 

@@ -26,13 +26,13 @@ public class FrameTestCommand extends Command{
     public void execute() {
         if (this.toggleButton1.isActive()) {
             this.intake.raiseLowerIntakeFrame(1, 0);
-            System.out.println(this.intake.getLeftFrame());
+            // System.out.println(this.intake.getLeftFrame());
         } else if (!this.toggleButton2.isActive()) {
             this.intake.raiseLowerIntakeFrame(0, 0);
         }
         if (this.toggleButton2.isActive()) {
             this.intake.raiseLowerIntakeFrame(0, 1);
-            System.out.println(this.intake.getRightFrame());
+            // System.out.println(this.intake.getRightFrame());
         } else if (!this.toggleButton1.isActive()) {
             this.intake.raiseLowerIntakeFrame(0, 0);
         }

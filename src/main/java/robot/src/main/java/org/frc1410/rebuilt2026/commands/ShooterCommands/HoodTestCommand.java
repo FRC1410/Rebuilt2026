@@ -16,7 +16,7 @@ public class HoodTestCommand extends Command{
     @Override
     public void initialize() {
         this.shoot.bumpHoodPos(inc);
-        System.out.println(this.shoot.getHoodSetPos());
+        // System.out.println(this.shoot.getHoodSetPos());
     }
 
     @Override

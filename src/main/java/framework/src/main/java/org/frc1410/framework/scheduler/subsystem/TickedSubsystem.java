@@ -16,6 +16,7 @@ public interface TickedSubsystem extends Subsystem {
     static void runTelems() {
         for (TickedSubsystem subsystem : allTickedSubsystems) {
             subsystem.telem();
+            // System.out.println(subsystem.getName());
         }
     }
 

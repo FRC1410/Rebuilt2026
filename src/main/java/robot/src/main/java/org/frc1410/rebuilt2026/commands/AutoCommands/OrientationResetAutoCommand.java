@@ -14,7 +14,7 @@ public class OrientationResetAutoCommand extends Command{
     @Override
     public void initialize() {
         // this.drivetrain.resetPose(new Pose2d(0, 0, Rotation2d.kZero));
-        System.out.println("RESET\nRESET\nRESET");
+        // System.out.println("RESET\nRESET\nRESET");
     }
 
     @Override

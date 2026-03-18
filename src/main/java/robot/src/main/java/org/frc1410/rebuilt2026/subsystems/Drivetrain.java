@@ -381,5 +381,9 @@ public class Drivetrain implements TickedSubsystem {
         this.yaw.set(getGyroYaw().getDegrees());
         this.pitch.set(getGyroPitch().getDegrees());
         this.roll.set(getGyroRoll().getDegrees());
+        this.frontRightModule.telem();
+        this.frontLeftModule.telem();
+        this.backRightModule.telem();
+        this.backLeftModule.telem();
     }
 }

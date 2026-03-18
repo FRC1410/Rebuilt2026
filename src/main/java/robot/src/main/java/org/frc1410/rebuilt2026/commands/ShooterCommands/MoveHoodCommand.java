@@ -17,10 +17,10 @@ public class MoveHoodCommand extends Command {
     @Override
     public void initialize() {
         this.shoot.setHoodPos(hoodstate);
-        System.out.println(hoodstate);
-        System.out.println(this.shoot.getHoodPos());
-        System.out.println(this.shoot.getHoodSetPos());
-        System.out.println(this.shoot.getHoodVoltage());
+        // System.out.println(hoodstate);
+        // System.out.println(this.shoot.getHoodPos());
+        // System.out.println(this.shoot.getHoodSetPos());
+        // System.out.println(this.shoot.getHoodVoltage());
     }
 
     @Override

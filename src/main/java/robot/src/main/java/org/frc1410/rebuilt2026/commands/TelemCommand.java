@@ -5,7 +5,10 @@ import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedS
 
 public class TelemCommand extends Command{
 
-    public TelemCommand() {
+    public TelemCommand(TickedSubsystem[] subsystems) {
+        for (TickedSubsystem subsystem: subsystems) {
+            subsystem.include();
+        }
     }
 
     @Override
