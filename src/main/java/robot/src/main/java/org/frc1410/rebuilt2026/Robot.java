@@ -19,6 +19,7 @@ import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.DriveL
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.OrientationResetCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleGuardModeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleSlowmodeCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeAutoCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ResetCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.HoodTestCommand;
@@ -83,6 +84,7 @@ public final class Robot extends PhaseDrivenRobot {
             .add("PreloadLeft", () -> new PathPlannerAuto("ShootPreloadLeft"))
             .add("SimpleRight", () -> new PathPlannerAuto("SimpleRight"))
             .add("SimpleLeft", () -> new PathPlannerAuto("SimpleLeft"))
+            .add("Escond", () -> new PathPlannerAuto("Escond"))
             .add("SysChecker", () -> new PathPlannerAuto("SysChecker"));
 
     {
@@ -116,7 +118,7 @@ public final class Robot extends PhaseDrivenRobot {
                 drivetrain
         );
 
-        // NamedCommands.registerCommand("Intake", new intakeCommand(intake));
+        NamedCommands.registerCommand("Intake", new IntakeAutoCommand(intake, 1.0));
         NamedCommands.registerCommand("Shoot Toggle", new ShooterAutoCommand(shooter));
         NamedCommands.registerCommand("Hood Up", new MoveHoodCommand(shooter, HoodStates.HIGH_LEFT));
         NamedCommands.registerCommand("Hood Down", new MoveHoodCommand(shooter, HoodStates.LOW_LEFT));
@@ -172,6 +174,7 @@ public final class Robot extends PhaseDrivenRobot {
         this.scheme.STORAGE_NEUTRAL.whileHeldOnce(storageNeutral, TaskPersistence.GAMEPLAY);
         this.scheme.STORAGE_OUTTAKE.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
         this.scheme.TRANSFER.whileHeld(transfer, TaskPersistence.GAMEPLAY);
+        this.scheme.TRANSFER2.whileHeld(transfer, TaskPersistence.GAMEPLAY);
 
         this.scheme.HOOD_RAISE.whileHeldOnce(new HoodTestCommand(shooter, .1), TaskPersistence.GAMEPLAY);
         this.scheme.HOOD_LOWER.whileHeldOnce(new HoodTestCommand(shooter, -.1), TaskPersistence.GAMEPLAY);
@@ -231,6 +234,7 @@ public final class Robot extends PhaseDrivenRobot {
         this.scheme.STORAGE_NEUTRAL.whileHeldOnce(storageNeutral, TaskPersistence.GAMEPLAY);
         this.scheme.STORAGE_OUTTAKE.whileHeldOnce(storageOuttake, TaskPersistence.GAMEPLAY);
         this.scheme.TRANSFER.whileHeld(transfer, TaskPersistence.GAMEPLAY);
+        this.scheme.TRANSFER2.whileHeld(transfer, TaskPersistence.GAMEPLAY);
 
         this.scheme.HOOD_RAISE.whileHeldOnce(new HoodTestCommand(shooter, .1), TaskPersistence.GAMEPLAY);
         this.scheme.HOOD_LOWER.whileHeldOnce(new HoodTestCommand(shooter, -.1), TaskPersistence.GAMEPLAY);
