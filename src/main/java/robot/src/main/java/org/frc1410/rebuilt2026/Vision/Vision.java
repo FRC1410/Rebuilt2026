@@ -26,7 +26,7 @@ public class Vision implements TickedSubsystem {
 
     private final Cam[] eyesOfCthulu;
     private final Drivetrain dt;
-
+    private final int[] hubTags = {2,3}; //placeholder numbers
     public Vision(Cam[] cams, Drivetrain dt) {
         eyesOfCthulu = cams;
         this.dt = dt;
@@ -75,6 +75,30 @@ public class Vision implements TickedSubsystem {
         }
         //System.out.println("Command Running");
     }
+    public void autoAlignToHub() {
+        boolean found = false;
+        for (Cam c : eyesOfCthulu) {
+            c.lookForTags(hubTags);
+            if (Math.abs(c.returnCamYaw()) > Math.abs(calcMaxAngleError(c.returnCamDist())/5)) {
+                found = true;
+                // if (c.returnCamYaw() < 0.25 && c.returnCamYaw() > -0.25) {
+                //     this.dt.setTurnRate(
+                //             (-1.0 * c.returnCamYaw() * (Tuning.VISION_TURN_kP - 0.065) * (Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.in(DegreesPerSecond) / 360))//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
+                //     );
+                // } else {
+                    this.dt.setTurnRate(
+                            (-1.0 * c.returnCamYaw() * Tuning.VISION_TURN_kP * (Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.in(DegreesPerSecond) / 360))//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
+                    );
+                // }
+            } else if (!found) {
+                this.dt.setTurnRate(
+                        (0)//* Constants.SWERVE_DRIVE_MAX_ANGULAR_VELOCITY
+                );
+                System.out.println(calcMaxAngleError(c.returnCamDist()));
 
+            }
+        }
+        //System.out.println("Command Running");
+    }
    
 }
