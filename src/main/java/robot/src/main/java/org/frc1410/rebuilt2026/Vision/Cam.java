@@ -116,6 +116,34 @@ public class Cam {
             camYaw.set(0);
         }
     }
+    public void lookForTags(int[] ids) {
+        if (!results.isEmpty()) {
+            // Camera processed a new frame since last
+            // Get the last one in the list.
+            var result = results.get(results.size() - 1);
+            if (result.hasTargets()) {
+                // At least one AprilTag was seen by the camera
+                for (var target : result.getTargets()) {
+                    for(int i = 0; i<ids.length; i++){
+                        if (target.getFiducialId() == ids[i]) {
+                            // Found Tag, record its information
+                            this.tagName = target.getFiducialId();
+                            this.targetYaw = target.getYaw();
+                            this.targetDist = (target.getBestCameraToTarget().getX() * 39.3701); //conversion from meters to inches
+                            this.targetVisible = true;
+                            camYaw.set(this.targetYaw);
+                        }
+                    }
+                }
+            }
+        } else {
+            this.tagName = 0;
+            this.targetYaw = 0;
+            this.targetDist = 0;
+            this.targetVisible = true;
+            camYaw.set(0);
+        }
+    }
 
     public List<PhotonPipelineResult> getUnreadResults() {
         return results;
