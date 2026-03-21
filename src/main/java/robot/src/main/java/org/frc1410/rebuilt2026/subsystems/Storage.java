@@ -1,6 +1,6 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
-import com.revrobotics.spark.SparkFlex;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -12,11 +12,10 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.BELT_MOTOR;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.TRANSFER_MOTOR;
+import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.INDEXER_D;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.INDEXER_I;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.INDEXER_P;
-
-import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public class Storage implements TickedSubsystem {
 
@@ -26,9 +25,11 @@ public class Storage implements TickedSubsystem {
         OUTTAKE
     }
 
-    private final SparkMax indexerMotor;
+    private final SparkMax indexerMotor1;
+    private final SparkMax indexerMotor2;
 
-    private final SparkMax transferMotor;
+    private final TalonFX transferMotor1;
+    private final TalonFX transferMotor2;
 
     private double targetIndexerSpeed = 0;
     private double indexerSpeed = 0;
@@ -47,26 +48,28 @@ public class Storage implements TickedSubsystem {
     public Storage() {
         this.targetIndexerSpeed = 0;
         this.transferSpeed = 0;
-        this.indexerMotor = new SparkMax(
+        this.indexerMotor1 = new SparkMax(
+                BELT_MOTOR,
+                SparkLowLevel.MotorType.kBrushless
+        );
+        this.indexerMotor2 = new SparkMax(
                 BELT_MOTOR,
                 SparkLowLevel.MotorType.kBrushless
         );
         SparkMaxConfig config = new SparkMaxConfig();
         config.inverted(true);
-        this.indexerMotor.configure(
+        this.indexerMotor1.configure(
                 config,
                 com.revrobotics.ResetMode.kNoResetSafeParameters,
                 com.revrobotics.PersistMode.kPersistParameters
         );
-        this.transferMotor = new SparkMax(
-                TRANSFER_MOTOR,
-                SparkLowLevel.MotorType.kBrushless
-        );
-        this.transferMotor.configure(
+        this.indexerMotor2.configure(
                 config,
                 com.revrobotics.ResetMode.kNoResetSafeParameters,
                 com.revrobotics.PersistMode.kPersistParameters
         );
+        this.transferMotor1 = new TalonFX(TRANSFER_MOTOR);
+        
 
         this.indexerController = new PIDController(INDEXER_P, INDEXER_I, INDEXER_D);
     }
@@ -87,7 +90,7 @@ public class Storage implements TickedSubsystem {
     }
 
     public double calcIndexerSpeed(double setpoint) {
-        return indexerController.calculate(this.indexerMotor.get(), setpoint);
+        return indexerController.calculate((this.indexerMotor1.get() + this.indexerMotor2.get())/2, setpoint);
     }
 
     @Override
@@ -101,7 +104,8 @@ public class Storage implements TickedSubsystem {
     }
     @Override
     public void telem(){
-        this.indexerMotor.set(this.indexerSpeed);
+        this.indexerMotor1.set(this.indexerSpeed);
+        this.indexerMotor2.set(this.indexerSpeed);
         this.speedPub.set(this.targetIndexerSpeed);
         this.transferMotor.set(transferSpeed);
     }

@@ -3,67 +3,75 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.008149466192171,
-        "y": 4.072657176749703
+        "x": 4.45048635824667,
+        "y": 7.332692763935747
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.19491473001651,
-        "y": 5.4807703656850855
-      },
-      "isLocked": false,
-      "linkedName": "CenterAZ"
-    },
-    {
-      "anchor": {
-        "x": 2.8366073546856474,
-        "y": 7.031435349940688
-      },
-      "prevControl": {
-        "x": 2.225920096262508,
-        "y": 6.183144576544712
-      },
-      "nextControl": {
-        "x": 3.1467831238007156,
-        "y": 7.462292944302024
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 4.859335705812574,
-        "y": 7.41876631079478
-      },
-      "prevControl": {
-        "x": 4.092354352404944,
-        "y": 7.377410940266958
-      },
-      "nextControl": {
-        "x": 5.108973080166132,
-        "y": 7.43222667207751
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 8.571257413999934,
+        "x": 6.417183324161972,
         "y": 7.332692763935747
       },
+      "isLocked": false,
+      "linkedName": "TrenchStart"
+    },
+    {
+      "anchor": {
+        "x": 8.625053380785223,
+        "y": 6.4611981020140385
+      },
       "prevControl": {
-        "x": 7.512333892307009,
-        "y": 7.50804467006709
+        "x": 8.643136361615767,
+        "y": 7.522066310739288
+      },
+      "nextControl": {
+        "x": 8.59277580071405,
+        "y": 4.5675800711718075
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.420628706998816,
+        "y": 1.7271530249110323
+      },
+      "prevControl": {
+        "x": 9.153486636079158,
+        "y": 2.795536270919723
+      },
+      "nextControl": {
+        "x": 7.52761565836299,
+        "y": 0.4252906287069993
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.732040332147095,
+        "y": 6.289051008303677
+      },
+      "prevControl": {
+        "x": 7.742807572114343,
+        "y": 6.848947486720436
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "IntakeLeft"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.0,
-      "rotationDegrees": -90.0
+      "waypointRelativePos": 2.008880994671408,
+      "rotationDegrees": -22.0
+    },
+    {
+      "waypointRelativePos": 2.328596802841913,
+      "rotationDegrees": 90.43953908338574
+    },
+    {
+      "waypointRelativePos": 2.824156305506233,
+      "rotationDegrees": 88.51957336130343
     }
   ],
   "constraintZones": [],
@@ -79,13 +87,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -95.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }
