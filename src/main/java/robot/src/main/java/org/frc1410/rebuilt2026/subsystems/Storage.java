@@ -1,6 +1,5 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
-import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -12,11 +11,10 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.BELT_MOTOR;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.TRANSFER_MOTOR;
+import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.INDEXER_D;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.INDEXER_I;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.INDEXER_P;
-
-import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public class Storage implements TickedSubsystem {
 
@@ -34,7 +32,7 @@ public class Storage implements TickedSubsystem {
     private double indexerSpeed = 0;
     private double transferSpeed = 0;
 
-    private PIDController indexerController;
+    private final PIDController indexerController;
 
     private final NetworkTable networkTable = NetworkTableInstance.getDefault()
             .getTable("Storage");
@@ -98,11 +96,11 @@ public class Storage implements TickedSubsystem {
             else if (this.indexerSpeed < 0) {this.indexerSpeed = -1;}
             else {System.err.println("According to all known laws of aviation, there is no way a bee should be able to fly. It's wings are too small to get it's fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible.");} //TODO: Finish
         }
+        this.indexerMotor.set(this.indexerSpeed);
+        this.transferMotor.set(transferSpeed);
     }
     @Override
     public void telem(){
-        this.indexerMotor.set(this.indexerSpeed);
         this.speedPub.set(this.targetIndexerSpeed);
-        this.transferMotor.set(transferSpeed);
     }
 }

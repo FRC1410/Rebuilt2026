@@ -45,7 +45,7 @@ public class ControlScheme {
         DRIVE_FORWARD = this.driverController.LEFT_X_AXIS;
         DRIVE_SIDEWAYS = this.driverController.LEFT_Y_AXIS;
         DRIVE_TURN = this.driverController.RIGHT_X_AXIS;
-        ROBOT_RELATIVE_TOGGLE = this.driverController.LEFT_TRIGGER.button();
+        ROBOT_RELATIVE_TOGGLE = this.driverController.LEFT_BUMPER;
 
         INTAKE = this.driverController.RIGHT_TRIGGER.button();
         INTAKE2 = this.operatorController.LEFT_TRIGGER.button();
@@ -66,7 +66,6 @@ public class ControlScheme {
         HOOD_LOW_RIGHT = this.operatorController.A;
         HOOD_HIGH_LEFT = this.operatorController.X;
 
-        AUTO_ALIGN = this.driverController.LEFT_STICK;
         ORIENTATION_RESET = this.driverController.X;
 
         SLOWMODE_TOGGLE = this.driverController.RIGHT_STICK;
