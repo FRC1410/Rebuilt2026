@@ -23,12 +23,12 @@ import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.Toggle
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeAutoCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ResetCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.TelemCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.HoodTestCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.MoveHoodCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.ShooterToggleCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageCommands.StorageToggleCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageCommands.StorageTransferRun;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.TelemCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Intake;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Shoot;
@@ -53,7 +53,7 @@ public final class Robot extends PhaseDrivenRobot {
 
     private final Shoot shooter = subsystems.track(new Shoot());
     private final ShooterToggleCommand shootingToggleCommand = new ShooterToggleCommand(shooter, 0.6);
-    private final ShooterToggleCommand passingToggleCommand = new ShooterToggleCommand(shooter, 0.5);
+    private final ShooterToggleCommand passingToggleCommand = new ShooterToggleCommand(shooter, 1);
     private final MoveHoodCommand moveHoodLowLeftCommand = new MoveHoodCommand(shooter, HoodStates.LOW_LEFT);
     private final MoveHoodCommand moveHoodLowRightCommand = new MoveHoodCommand(shooter, HoodStates.LOW_RIGHT);
     private final MoveHoodCommand moveHoodHighLeftCommand = new MoveHoodCommand(shooter, HoodStates.HIGH_LEFT);

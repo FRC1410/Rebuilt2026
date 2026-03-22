@@ -5,10 +5,10 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.spark.SparkLowLevel;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
+// import com.revrobotics.spark.SparkLowLevel;
+// import com.revrobotics.spark.SparkMax;
+// import com.revrobotics.spark.config.SparkBaseConfig;
+// import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.DoublePublisher;
@@ -16,18 +16,18 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
 
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.DRIVE_MOTOR_CURRENT_LIMIT;
+// import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.DRIVE_MOTOR_CURRENT_LIMIT;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOOD_HIGH_LEFT_SETPOINT;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOOD_LOW_LEFT_SETPOINT;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOOD_LOW_RIGHT_SETPOINT;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.*;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel;
-import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.SparkBaseConfig;
+// import com.revrobotics.spark.SparkMax;
+// import com.revrobotics.spark.SparkLowLevel;
+// import com.revrobotics.spark.config.SparkMaxConfig;
+// import com.revrobotics.spark.config.SparkBaseConfig;
 
-import com.revrobotics.servohub.ServoHub;
+// import com.revrobotics.servohub.ServoHub;
 
 public class Shoot implements TickedSubsystem {
 

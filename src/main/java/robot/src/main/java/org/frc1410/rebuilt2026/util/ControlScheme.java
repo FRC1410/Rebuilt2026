@@ -6,8 +6,8 @@ import framework.src.main.java.org.frc1410.framework.control.Controller;
 
 public class ControlScheme {
 
-    private Controller driverController;
-    private Controller operatorController;
+    private final Controller driverController;
+    private final Controller operatorController;
 
     public Axis DRIVE_FORWARD;
     public Axis DRIVE_SIDEWAYS;

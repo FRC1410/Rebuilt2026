@@ -2,7 +2,6 @@ package robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Shoot;
-import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Shoot.HoodStates;
 
 public class HoodTestCommand extends Command{
     private final Shoot shoot;
