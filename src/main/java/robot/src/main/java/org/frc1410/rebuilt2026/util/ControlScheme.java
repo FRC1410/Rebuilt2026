@@ -48,7 +48,7 @@ public class ControlScheme {
         ROBOT_RELATIVE_TOGGLE = this.driverController.LEFT_BUMPER;
 
         INTAKE = this.driverController.RIGHT_TRIGGER.button();
-        INTAKE2 = this.operatorController.LEFT_TRIGGER.button();
+        INTAKE2 = this.operatorController.LEFT_STICK;
         OUTTAKE = this.driverController.LEFT_TRIGGER.button();
         HOOD_RAISE = this.operatorController.DPAD_UP;
         HOOD_LOWER = this.operatorController.DPAD_DOWN;

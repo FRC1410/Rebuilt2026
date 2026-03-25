@@ -22,6 +22,8 @@ public class DriveLooped extends Command {
 
     private final Button robotRelativeTrigger;
 
+    private double slowSpeed = 0.6;
+
     public DriveLooped(Drivetrain drivetrain, Axis xAxis, Axis yAxis, Axis rotationAxis, Button robotRelativeTrigger) {
         this.drivetrain = drivetrain;
 
@@ -31,6 +33,10 @@ public class DriveLooped extends Command {
         this.robotRelativeTrigger = robotRelativeTrigger;
 
         this.addRequirements(drivetrain);
+    }
+
+    public void setSlowSpeed(double speed) {
+        this.slowSpeed = speed;
     }
 
     @Override
@@ -45,9 +51,9 @@ public class DriveLooped extends Command {
         
 
         if(this.drivetrain.isSlowModeEnabled()) {
-            xVelocity = SWERVE_DRIVE_MAX_SPEED.times(-this.xAxis.get() * 0.6);
-            yVelocity = SWERVE_DRIVE_MAX_SPEED.times(-this.yAxis.get() * 0.6);
-            angularVelocity = SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.times(-this.rotationAxis.get() * 0.6);
+            xVelocity = SWERVE_DRIVE_MAX_SPEED.times(-this.xAxis.get() * this.slowSpeed);
+            yVelocity = SWERVE_DRIVE_MAX_SPEED.times(-this.yAxis.get() * this.slowSpeed);
+            angularVelocity = SWERVE_DRIVE_MAX_ANGULAR_VELOCITY.times(-this.rotationAxis.get() * this.slowSpeed);
         } else {
             xVelocity = SWERVE_DRIVE_MAX_SPEED.times(-this.xAxis.get());
             yVelocity = SWERVE_DRIVE_MAX_SPEED.times(-this.yAxis.get());

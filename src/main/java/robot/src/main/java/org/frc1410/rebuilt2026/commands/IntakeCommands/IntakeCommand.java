@@ -17,6 +17,7 @@ public class IntakeCommand extends Command{
     private final Intake intake;
 
     private final Button intakeButton;
+    private final Button intakeButton2;
     private final Button outtakeButton;
     
     private final PIDController leftPID;
@@ -24,10 +25,11 @@ public class IntakeCommand extends Command{
     
     private boolean isRaised = false;
 
-    public IntakeCommand(Intake intake, Button intakeButton, Button outtakeButton) {
+    public IntakeCommand(Intake intake, Button intakeButton, Button intakeButton2, Button outtakeButton) {
         this.intake = intake;
 
         this.intakeButton = intakeButton;
+        this.intakeButton2 = intakeButton2;
         this.outtakeButton = outtakeButton;
 
         this.leftPID = new PIDController(INTAKE_FRAME_P, INTAKE_FRAME_I, INTAKE_FRAME_D);
@@ -47,7 +49,7 @@ public class IntakeCommand extends Command{
 
     @Override
     public void execute() {
-        if (this.intakeButton.isActive()){
+        if (this.intakeButton.isActive() || this.intakeButton2.isActive()){
             this.intake.setSpeed(1);
             this.intake.setTestSpeed(1);
             if (!isRaised) {

@@ -51,6 +51,14 @@ public final class Robot extends PhaseDrivenRobot {
 
     private final ControlScheme scheme = new ControlScheme(driverController, operatorController);
 
+    private final DriveLooped driveLooped = new DriveLooped(
+        this.drivetrain,
+        this.scheme.DRIVE_SIDEWAYS,
+        this.scheme.DRIVE_FORWARD,
+        this.scheme.DRIVE_TURN,
+        this.scheme.ROBOT_RELATIVE_TOGGLE
+    );
+
     private final Shoot shooter = subsystems.track(new Shoot());
     private final ShooterToggleCommand shootingToggleCommand = new ShooterToggleCommand(shooter, 0.6);
     private final ShooterToggleCommand passingToggleCommand = new ShooterToggleCommand(shooter, 1);
@@ -68,7 +76,7 @@ public final class Robot extends PhaseDrivenRobot {
 
     private final Intake intake = subsystems.track(new Intake());
 
-    private final IntakeCommand intakeCommand = new IntakeCommand(intake,this.scheme.INTAKE, this.scheme.OUTTAKE);
+    private final IntakeCommand intakeCommand = new IntakeCommand(intake,this.scheme.INTAKE, this.scheme.INTAKE2, this.scheme.OUTTAKE);
 
     private final StorageTransferRun transfer = new StorageTransferRun(storage);
 
@@ -105,6 +113,9 @@ public final class Robot extends PhaseDrivenRobot {
     }
 
     public Robot() {
+        //This should be commented unless non-team-members are driving the robot
+        // this.driveLooped.setSlowSpeed(0.1);
+
         AutoBuilder.configure(
                 this.drivetrain::getEstimatedPosition,
                 this.drivetrain::resetPose,
@@ -164,15 +175,9 @@ public final class Robot extends PhaseDrivenRobot {
     public void teleopSequence() {
         this.scheduler.scheduleDefaultCommand(resetCommand, TaskPersistence.GAMEPLAY);
         this.scheduler.scheduleDefaultCommand(
-                new DriveLooped(
-                        this.drivetrain,
-                        this.scheme.DRIVE_SIDEWAYS,
-                        this.scheme.DRIVE_FORWARD,
-                        this.scheme.DRIVE_TURN,
-                        this.scheme.ROBOT_RELATIVE_TOGGLE
-                ),
-                TaskPersistence.GAMEPLAY,
-                LockPriority.HIGH
+            driveLooped,
+            TaskPersistence.GAMEPLAY,
+            LockPriority.HIGH
         );
 
         this.scheme.STORAGE_INTAKE.whileHeldOnce(storageIntake, TaskPersistence.GAMEPLAY);
@@ -225,15 +230,9 @@ public final class Robot extends PhaseDrivenRobot {
         this.scheduler.scheduleDefaultCommand(telemCommand, TaskPersistence.GAMEPLAY);
         this.scheduler.scheduleDefaultCommand(resetCommand, TaskPersistence.GAMEPLAY);
         this.scheduler.scheduleDefaultCommand(
-                new DriveLooped(
-                        this.drivetrain,
-                        this.scheme.DRIVE_SIDEWAYS,
-                        this.scheme.DRIVE_FORWARD,
-                        this.scheme.DRIVE_TURN,
-                        this.scheme.ROBOT_RELATIVE_TOGGLE
-                ),
-                TaskPersistence.GAMEPLAY,
-                LockPriority.HIGH
+            driveLooped,
+            TaskPersistence.GAMEPLAY,
+            LockPriority.HIGH
         );
 
         this.scheme.STORAGE_INTAKE.whileHeldOnce(storageIntake, TaskPersistence.GAMEPLAY);
