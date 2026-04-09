@@ -18,11 +18,11 @@ public class OrientationResetCommand extends Command{
 
     @Override
     public void initialize() {
-        if (DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red))) {
-            this.drivetrain.resetPose(new Pose2d(0, 0, Rotation2d.fromDegrees(180)));
-        } else {
+        // if (DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red))) {
+        //     this.drivetrain.resetPose(new Pose2d(0, 0, Rotation2d.fromDegrees(180)));
+        // } else {
             this.drivetrain.resetPose(new Pose2d(0, 0, Rotation2d.kZero));
-        }
+        //}
         
     }
 
