@@ -63,9 +63,9 @@ public final class Robot extends PhaseDrivenRobot {
     private final Shoot shooter = subsystems.track(new Shoot());
     private final ShooterToggleCommand shootingToggleCommand = new ShooterToggleCommand(shooter, 0.55);
     private final ShooterToggleCommand passingToggleCommand = new ShooterToggleCommand(shooter, 1);
-    // private final MoveHoodCommand moveHoodLowLeftCommand = new MoveHoodCommand(shooter, HoodStates.LOW_LEFT);
+    private final MoveHoodCommand moveHoodLowLeftCommand = new MoveHoodCommand(shooter, HoodStates.LOW_LEFT);
     // private final MoveHoodCommand moveHoodLowRightCommand = new MoveHoodCommand(shooter, HoodStates.LOW_RIGHT);
-    // private final MoveHoodCommand moveHoodHighLeftCommand = new MoveHoodCommand(shooter, HoodStates.HIGH_LEFT);
+    private final MoveHoodCommand moveHoodHighLeftCommand = new MoveHoodCommand(shooter, HoodStates.HIGH_LEFT);
 
     // Cam[] eyesOfCthulu = new Cam[]{new Cam(CAM_NAME1, EoC1_OFFSET, drivetrain::addVisionMeasurement), new Cam(CAM_NAME2, EoC2_OFFSET, drivetrain::addVisionMeasurement)};
     // Vision kv = subsystems.track(new Vision(eyesOfCthulu, drivetrain));
@@ -92,6 +92,8 @@ public final class Robot extends PhaseDrivenRobot {
     private final AutoSelector autoSelector = new AutoSelector()
             .add("Shootah", () -> new PathPlannerAuto("Shootah"))
             .add("Tst", () -> new PathPlannerAuto("Tst"))
+            .add("DsrptL", () -> new PathPlannerAuto("DisruptLeft"))
+            .add("DsrptR", () -> new PathPlannerAuto("DisruptRight"))
             .add("RightStartAuto (Not Updated)", () -> new PathPlannerAuto("RightStartAuto"))
             .add("LeftStartAuto (Not Updated)", () -> new PathPlannerAuto("LeftStartAuto"))
             .add("PreloadRight", () -> new PathPlannerAuto("ShootPreloadRight"))
@@ -189,6 +191,7 @@ public final class Robot extends PhaseDrivenRobot {
 
         this.scheme.HOOD_RAISE.whileHeldOnce(new HoodTestCommand(shooter, .1), TaskPersistence.GAMEPLAY);
         this.scheme.HOOD_LOWER.whileHeldOnce(new HoodTestCommand(shooter, -.1), TaskPersistence.GAMEPLAY);
+        this.scheme.HOOD_HIGH_LEFT.whileHeldOnce(moveHoodHighLeftCommand, TaskPersistence.GAMEPLAY);
 
         // Add slowmode toggle on left bumper
         this.scheme.SLOWMODE_TOGGLE.whenPressed(

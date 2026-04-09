@@ -1,7 +1,10 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
 
@@ -15,7 +18,12 @@ public class OrientationResetCommand extends Command{
 
     @Override
     public void initialize() {
-        this.drivetrain.resetPose(new Pose2d(0, 0, Rotation2d.kZero));
+        if (DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red))) {
+            this.drivetrain.resetPose(new Pose2d(0, 0, Rotation2d.fromDegrees(180)));
+        } else {
+            this.drivetrain.resetPose(new Pose2d(0, 0, Rotation2d.kZero));
+        }
+        
     }
 
     @Override

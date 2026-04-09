@@ -69,17 +69,17 @@ public class ControlScheme {
         GUARDMODE_TOGGLE = this.driverController.DPAD_DOWN;
         
         //Seb Op Controls:
-        // STORAGE_INTAKE = this.operatorController.LEFT_BUMPER;
-        // STORAGE_NEUTRAL = this.operatorController.Y;
-        // STORAGE_OUTTAKE = this.operatorController.RIGHT_BUMPER;
-        // SHOOTING_TOGGLE = this.operatorController.B;
-        // PASSING_TOGGLE = this.operatorController.RIGHT_TRIGGER.button();
+        STORAGE_INTAKE = this.operatorController.LEFT_BUMPER;
+        STORAGE_NEUTRAL = this.operatorController.Y;
+        STORAGE_OUTTAKE = this.operatorController.RIGHT_BUMPER;
+        SHOOTING_TOGGLE = this.operatorController.B;
+        PASSING_TOGGLE = this.operatorController.RIGHT_TRIGGER.button();
 
         //Abbot Op Controls:
-        STORAGE_INTAKE = this.operatorController.B;
-        STORAGE_NEUTRAL = this.operatorController.X;
-        STORAGE_OUTTAKE = this.operatorController.Y;
-        SHOOTING_TOGGLE = this.operatorController.RIGHT_TRIGGER.button();
-        PASSING_TOGGLE = this.operatorController.LEFT_BUMPER;
+        // STORAGE_INTAKE = this.operatorController.Y;
+        // STORAGE_NEUTRAL = this.operatorController.B;
+        // STORAGE_OUTTAKE = this.operatorController.A;
+        // SHOOTING_TOGGLE = this.operatorController.RIGHT_TRIGGER.button();
+        // PASSING_TOGGLE = this.operatorController.LEFT_BUMPER;
     }
 }
