@@ -10,11 +10,10 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-// import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkFlexConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -107,7 +106,7 @@ public class SwerveModule implements TickedSubsystem {
         this.driveMotor.getConfigurator().apply(driveMotorConfig);
 
         // Steer config
-        var sparkConfig = new SparkFlexConfig();
+        var sparkConfig = new SparkMaxConfig();
 
         sparkConfig.smartCurrentLimit(STEER_MOTOR_CURRENT_LIMIT);
         sparkConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);

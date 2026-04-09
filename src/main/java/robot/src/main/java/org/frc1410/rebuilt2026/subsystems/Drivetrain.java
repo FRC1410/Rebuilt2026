@@ -347,7 +347,7 @@ public class Drivetrain implements TickedSubsystem {
         this.backLeftModule.randomMusic();
         this.backRightModule.randomMusic();
     }
-     public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds) {
+    public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds) {
         poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds);
     }
     public void addVisionMeasurement(

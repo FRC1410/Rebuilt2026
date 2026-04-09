@@ -33,7 +33,7 @@ public class ControlScheme {
     public Button HOOD_LOW_RIGHT;
     public Button HOOD_HIGH_LEFT;
 
-    public Button AUTO_ALIGN;
+    public Button PASSING_ANGLE_LOCK;
     public Button ORIENTATION_RESET;
 
     public Button SLOWMODE_TOGGLE;
@@ -48,7 +48,7 @@ public class ControlScheme {
         ROBOT_RELATIVE_TOGGLE = this.driverController.LEFT_BUMPER;
 
         INTAKE = this.driverController.RIGHT_TRIGGER.button();
-        INTAKE2 = this.operatorController.LEFT_STICK;
+        INTAKE2 = this.operatorController.LEFT_TRIGGER.button();
         OUTTAKE = this.driverController.LEFT_TRIGGER.button();
         HOOD_RAISE = this.operatorController.DPAD_UP;
         HOOD_LOWER = this.operatorController.DPAD_DOWN;
@@ -59,13 +59,14 @@ public class ControlScheme {
         TRANSFER = this.driverController.RIGHT_BUMPER;
         TRANSFER2 = this.operatorController.DPAD_RIGHT;
 
-        SHOOTING_TOGGLE = this.operatorController.RIGHT_TRIGGER.button();
-        PASSING_TOGGLE = this.operatorController.LEFT_TRIGGER.button();
+        SHOOTING_TOGGLE = this.operatorController.B;
+        PASSING_TOGGLE = this.operatorController.RIGHT_TRIGGER.button();
 
         HOOD_LOW_LEFT = this.operatorController.B;
         HOOD_LOW_RIGHT = this.operatorController.A;
         HOOD_HIGH_LEFT = this.operatorController.X;
 
+        PASSING_ANGLE_LOCK = this.driverController.B;
         ORIENTATION_RESET = this.driverController.X;
 
         SLOWMODE_TOGGLE = this.driverController.RIGHT_STICK;

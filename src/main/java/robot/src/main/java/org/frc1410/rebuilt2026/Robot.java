@@ -18,6 +18,7 @@ import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPri
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.AutoCommands.ShooterAutoCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.DriveLooped;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.OrientationResetCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.PassingAngleLock;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleGuardModeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleSlowmodeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeAutoCommand;
@@ -52,19 +53,19 @@ public final class Robot extends PhaseDrivenRobot {
     private final ControlScheme scheme = new ControlScheme(driverController, operatorController);
 
     private final DriveLooped driveLooped = new DriveLooped(
-        this.drivetrain,
-        this.scheme.DRIVE_SIDEWAYS,
-        this.scheme.DRIVE_FORWARD,
-        this.scheme.DRIVE_TURN,
-        this.scheme.ROBOT_RELATIVE_TOGGLE
+            this.drivetrain,
+            this.scheme.DRIVE_SIDEWAYS,
+            this.scheme.DRIVE_FORWARD,
+            this.scheme.DRIVE_TURN,
+            this.scheme.ROBOT_RELATIVE_TOGGLE
     );
 
     private final Shoot shooter = subsystems.track(new Shoot());
-    private final ShooterToggleCommand shootingToggleCommand = new ShooterToggleCommand(shooter, 0.6);
+    private final ShooterToggleCommand shootingToggleCommand = new ShooterToggleCommand(shooter, 0.55);
     private final ShooterToggleCommand passingToggleCommand = new ShooterToggleCommand(shooter, 1);
-    private final MoveHoodCommand moveHoodLowLeftCommand = new MoveHoodCommand(shooter, HoodStates.LOW_LEFT);
-    private final MoveHoodCommand moveHoodLowRightCommand = new MoveHoodCommand(shooter, HoodStates.LOW_RIGHT);
-    private final MoveHoodCommand moveHoodHighLeftCommand = new MoveHoodCommand(shooter, HoodStates.HIGH_LEFT);
+    // private final MoveHoodCommand moveHoodLowLeftCommand = new MoveHoodCommand(shooter, HoodStates.LOW_LEFT);
+    // private final MoveHoodCommand moveHoodLowRightCommand = new MoveHoodCommand(shooter, HoodStates.LOW_RIGHT);
+    // private final MoveHoodCommand moveHoodHighLeftCommand = new MoveHoodCommand(shooter, HoodStates.HIGH_LEFT);
 
     // Cam[] eyesOfCthulu = new Cam[]{new Cam(CAM_NAME1, EoC1_OFFSET, drivetrain::addVisionMeasurement), new Cam(CAM_NAME2, EoC2_OFFSET, drivetrain::addVisionMeasurement)};
     // Vision kv = subsystems.track(new Vision(eyesOfCthulu, drivetrain));
@@ -76,7 +77,7 @@ public final class Robot extends PhaseDrivenRobot {
 
     private final Intake intake = subsystems.track(new Intake());
 
-    private final IntakeCommand intakeCommand = new IntakeCommand(intake,this.scheme.INTAKE, this.scheme.INTAKE2, this.scheme.OUTTAKE);
+    private final IntakeCommand intakeCommand = new IntakeCommand(intake, this.scheme.INTAKE, this.scheme.INTAKE2, this.scheme.OUTTAKE);
 
     private final StorageTransferRun transfer = new StorageTransferRun(storage);
 
@@ -175,9 +176,9 @@ public final class Robot extends PhaseDrivenRobot {
     public void teleopSequence() {
         this.scheduler.scheduleDefaultCommand(resetCommand, TaskPersistence.GAMEPLAY);
         this.scheduler.scheduleDefaultCommand(
-            driveLooped,
-            TaskPersistence.GAMEPLAY,
-            LockPriority.HIGH
+                driveLooped,
+                TaskPersistence.GAMEPLAY,
+                LockPriority.HIGH
         );
 
         this.scheme.STORAGE_INTAKE.whileHeldOnce(storageIntake, TaskPersistence.GAMEPLAY);
@@ -201,28 +202,12 @@ public final class Robot extends PhaseDrivenRobot {
                 TaskPersistence.GAMEPLAY
         );
 
-        // this.scheme.FRAME_RAISE.whileHeld(FrameRaiseCommand, TaskPersistence.GAMEPLAY);
-        // this.scheme.FRAME_LOWER.whileHeld(FrameLowerCommand, TaskPersistence.GAMEPLAY);
         this.scheduler.scheduleDefaultCommand(intakeCommand, TaskPersistence.GAMEPLAY);
-        // this.scheme.INTAKE_REVERSE.whileHeld(intakeReverseCommand, TaskPersistence.GAMEPLAY);
-        // this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
         this.scheme.SHOOTING_TOGGLE.whileHeldOnce(shootingToggleCommand, TaskPersistence.GAMEPLAY);
         this.scheme.PASSING_TOGGLE.whileHeldOnce(passingToggleCommand, TaskPersistence.GAMEPLAY);
 
-        this.scheme.HOOD_LOW_LEFT.whileHeldOnce(moveHoodLowLeftCommand, TaskPersistence.GAMEPLAY);
-        this.scheme.HOOD_LOW_RIGHT.whileHeldOnce(moveHoodLowRightCommand, TaskPersistence.GAMEPLAY);
-        this.scheme.HOOD_HIGH_LEFT.whileHeldOnce(moveHoodHighLeftCommand, TaskPersistence.GAMEPLAY);
-        
         this.scheme.ORIENTATION_RESET.whileHeldOnce(new OrientationResetCommand(drivetrain), TaskPersistence.GAMEPLAY);
 
-        // this.scheme.AUTO_ALIGN.whileHeld(
-        //         new AutoAlign(
-        //                 drivetrain,
-        //                 kv,
-        //                 scheme.AUTO_ALIGN
-        //         ),
-        //         TaskPersistence.GAMEPLAY
-        // );
     }
 
     @Override
@@ -230,9 +215,9 @@ public final class Robot extends PhaseDrivenRobot {
         this.scheduler.scheduleDefaultCommand(telemCommand, TaskPersistence.GAMEPLAY);
         this.scheduler.scheduleDefaultCommand(resetCommand, TaskPersistence.GAMEPLAY);
         this.scheduler.scheduleDefaultCommand(
-            driveLooped,
-            TaskPersistence.GAMEPLAY,
-            LockPriority.HIGH
+                driveLooped,
+                TaskPersistence.GAMEPLAY,
+                LockPriority.HIGH
         );
 
         this.scheme.STORAGE_INTAKE.whileHeldOnce(storageIntake, TaskPersistence.GAMEPLAY);
@@ -256,33 +241,13 @@ public final class Robot extends PhaseDrivenRobot {
                 TaskPersistence.GAMEPLAY
         );
 
-        // this.scheme.FRAME_RAISE.whileHeld(FrameRaiseCommand, TaskPersistence.GAMEPLAY);
-        // this.scheme.FRAME_LOWER.whileHeld(FrameLowerCommand, TaskPersistence.GAMEPLAY);
         this.scheduler.scheduleDefaultCommand(intakeCommand, TaskPersistence.GAMEPLAY);
-        // this.scheme.INTAKE_REVERSE.whileHeld(intakeReverseCommand, TaskPersistence.GAMEPLAY);
-        // this.scheduler.scheduleDefaultCommand(readyToRumbleCommand, TaskPersistence.GAMEPLAY, LockPriority.HIGH);
         this.scheme.SHOOTING_TOGGLE.whileHeldOnce(shootingToggleCommand, TaskPersistence.GAMEPLAY);
         this.scheme.PASSING_TOGGLE.whileHeldOnce(passingToggleCommand, TaskPersistence.GAMEPLAY);
 
-        this.scheme.HOOD_LOW_LEFT.whileHeldOnce(moveHoodLowLeftCommand, TaskPersistence.GAMEPLAY);
-        this.scheme.HOOD_LOW_RIGHT.whileHeldOnce(moveHoodLowRightCommand, TaskPersistence.GAMEPLAY);
-        this.scheme.HOOD_HIGH_LEFT.whileHeldOnce(moveHoodHighLeftCommand, TaskPersistence.GAMEPLAY);
-
         this.scheme.ORIENTATION_RESET.whileHeldOnce(new OrientationResetCommand(drivetrain), TaskPersistence.GAMEPLAY);
 
-        // this.driverController.DPAD_UP.whileHeld(new IntakeMotorCommand(intake), TaskPersistence.GAMEPLAY);
-        // this.driverController.DPAD_LEFT.whileHeld(new IntakeRightMotorCommand(intake), TaskPersistence.GAMEPLAY);
-        // this.driverController.DPAD_RIGHT.whileHeld(new IntakeLeftMotorCommand(intake), TaskPersistence.GAMEPLAY);
-        // this.driverController.DPAD_DOWN.whileHeld(new IntakeTestMotorCommand(intake), TaskPersistence.GAMEPLAY);
-
-        // this.scheme.AUTO_ALIGN.whileHeld(
-        //         new AutoAlign(
-        //                 drivetrain,
-        //                 kv,
-        //                 scheme.AUTO_ALIGN
-        //         ),
-        //         TaskPersistence.GAMEPLAY
-        // );
+        this.scheduler.scheduleDefaultCommand(new PassingAngleLock(drivetrain, this.scheme.PASSING_ANGLE_LOCK), TaskPersistence.GAMEPLAY);
     }
 
     @Override

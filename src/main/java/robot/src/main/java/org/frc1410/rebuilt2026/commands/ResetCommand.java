@@ -30,6 +30,8 @@ public class ResetCommand extends Command{
                 0
             )
         );
+        this.drivetrain.setTurnRate(0);
+        this.drivetrain.aligning = false;
         this.intake.setSpeed(0);
         this.shoot.setHoodPos(HoodStates.LOW_LEFT);
         this.shoot.resetSpeed();
@@ -46,6 +48,8 @@ public class ResetCommand extends Command{
                 0
             )
         );
+        this.drivetrain.setTurnRate(0);
+        this.drivetrain.aligning = false;
         this.intake.setSpeed(0);
         this.shoot.setHoodPos(HoodStates.LOW_LEFT);
         this.shoot.resetSpeed();
