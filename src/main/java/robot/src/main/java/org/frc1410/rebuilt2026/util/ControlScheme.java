@@ -48,28 +48,38 @@ public class ControlScheme {
         ROBOT_RELATIVE_TOGGLE = this.driverController.LEFT_BUMPER;
 
         INTAKE = this.driverController.RIGHT_TRIGGER.button();
-        INTAKE2 = this.operatorController.LEFT_TRIGGER.button();
         OUTTAKE = this.driverController.LEFT_TRIGGER.button();
+        INTAKE2 = this.operatorController.LEFT_TRIGGER.button();
+
+        //only for when hood is attached
         HOOD_RAISE = this.operatorController.DPAD_UP;
         HOOD_LOWER = this.operatorController.DPAD_DOWN;
-
-        STORAGE_INTAKE = this.operatorController.LEFT_BUMPER;
-        STORAGE_NEUTRAL = this.operatorController.Y;
-        STORAGE_OUTTAKE = this.operatorController.RIGHT_BUMPER;
-        TRANSFER = this.driverController.RIGHT_BUMPER;
-        TRANSFER2 = this.operatorController.DPAD_RIGHT;
-
-        SHOOTING_TOGGLE = this.operatorController.B;
-        PASSING_TOGGLE = this.operatorController.RIGHT_TRIGGER.button();
-
         HOOD_LOW_LEFT = this.operatorController.B;
         HOOD_LOW_RIGHT = this.operatorController.A;
         HOOD_HIGH_LEFT = this.operatorController.X;
+
+
+        TRANSFER = this.driverController.RIGHT_BUMPER;
+        TRANSFER2 = this.operatorController.DPAD_RIGHT;
 
         PASSING_ANGLE_LOCK = this.driverController.B;
         ORIENTATION_RESET = this.driverController.X;
 
         SLOWMODE_TOGGLE = this.driverController.RIGHT_STICK;
         GUARDMODE_TOGGLE = this.driverController.DPAD_DOWN;
+        
+        //Seb Op Controls:
+        // STORAGE_INTAKE = this.operatorController.LEFT_BUMPER;
+        // STORAGE_NEUTRAL = this.operatorController.Y;
+        // STORAGE_OUTTAKE = this.operatorController.RIGHT_BUMPER;
+        // SHOOTING_TOGGLE = this.operatorController.B;
+        // PASSING_TOGGLE = this.operatorController.RIGHT_TRIGGER.button();
+
+        //Abbot Op Controls:
+        STORAGE_INTAKE = this.operatorController.B;
+        STORAGE_NEUTRAL = this.operatorController.X;
+        STORAGE_OUTTAKE = this.operatorController.Y;
+        SHOOTING_TOGGLE = this.operatorController.RIGHT_TRIGGER.button();
+        PASSING_TOGGLE = this.operatorController.LEFT_BUMPER;
     }
 }
