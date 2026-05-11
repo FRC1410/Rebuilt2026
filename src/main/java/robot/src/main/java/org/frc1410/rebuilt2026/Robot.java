@@ -117,7 +117,7 @@ public final class Robot extends PhaseDrivenRobot {
 
     public Robot() {
         //This should be commented unless non-team-members are driving the robot
-        // this.driveLooped.setSlowSpeed(0.1);
+        // this.driveLooped.setSlowSpeed(0.05);
 
         AutoBuilder.configure(
                 this.drivetrain::getEstimatedPosition,
