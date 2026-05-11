@@ -63,7 +63,7 @@ public final class Constants {
     public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(87.71484375); //87.535859375
     public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(167.87109375); //54.052734375
     public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(48.955078125); //50.712890625
-    public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(37.6171875); //37.44140625
+    public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(180-37.35); //37.44140625
     // public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(0); //88.769531
     // public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(0); //53.349609
     // public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(0); //155.039062-180
