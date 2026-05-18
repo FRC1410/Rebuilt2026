@@ -229,9 +229,9 @@ public class Drivetrain implements TickedSubsystem {
 
 
         Rotation2d robotAngle = this.getGyroYaw().minus(this.fieldRelativeOffset);
-        if (DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red))) {
-            robotAngle = robotAngle.rotateBy(Rotation2d.fromDegrees(180));
-        }
+        // if (DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red))) {
+        //     robotAngle = robotAngle.rotateBy(Rotation2d.fromDegrees(180));
+        // }
 
         var robotRelativeChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, robotAngle);
 
