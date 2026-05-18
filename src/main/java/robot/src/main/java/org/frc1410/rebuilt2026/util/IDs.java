@@ -50,4 +50,9 @@ public final class IDs {
 	public static final int INTAKE_FRAME_SPARK_LEFT = 12;
 	public static final int INTAKE_FRAME_SPARK_RIGHT = 20;
 	public static final int INTAKE_TEST_SPARK = 14;
+
+	//Temp values for shooter
+	public static final int TURRET_SPARK = 67;
+	public static final int TURRET_HOOD_SPARK = 69;
+	public static final int TURRET_SWIVEL_SPARK = 420;
 }
