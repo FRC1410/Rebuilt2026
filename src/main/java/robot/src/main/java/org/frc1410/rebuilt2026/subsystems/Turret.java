@@ -18,12 +18,16 @@ public class Turret implements TickedSubsystem{
     private final SparkMax hood;
     private final SparkMax swivel;
     private final SparkMax shoot;
+    private double TargetSwivelPos;
+    private double TargetHoodPos;
+    private double shooterSpeed;
+    public enum ShooterStates{
+        FULLPOWER, LOWPOWER, NEUTRAL, REVERSE
+    }
+    private ShooterStates ShooterState = ShooterStates.NEUTRAL; 
+
     
     public Turret(){
-        // this.intakeMotor = new SparkMax(INTAKE_SPARK, SparkLowLevel.MotorType.kBrushless);
-        // SparkMaxConfig intakeMotorConfig = new SparkMaxConfig();
-        // intakeMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
-        // intakeMotorConfig.smartCurrentLimit(30);
         this.swivel = new SparkMax(TURRET_SWIVEL_SPARK, SparkLowLevel.MotorType.kBrushless);
         SparkMaxConfig swivelHoodConfig = new SparkMaxConfig();
         swivelHoodConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
@@ -36,10 +40,28 @@ public class Turret implements TickedSubsystem{
         this.hood.configure(swivelHoodConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
         this.hood.configure(shootConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
     }
+    public void setShooterSpeed(ShooterStates s){
+        ShooterState = s;
+    }
     
+
     @Override
     public void periodic(){
-
+        switch(ShooterState){
+            case FULLPOWER:
+                shooterSpeed = .9;
+                break;
+            case LOWPOWER:
+                shooterSpeed = .4;
+                break;
+            case NEUTRAL:
+                shooterSpeed = 0;
+                break;
+            case REVERSE:
+                shooterSpeed = -0.7;
+                break;
+        }
+        shoot.set(shooterSpeed);
     }
     @Override
     public void telem(){
