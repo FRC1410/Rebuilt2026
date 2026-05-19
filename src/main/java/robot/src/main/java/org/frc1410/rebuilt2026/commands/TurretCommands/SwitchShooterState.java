@@ -5,12 +5,19 @@ import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Turret;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Turret.ShooterStates;
 
 public class SwitchShooterState extends Command{
+    
+    //Declare necessary
     private final Turret t;
     private final ShooterStates s;
     
-    public SwitchShooterState(Turret tu, ShooterStates ss){
-        t = tu;
-        s= ss;
+
+    /** Change the state of the shooter by passing in a {@link ShooterStates state}
+    * @param turret feed in the turret here
+    * @param state pass in the state you want to change to
+    */
+    public SwitchShooterState(Turret turret, ShooterStates state){
+        t = turret;
+        s = state;
     }
 
     @Override
