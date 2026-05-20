@@ -77,6 +77,14 @@ public final class Tuning {
     public static final double INDEXER_I = 0.0;
     public static final double INDEXER_D = 0.0;
 
+    // Turret PIDs
+     public static final double HOOD_P = 0.1;
+     public static final double HOOD_I = 0.0;
+     public static final double HOOD_D = 0.0;
+
+     public static final double SWIVEL_P = 0.1;
+     public static final double SWIVEL_I = 0.0;
+     public static final double SWIVEL_D = 0.0;
     //frame left pos down: -0.23809510469436646
     //frame right pos down: -0.21428579092025757
     //frame left pos up: -21.71417999267578
