@@ -90,14 +90,14 @@ public class Turret implements TickedSubsystem {
     /** Sets the {@link Turret hood} to a desired angle in degrees
     *  @param deg Feed in your degrees value here, assume 0 is lowest position for the hood and you're incrementing ccw up to 90 degrees
     */
-    public void setHoodAngle(int deg){
+    public void setHoodAngle(double deg){
         targetHoodPos = deg;
     }
 
     /** Sets the {@link Turret swivel} to a desired angle in degrees
     *  @param deg Feed in your degrees value here, assume 0 is the opening facing the intake, up to 359 ccw or cw
     */
-    public void setSwivelAngle(int deg)
+    public void setSwivelAngle(double deg)
     {
         targetSwivelPos = deg;
     }

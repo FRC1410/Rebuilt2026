@@ -11,6 +11,12 @@ public class SwivelCommand extends Command {
     Axis a1;
     Axis a2;
 
+
+    /** Manual Swivel input 
+     * @param turret feeds in the {@link Turret} you're modifying
+     * @param a1 is your x axis
+     * @param a2 is your y axis
+    */
     public SwivelCommand(Turret turret, Axis a1, Axis a2) {
         this.turret = turret;
         this.a1 = a1;
@@ -19,7 +25,7 @@ public class SwivelCommand extends Command {
 
     @Override
     public void execute() {
-        double angle = Math.acos(a1.get()/a2.get()/a2.get());
+        double angle = Math.atan2(a1.get(), a2.get());
 
         this.turret.setSwivelAngle(angle);
     }
