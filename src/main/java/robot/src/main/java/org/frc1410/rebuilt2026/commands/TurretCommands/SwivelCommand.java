@@ -8,8 +8,8 @@ public class SwivelCommand extends Command {
 
     private Turret turret;
 
-    Axis a1;
-    Axis a2;
+    private Axis a1;
+    private Axis a2;
 
 
     /** Manual Swivel input 

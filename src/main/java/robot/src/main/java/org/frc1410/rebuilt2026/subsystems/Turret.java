@@ -29,6 +29,7 @@ public class Turret implements TickedSubsystem {
     private double targetSwivelPos;
     private double targetHoodPos;
     private double shooterSpeed;
+    private double distance;
 
     private PIDController hoodController;
     private PIDController swivelController;
@@ -64,6 +65,7 @@ public class Turret implements TickedSubsystem {
         this.hood.configure(swivelHoodConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
         this.swivel.configure(swivelHoodConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
         this.shoot.configure(shootConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
+        distance = 0.0;
     }
 
     /**
@@ -101,6 +103,12 @@ public class Turret implements TickedSubsystem {
     {
         targetSwivelPos = deg;
     }
+    /**Sets the distance of the robot from the hub(in meters)
+     * @param dist Distance from the camera to the target
+     */
+    public void setDistance(double dist){
+        distance = dist;
+    }
     @Override
     public void periodic() {
 
@@ -118,30 +126,34 @@ public class Turret implements TickedSubsystem {
         //Put NetworkTables here if there are any
     }
 
-    /** Returns the actual current angle of the swivel */
+    /** @return the actual current angle of the swivel */
     public double getSwivel() {
         return swivel.getEncoder().getPosition() * 360;
     }
 
-    /** Return actual current hood angle */
+    /** @return actual current hood angle */
     public double getHood() {
         return hood.getEncoder().getPosition() * 360;
     }
     
-    /** Returns current shooter speed*/
+    /** @return current shooter speed*/
     public double getShooter() {
         return shooterSpeed;
     }
 
-    /** Returns what the hood should be at degrees*/
+    /** @return what the hood should be at degrees*/
     public double getDesiredHood(){
         return targetHoodPos;
     }
 
-    /** Returns what the swivel should be at in degrees*/
+    /** @return what the swivel should be at in degrees*/
     public double getDesiredSwivel(){
         return targetSwivelPos;
     }
-
+    
+    /** @return Distance from camera to target in meters*/
+    public double returnDistance(){
+        return distance;
+    }
     
 }

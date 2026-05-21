@@ -4,13 +4,13 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Radians;
 
 public class AngleCalc {
-    double GRAVITY = 9.81;
-    double VELOCITY = 17;
+    private static double GRAVITY = 9.81;
+    private static double VELOCITY = 17;
 
-    double TARGET_HEIGHT = 1.8288;
+    private static double TARGET_HEIGHT = 1.8288;
 
 
-    private double[] getVels(double angle) {
+    private static double[] getVels(double angle) {
         return new double[]{
             Math.sin(Radians.convertFrom(angle, Degrees)) 
             * VELOCITY, 
@@ -19,15 +19,15 @@ public class AngleCalc {
         };
     }
 
-    private double height(double time, double vUp) {
+    private static double height(double time, double vUp) {
         return ((vUp * time) - ((GRAVITY / 2) * time * time));
     }
 
-    private double forward(double time, double vForward) {
+    private static double forward(double time, double vForward) {
         return (vForward * time);
     }
 
-    public double calcAngle(double distance) {
+    public static double calcAngle(double distance) {
         double vUp;
         double vForward;
 
