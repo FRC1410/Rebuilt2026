@@ -44,8 +44,8 @@ public class Turret implements TickedSubsystem {
     public Turret() {
 
         //Declare PID controllers
-        hoodController = new PIDCotroller(HOOD_P, HOOD_I, HOOD_D);
-        swivelController = new PIDDConttroller(SWIVEL_P, SWIVEL_I, SWIVEL_DD);
+        hoodController = new PIDController(HOOD_P, HOOD_I, HOOD_D);
+        swivelController = new PIDController(SWIVEL_P, SWIVEL_I, SWIVEL_D);
 
         //Declare our swivel and hood sparks(which use PID) and create the config for them
         this.swivel = new SparkMax(TURRET_SWIVEL_SPARK, SparkLowLevel.MotorType.kBrushless);
@@ -87,19 +87,26 @@ public class Turret implements TickedSubsystem {
                 shooterSpeed = -0.7;
         }
     }
-    /** Sets the hood to a desired angle in degrees
-    *  @param deg Feed in your degrees value here, assume 0 is lowest position for the hood and you're incrementing ccw
+    /** Sets the {@link Turret hood} to a desired angle in degrees
+    *  @param deg Feed in your degrees value here, assume 0 is lowest position for the hood and you're incrementing ccw up to 90 degrees
     */
     public void setHoodAngle(int deg){
-        
+        targetHoodPos = deg;
     }
 
+    /** Sets the {@link Turret swivel} to a desired angle in degrees
+    *  @param deg Feed in your degrees value here, assume 0 is the opening facing the intake, up to 359 ccw or cw
+    */
+    public void setSwivelAngle(int deg)
+    {
+        targetSwivelPos = deg;
+    }
     @Override
     public void periodic() {
 
         //Calculates the power needed to make a given motor go to a desired angle in degrees
-        double swivelOutput = swivelController.calculate(swivel.get(), targetSwivelPos);
-        double hoodOutput = hoodController.calculate(hood.get(), targetHoodPos);
+        double swivelOutput = swivelController.calculate(swivel.getEncoder().getPosition() * 360, targetSwivelPos);
+        double hoodOutput = hoodController.calculate(hood.getEncoder().getPosition() * 360, targetHoodPos);
 
         shoot.set(shooterSpeed);
         swivel.set(swivelOutput);
@@ -108,17 +115,17 @@ public class Turret implements TickedSubsystem {
 
     @Override
     public void telem() {
-        //copy everything from periodic here once it fully works
+        //Put NetworkTables here if there are any
     }
 
     /** Returns the actual current angle of the swivel */
     public double getSwivel() {
-        return swivel.get();
+        return swivel.getEncoder().getPosition() * 360;
     }
 
     /** Return actual current hood angle */
     public double getHood() {
-        return hood.get();
+        return hood.getEncoder().getPosition() * 360;
     }
     
     /** Returns current shooter speed*/
@@ -126,12 +133,12 @@ public class Turret implements TickedSubsystem {
         return shooterSpeed;
     }
 
-    /** Returns what the hood should be at */
+    /** Returns what the hood should be at degrees*/
     public double getDesiredHood(){
         return targetHoodPos;
     }
 
-    /** Returns what the swivel should be at */
+    /** Returns what the swivel should be at in degrees*/
     public double getDesiredSwivel(){
         return targetSwivelPos;
     }
