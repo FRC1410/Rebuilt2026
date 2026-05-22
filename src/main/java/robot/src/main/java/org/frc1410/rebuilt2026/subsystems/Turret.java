@@ -1,14 +1,23 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
+
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.SHOOTER1;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.SHOOTER2;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.TURRET_HOOD_SPARK;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.TURRET_SPARK;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.TURRET_SWIVEL_SPARK;
 
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.HOOD_P;
@@ -21,9 +30,11 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWIVEL_D;
 public class Turret implements TickedSubsystem {
 
     //SparkMaxes control the motors that operate the turret, declare them here
-    private final SparkMax hood;
+    private final SparkFlex hood;
     private final SparkMax swivel;
-    private final SparkMax shoot;
+    private final TalonFX shoot1;
+    private final TalonFX shoot2;
+    // 
 
     //Declare stuff that we will be altering the sparks with 
     private double targetSwivelPos;
@@ -50,21 +61,31 @@ public class Turret implements TickedSubsystem {
 
         //Declare our swivel and hood sparks(which use PID) and create the config for them
         this.swivel = new SparkMax(TURRET_SWIVEL_SPARK, SparkLowLevel.MotorType.kBrushless);
-        SparkMaxConfig swivelHoodConfig = new SparkMaxConfig();
-        swivelHoodConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
-        swivelHoodConfig.smartCurrentLimit(30);
-        this.hood = new SparkMax(TURRET_HOOD_SPARK, SparkLowLevel.MotorType.kBrushless);
+        SparkMaxConfig swivelConfig = new SparkMaxConfig();
+        swivelConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
+        swivelConfig.smartCurrentLimit(30);
+
+        SparkFlexConfig hoodConfig = new SparkFlexConfig();
+        hoodConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
+        hoodConfig.smartCurrentLimit(30);
+        this.hood = new SparkFlex(TURRET_HOOD_SPARK, SparkLowLevel.MotorType.kBrushless);
 
         //Declare the shooter spark and create the config for the spark
-        this.shoot = new SparkMax(TURRET_SPARK, SparkLowLevel.MotorType.kBrushless);
-        SparkMaxConfig shootConfig = new SparkMaxConfig();
-        shootConfig.idleMode(SparkBaseConfig.IdleMode.kCoast);
-        shootConfig.smartCurrentLimit(30);
+        this.shoot1 = new TalonFX(SHOOTER1);
+        this.shoot2 = new TalonFX(SHOOTER2);
+        TalonFXConfiguration shootConfig = new TalonFXConfiguration();
+        shootConfig.CurrentLimits.SupplyCurrentLimit = 30;
+        shootConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+
+        shootConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        shootConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
         //Configure our sparks based on the configs we just made
-        this.hood.configure(swivelHoodConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
-        this.swivel.configure(swivelHoodConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
-        this.shoot.configure(shootConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
+        this.hood.configure(hoodConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
+        this.swivel.configure(swivelConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
+
+        this.shoot1.getConfigurator().apply(shootConfig);
+        this.shoot2.getConfigurator().apply(shootConfig);
         distance = 0.0;
     }
 
@@ -116,7 +137,8 @@ public class Turret implements TickedSubsystem {
         double swivelOutput = swivelController.calculate(swivel.getEncoder().getPosition() * 360, targetSwivelPos);
         double hoodOutput = hoodController.calculate(hood.getEncoder().getPosition() * 360, targetHoodPos);
 
-        shoot.set(shooterSpeed);
+        shoot1.set(shooterSpeed);
+        shoot2.set(-shooterSpeed);
         swivel.set(swivelOutput);
         hood.set(hoodOutput);
     }
