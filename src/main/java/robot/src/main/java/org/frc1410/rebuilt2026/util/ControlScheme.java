@@ -39,6 +39,15 @@ public class ControlScheme {
     public Button SLOWMODE_TOGGLE;
     public Button GUARDMODE_TOGGLE;
 
+    public Axis SWIVEL_X;
+    public Axis SWIVEL_Y;
+
+    public Button SHOOTER_FULLPOWER;
+    public Button SHOOTER_HALFPOWER;
+    public Button SHOOTER_NEUTRAL;
+    public Button SHOOTER_REVERSE;
+
+
     public ControlScheme(Controller C1, Controller C2) {
         driverController = C1;
         operatorController = C2;
@@ -67,7 +76,14 @@ public class ControlScheme {
 
         SLOWMODE_TOGGLE = this.driverController.RIGHT_STICK;
         GUARDMODE_TOGGLE = this.driverController.DPAD_DOWN;
-        
+
+        SWIVEL_X = this.operatorController.RIGHT_X_AXIS;
+        SWIVEL_X = this.operatorController.RIGHT_Y_AXIS;
+
+        SHOOTER_FULLPOWER = this.operatorController.A;
+        SHOOTER_HALFPOWER = this.operatorController.B;
+        SHOOTER_REVERSE = this.operatorController.X;
+        SHOOTER_NEUTRAL = this.operatorController.Y;
         //Seb Op Controls:
         STORAGE_INTAKE = this.operatorController.LEFT_BUMPER;
         STORAGE_NEUTRAL = this.operatorController.Y;
