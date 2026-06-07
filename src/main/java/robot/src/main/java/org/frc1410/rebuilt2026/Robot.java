@@ -1,65 +1,15 @@
 package robot.src.main.java.org.frc1410.rebuilt2026;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StringPublisher;
-import edu.wpi.first.networktables.StringSubscriber;
-import edu.wpi.first.wpilibj.DriverStation;
 import framework.src.main.java.org.frc1410.framework.AutoSelector;
 import framework.src.main.java.org.frc1410.framework.PhaseDrivenRobot;
 import framework.src.main.java.org.frc1410.framework.control.Controller;
-import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
 import framework.src.main.java.org.frc1410.framework.scheduler.task.TaskPersistence;
-import framework.src.main.java.org.frc1410.framework.scheduler.task.lock.LockPriority;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ResetCommand;
-// import robot.src.main.java.org.frc1410.rebuilt2026.commands.AutoCommands.ShooterAutoCommand;
-// import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.DriveLooped;
-// import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.OrientationResetCommand;
-// import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.PassingAngleLock;
-// import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleGuardModeCommand;
-// import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleSlowmodeCommand;
-// import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeAutoCommand;
-// import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeCommand;
-// import robot.src.main.java.org.frc1410.rebuilt2026.commands.ResetCommand;
-// import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.HoodTestCommand;
-// import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.MoveHoodCommand;
-// import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.ShooterToggleCommand;
-// import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageCommands.StorageToggleCommand;
-// import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageCommands.StorageTransferRun;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.TelemCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.AutoCommands.ShooterAutoCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.OrientationResetCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.PassingAngleLock;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleGuardModeCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleSlowmodeCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeAutoCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.HoodTestCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.MoveHoodCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.ShooterToggleCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageCommands.StorageToggleCommand;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.StorageCommands.StorageTransferRun;
-import robot.src.main.java.org.frc1410.rebuilt2026.commands.TurretCommands.*;
-import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Intake;
-// import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Drivetrain;
-// import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Intake;
-import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Shoot;
-import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Shoot.HoodStates;
-import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Turret.ShooterStates;
-import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Storage;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.TurretCommands.SwivelCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Turret;
-
-// import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Storage;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOLONOMIC_AUTO_CONFIG;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.ROBOT_CONFIG;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.ControlScheme;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
-import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 // import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.EoC1_OFFSET;
 // import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.EoC2_OFFSET;
 
@@ -79,33 +29,33 @@ public final class Robot extends PhaseDrivenRobot {
     //         this.scheme.ROBOT_RELATIVE_TOGGLE
     // );
 
-    private final Shoot shooter = subsystems.track(new Shoot());
-    private final ShooterToggleCommand shootingToggleCommand = new ShooterToggleCommand(shooter, 0.55);
-    private final ShooterToggleCommand passingToggleCommand = new ShooterToggleCommand(shooter, 1);
+    // private final Shoot shooter = subsystems.track(new Shoot());
+    // private final ShooterToggleCommand shootingToggleCommand = new ShooterToggleCommand(shooter, 0.55);
+    // private final ShooterToggleCommand passingToggleCommand = new ShooterToggleCommand(shooter, 1);
     // private final MoveHoodCommand moveHoodLowLeftCommand = new MoveHoodCommand(shooter, HoodStates.LOW_LEFT);
     // // private final MoveHoodCommand moveHoodLowRightCommand = new MoveHoodCommand(shooter, HoodStates.LOW_RIGHT);
     // private final MoveHoodCommand moveHoodHighLeftCommand = new MoveHoodCommand(shooter, HoodStates.HIGH_LEFT);
 
     // Cam[] eyesOfCthulu = new Cam[]{new Cam(CAM_NAME1, EoC1_OFFSET, drivetrain::addVisionMeasurement), new Cam(CAM_NAME2, EoC2_OFFSET, drivetrain::addVisionMeasurement)};
     // Vision kv = subsystems.track(new Vision(eyesOfCthulu, drivetrain));
-    private final Storage storage = subsystems.track(new Storage());
+    // private final Storage storage = subsystems.track(new Storage());
 
-    private final StorageToggleCommand storageIntake = new StorageToggleCommand(storage, Storage.StorageStates.INTAKE);
-    private final StorageToggleCommand storageNeutral = new StorageToggleCommand(storage, Storage.StorageStates.NEUTRAL);
-    private final StorageToggleCommand storageOuttake = new StorageToggleCommand(storage, Storage.StorageStates.OUTTAKE);
+    // private final StorageToggleCommand storageIntake = new StorageToggleCommand(storage, Storage.StorageStates.INTAKE);
+    // private final StorageToggleCommand storageNeutral = new StorageToggleCommand(storage, Storage.StorageStates.NEUTRAL);
+    // private final StorageToggleCommand storageOuttake = new StorageToggleCommand(storage, Storage.StorageStates.OUTTAKE);
 
-    private final Intake intake = subsystems.track(new Intake());
+    // private final Intake intake = subsystems.track(new Intake());
 
-    private final IntakeCommand intakeCommand = new IntakeCommand(intake, this.scheme.INTAKE, this.scheme.INTAKE2, this.scheme.OUTTAKE);
+    // private final IntakeCommand intakeCommand = new IntakeCommand(intake, this.scheme.INTAKE, this.scheme.INTAKE2, this.scheme.OUTTAKE);
 
-    private final StorageTransferRun transfer = new StorageTransferRun(storage);
+    // private final StorageTransferRun transfer = new StorageTransferRun(storage);
 
-    private final Turret turret = new Turret();
+    private final Turret turret = subsystems.track(new Turret());
     private final SwivelCommand swivel = new SwivelCommand(turret, this.scheme.SWIVEL_X, this.scheme.SWIVEL_Y);
-    private final SwitchShooterState shooterFullPower = new SwitchShooterState(turret, ShooterStates.FULLPOWER);
-    private final SwitchShooterState shooterHalfPower = new SwitchShooterState(turret, ShooterStates.LOWPOWER);
-    private final SwitchShooterState shooterNeutral = new SwitchShooterState(turret, ShooterStates.NEUTRAL);
-    private final SwitchShooterState shooterReverse = new SwitchShooterState(turret, ShooterStates.REVERSE);
+    // private final SwitchShooterState shooterFullPower = new SwitchShooterState(turret, ShooterStates.FULLPOWER);
+    // private final SwitchShooterState shooterHalfPower = new SwitchShooterState(turret, ShooterStates.LOWPOWER);
+    // private final SwitchShooterState shooterNeutral = new SwitchShooterState(turret, ShooterStates.NEUTRAL);
+    // private final SwitchShooterState shooterReverse = new SwitchShooterState(turret, ShooterStates.REVERSE);
 
     // private final ResetCommand resetCommand = new ResetCommand(drivetrain, intake, shooter, storage);
     // private final ReadyToRumbleCommand readyToRumbleCommand = new ReadyToRumbleCommand(driverController);
@@ -202,10 +152,10 @@ public final class Robot extends PhaseDrivenRobot {
 
     @Override
     public void teleopSequence() {
-        this.scheme.SHOOTER_FULLPOWER.whileHeldOnce(shooterFullPower, TaskPersistence.GAMEPLAY);
-        this.scheme.SHOOTER_HALFPOWER.whileHeldOnce(shooterHalfPower, TaskPersistence.GAMEPLAY);
-        this.scheme.SHOOTER_NEUTRAL.whileHeldOnce(shooterNeutral, TaskPersistence.GAMEPLAY);
-        this.scheme.SHOOTER_REVERSE.whileHeldOnce(shooterReverse, TaskPersistence.GAMEPLAY);
+        // this.scheme.SHOOTER_FULLPOWER.whileHeldOnce(shooterFullPower, TaskPersistence.GAMEPLAY);
+        // this.scheme.SHOOTER_HALFPOWER.whileHeldOnce(shooterHalfPower, TaskPersistence.GAMEPLAY);
+        // this.scheme.SHOOTER_NEUTRAL.whileHeldOnce(shooterNeutral, TaskPersistence.GAMEPLAY);
+        // this.scheme.SHOOTER_REVERSE.whileHeldOnce(shooterReverse, TaskPersistence.GAMEPLAY);
 
         this.scheduler.scheduleDefaultCommand(swivel, TaskPersistence.GAMEPLAY);
         // this.scheduler.scheduleDefaultCommand(resetCommand, TaskPersistence.GAMEPLAY);

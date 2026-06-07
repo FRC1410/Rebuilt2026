@@ -25,9 +25,10 @@ public class SwivelCommand extends Command {
 
     @Override
     public void execute() {
-        double angle = Math.atan2(a1.get(), a2.get());
+        // double angle = Math.atan2(a1.get(), a2.get());
 
-        this.turret.setSwivelAngle(angle);
+        // this.turret.setSwivelAngle(angle);
+        this.turret.setSwivelSpeed(a1.get() / 2);
     }
 
 }

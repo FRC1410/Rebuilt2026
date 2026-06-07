@@ -78,7 +78,7 @@ public class ControlScheme {
         GUARDMODE_TOGGLE = this.driverController.DPAD_DOWN;
 
         SWIVEL_X = this.operatorController.RIGHT_X_AXIS;
-        SWIVEL_X = this.operatorController.RIGHT_Y_AXIS;
+        SWIVEL_Y = this.operatorController.RIGHT_Y_AXIS;
 
         SHOOTER_FULLPOWER = this.operatorController.A;
         SHOOTER_HALFPOWER = this.operatorController.B;

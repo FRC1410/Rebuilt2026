@@ -10,22 +10,19 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
-
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.SHOOTER1;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.SHOOTER2;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.TURRET_HOOD_SPARK;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.TURRET_HOOD_FLEX;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.TURRET_SWIVEL_SPARK;
-
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.HOOD_P;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.HOOD_I;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.HOOD_D;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWIVEL_P;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWIVEL_I;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.HOOD_I;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.HOOD_P;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWIVEL_D;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWIVEL_I;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning.SWIVEL_P;
 
 public class Turret implements TickedSubsystem {
 
@@ -42,6 +39,8 @@ public class Turret implements TickedSubsystem {
     private double shooterSpeed;
     private double distance;
 
+    private double swivelSpeed = 2;
+
     private PIDController hoodController;
     private PIDController swivelController;
 
@@ -49,7 +48,7 @@ public class Turret implements TickedSubsystem {
     public enum ShooterStates {
         FULLPOWER, LOWPOWER, NEUTRAL, REVERSE
     }
-    //Initialize the statemachine ina neutral state
+    //Initialize the statemachine in a neutral state
     private ShooterStates shooterState = ShooterStates.NEUTRAL;
 
     //Constructor
@@ -68,7 +67,7 @@ public class Turret implements TickedSubsystem {
         SparkFlexConfig hoodConfig = new SparkFlexConfig();
         hoodConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         hoodConfig.smartCurrentLimit(30);
-        this.hood = new SparkFlex(TURRET_HOOD_SPARK, SparkLowLevel.MotorType.kBrushless);
+        this.hood = new SparkFlex(TURRET_HOOD_FLEX, SparkLowLevel.MotorType.kBrushless);
 
         //Declare the shooter spark and create the config for the spark
         this.shoot1 = new TalonFX(SHOOTER1);
@@ -110,37 +109,64 @@ public class Turret implements TickedSubsystem {
                 shooterSpeed = -0.7;
         }
     }
-    /** Sets the {@link Turret hood} to a desired angle in degrees
-    *  @param deg Feed in your degrees value here, assume 0 is lowest position for the hood and you're incrementing ccw up to 90 degrees
-    */
-    public void setHoodAngle(double deg){
+
+    /**
+     * Sets the {@link Turret hood} to a desired angle in degrees
+     *
+     * @param deg Feed in your degrees value here, assume 0 is lowest position
+     * for the hood and you're incrementing ccw up to 90 degrees
+     */
+    public void setHoodAngle(double deg) {
         targetHoodPos = deg;
     }
 
-    /** Sets the {@link Turret swivel} to a desired angle in degrees
-    *  @param deg Feed in your degrees value here, assume 0 is the opening facing the intake, up to 359 ccw or cw
-    */
-    public void setSwivelAngle(double deg)
-    {
+    /**
+     * Sets the {@link Turret swivel} to a desired angle in degrees
+     *
+     * @param deg Feed in your degrees value here, assume 0 is the opening
+     * facing the intake, up to 359 ccw or cw
+     */
+    public void setSwivelAngle(double deg) {
         targetSwivelPos = deg;
     }
-    /**Sets the distance of the robot from the hub(in meters)
+
+    /**
+     * Sets the {@link Turret swivel} to a desired speed in -1 to 1. Manual
+     * control only, use PID 90% of the time
+     *
+     * @param deg Feed in your speed value here
+     */
+    public void setSwivelSpeed(double speed) {
+        swivelSpeed = speed;
+    }
+
+    /**
+     * Sets the distance of the robot from the hub(in meters)
+     *
      * @param dist Distance from the camera to the target
      */
-    public void setDistance(double dist){
+    public void setDistance(double dist) {
         distance = dist;
     }
+
     @Override
     public void periodic() {
 
         //Calculates the power needed to make a given motor go to a desired angle in degrees
-        double swivelOutput = swivelController.calculate(swivel.getEncoder().getPosition() * 360, targetSwivelPos);
-        double hoodOutput = hoodController.calculate(hood.getEncoder().getPosition() * 360, targetHoodPos);
+        // double swivelOutput = swivelController.calculate(swivel.getEncoder().getPosition() * 360, targetSwivelPos);
+        // double hoodOutput = hoodController.calculate(hood.getEncoder().getPosition() * 360, targetHoodPos);
 
-        shoot1.set(shooterSpeed);
-        shoot2.set(-shooterSpeed);
-        swivel.set(swivelOutput);
-        hood.set(hoodOutput);
+        // shoot1.set(shooterSpeed);
+        // shoot2.set(-shooterSpeed);
+        if (swivelSpeed >= -1 && swivelSpeed <= 1) {
+            swivel.set(swivelSpeed);
+        } else {
+            swivel.set(0);
+            // swivel.set(swivelOutput);
+        }
+        // hood.set(hoodOutput);
+
+        System.out.println(swivelSpeed);
     }
 
     @Override
@@ -148,34 +174,46 @@ public class Turret implements TickedSubsystem {
         //Put NetworkTables here if there are any
     }
 
-    /** @return the actual current angle of the swivel */
+    /**
+     * @return the actual current angle of the swivel
+     */
     public double getSwivel() {
         return swivel.getEncoder().getPosition() * 360;
     }
 
-    /** @return actual current hood angle */
+    /**
+     * @return actual current hood angle
+     */
     public double getHood() {
         return hood.getEncoder().getPosition() * 360;
     }
-    
-    /** @return current shooter speed*/
+
+    /**
+     * @return current shooter speed
+     */
     public double getShooter() {
         return shooterSpeed;
     }
 
-    /** @return what the hood should be at degrees*/
-    public double getDesiredHood(){
+    /**
+     * @return what the hood should be at degrees
+     */
+    public double getDesiredHood() {
         return targetHoodPos;
     }
 
-    /** @return what the swivel should be at in degrees*/
-    public double getDesiredSwivel(){
+    /**
+     * @return what the swivel should be at in degrees
+     */
+    public double getDesiredSwivel() {
         return targetSwivelPos;
     }
-    
-    /** @return Distance from camera to target in meters*/
-    public double returnDistance(){
+
+    /**
+     * @return Distance from camera to target in meters
+     */
+    public double returnDistance() {
         return distance;
     }
-    
+
 }
