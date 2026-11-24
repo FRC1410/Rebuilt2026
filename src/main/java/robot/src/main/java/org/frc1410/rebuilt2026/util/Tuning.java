@@ -9,17 +9,19 @@ import edu.wpi.first.math.geometry.Translation3d;
 public final class Tuning {
 
     // Drivetrain
-    public static final double SWERVE_DRIVE_P = 0.401;
-    public static final double SWERVE_DRIVE_I = 0;
-    public static final double SWERVE_DRIVE_D = 0.000;
+    public static final double SWERVE_DRIVE_P = 0.00005;
+    public static final double SWERVE_DRIVE_I = 0.0;
+    public static final double SWERVE_DRIVE_D = 0.0;
 
-    public static final double SWERVE_STEER_P = 4.7; //4.7
-    public static final double SWERVE_STEER_I = 0.0;
-    public static final double SWERVE_STEER_D = 0.0;
-
-//    public static final double SWERVE_STEER_P = 0.0;
-//    public static final double SWERVE_STEER_I = 0.0;
-//    public static final double SWERVE_STEER_D = 0.0;
+//     public static final double SWERVE_DRIVE_P = 0.0;
+//     public static final double SWERVE_DRIVE_I = 0.0;
+//     public static final double SWERVE_DRIVE_D = 0.0;
+    public static final double SWERVE_STEER_P = 8.0; //4.7
+    public static final double SWERVE_STEER_I = 0.001;
+    public static final double SWERVE_STEER_D = 0.009;
+//     public static final double SWERVE_STEER_P = 0.0;
+//     public static final double SWERVE_STEER_I = 0.0;
+//     public static final double SWERVE_STEER_D = 0.0;
 
     public static final double DRIVE_KS = 0.36498;
     public static final double DRIVE_KV = 0.11769;
@@ -30,18 +32,18 @@ public final class Tuning {
     public static final double VISION_TURN_kP = 0.07;
     
     public static final Transform3d EoC1_OFFSET = new Transform3d(new Translation3d(
-        //How forward or backward the came is from robot center
-        -0.209, //0
-        //How left or right cam is from robot center
-        0, //0
-        //Measures how far up or down from the robot center the cam is
-        0.494 //0.5
-        ),
-    new Rotation3d(
-        0,
-        0,
-        0
-        ));
+            //How forward or backward the cam is from robot center
+            0, //0.5
+            //How left or right cam is from robot center
+            0, //0
+            //Measures how far up or down from the robot center the cam is
+            0.5 //0.5
+    ),
+            new Rotation3d(
+                    0,
+                    0,
+                    0
+            ));
     public static final Transform3d EoC2_OFFSET = new Transform3d(new Translation3d(
         //How forward or backward the came is from robot center
         -0.209, //0
@@ -62,8 +64,21 @@ public final class Tuning {
     public static final PIDConstants PATH_FOLLOWING_TRANSLATION_CONSTRAINTS = new PIDConstants(4, 0, 0);
     public static final PIDConstants PATH_FOLLOWING_ROTATION_CONSTRAINTS = new PIDConstants(0.6, 0, 0.05);
 
-    public static final double INTAKE_FRAME_P = 0;
-    public static final double INTAKE_FRAME_I = 0;
-    public static final double INTAKE_FRAME_D = 0;
-    public static final double INTAKE_FRAME_TOLERANCE = 0;
+    public static final double INTAKE_FRAME_P = 0.02;
+    public static final double INTAKE_FRAME_I = 0.0;
+    public static final double INTAKE_FRAME_D = 0.0;
+
+//     public static final double INTAKE_FRAME_P = 0.0;
+//     public static final double INTAKE_FRAME_I = 0.0;
+//     public static final double INTAKE_FRAME_D = 0.0;
+    public static final double INTAKE_FRAME_TOLERANCE = 0.5;
+
+    public static final double INDEXER_P = 0.1;
+    public static final double INDEXER_I = 0.0;
+    public static final double INDEXER_D = 0.0;
+
+    //frame left pos down: -0.23809510469436646
+    //frame right pos down: -0.21428579092025757
+    //frame left pos up: -21.71417999267578
+    //frame right pos up: -17.09520721435547
 }

@@ -40,6 +40,9 @@ import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.FRONT_L
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.FRONT_RIGHT_DRIVE_MOTOR_INVERTED;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.FRONT_RIGHT_STEER_ENCODER_OFFSET;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.FRONT_RIGHT_STEER_MOTOR_INVERTED;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.PIGEON_MOUNT_PITCH;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.PIGEON_MOUNT_ROLL;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.PIGEON_MOUNT_YAW;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.SWERVE_DRIVE_KINEMATICS;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.SWERVE_DRIVE_MAX_SPEED;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.BACK_LEFT_DRIVE_MOTOR;
@@ -89,7 +92,7 @@ public class Drivetrain implements TickedSubsystem {
     private final DoublePublisher pitch = NetworkTables.PublisherFactory(this.table, "pitch", 0);
     private final DoublePublisher roll = NetworkTables.PublisherFactory(this.table, "roll", 0);
 
-    // private final DoublePublisher rawPidgionVal = NetworkTables.PublisherFactory(this.table, "Pidgion Val", 0);
+    // private final DoublePublisher rawPigeonVal = NetworkTables.PublisherFactory(this.table, "Pideon Val", 0);
 
     private final DoublePublisher characterizationVolts = NetworkTables.PublisherFactory(this.table,
             "characterization volts", 0);
@@ -173,9 +176,9 @@ public class Drivetrain implements TickedSubsystem {
         this.gyro.reset();
 
         final Pigeon2Configuration bird = new Pigeon2Configuration();
-        bird.MountPose.MountPosePitch = 90;
-        bird.MountPose.MountPoseRoll = 0;
-        bird.MountPose.MountPoseYaw = -180;
+        bird.MountPose.MountPosePitch = PIGEON_MOUNT_PITCH;
+        bird.MountPose.MountPoseRoll = PIGEON_MOUNT_ROLL;
+        bird.MountPose.MountPoseYaw = PIGEON_MOUNT_YAW;
 
         this.gyro.getConfigurator().apply(bird);
 
@@ -226,9 +229,9 @@ public class Drivetrain implements TickedSubsystem {
 
 
         Rotation2d robotAngle = this.getGyroYaw().minus(this.fieldRelativeOffset);
-        if (DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red))) {
-            robotAngle = robotAngle.rotateBy(Rotation2d.fromDegrees(180));
-        }
+        // if (DriverStation.getAlliance().equals(Optional.of(DriverStation.Alliance.Red))) {
+        //     robotAngle = robotAngle.rotateBy(Rotation2d.fromDegrees(180));
+        // }
 
         var robotRelativeChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, robotAngle);
 
@@ -344,7 +347,7 @@ public class Drivetrain implements TickedSubsystem {
         this.backLeftModule.randomMusic();
         this.backRightModule.randomMusic();
     }
-     public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds) {
+    public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds) {
         poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds);
     }
     public void addVisionMeasurement(
@@ -353,7 +356,10 @@ public class Drivetrain implements TickedSubsystem {
     }
 
     @Override
-    public void periodic() {
+    public void periodic() {}
+
+    @Override
+    public void telem(){
         this.poseEstimator.update(
                 this.getGyroYaw(),
                 this.getSwerveModulePositions()
@@ -375,5 +381,9 @@ public class Drivetrain implements TickedSubsystem {
         this.yaw.set(getGyroYaw().getDegrees());
         this.pitch.set(getGyroPitch().getDegrees());
         this.roll.set(getGyroRoll().getDegrees());
+        this.frontRightModule.telem();
+        this.frontLeftModule.telem();
+        this.backRightModule.telem();
+        this.backLeftModule.telem();
     }
 }

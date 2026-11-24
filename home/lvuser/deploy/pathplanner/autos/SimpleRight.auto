@@ -1,0 +1,68 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RightStart to CenterAZ"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Toggle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Hood Down"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.3
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Transfer"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 12.0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot Toggle"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "EscondRight"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

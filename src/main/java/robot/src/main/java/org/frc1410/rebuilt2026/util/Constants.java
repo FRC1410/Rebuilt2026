@@ -54,32 +54,35 @@ public final class Constants {
     }
 
     // Robot constants
-    public static final double DRIVE_GEAR_RATIO = (50.0 / 16.0) * (17.0 / 27.0) * (45.0 / 15.0);
-//    public static final double DRIVE_L_TWO_GEAR_RATIO = (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0);
+    public static final double DRIVE_GEAR_RATIO = (54.0 / 16.0) * (25.0 / 32.0) * (30.0 / 15.0); //(Driven gear/Driving gear)
     public static final Distance WHEEL_RADIUS = Inches.of(2);
     public static final Distance WHEEL_CIRCUMFERENCE = WHEEL_RADIUS.times(2 * Math.PI);
     public static final Distance TRACKWIDTH_METERS = Meters.of(0.6032627);
 
     // Drive constants
-    public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(88.593750); //88.769531
-    public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(54.052734); //53.349609
-    public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(167.695312); //155.039062-180
-    public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(37.529297); //37.265625
+    public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(87.71484375); //87.535859375
+    public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(167.87109375); //54.052734375
+    public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(48.955078125); //50.712890625
+    public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(180-37.35); //37.44140625
+    // public static final Angle FRONT_LEFT_STEER_ENCODER_OFFSET = Degrees.of(0); //88.769531
+    // public static final Angle FRONT_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(0); //53.349609
+    // public static final Angle BACK_LEFT_STEER_ENCODER_OFFSET = Degrees.of(0); //155.039062-180
+    // public static final Angle BACK_RIGHT_STEER_ENCODER_OFFSET = Degrees.of(0); //37.265625
 
-    public static final boolean FRONT_LEFT_DRIVE_MOTOR_INVERTED = true;
-    public static final boolean FRONT_RIGHT_DRIVE_MOTOR_INVERTED = false;
-    public static final boolean BACK_LEFT_DRIVE_MOTOR_INVERTED = false;
-    public static final boolean BACK_RIGHT_DRIVE_MOTOR_INVERTED = false;
+    public static final boolean FRONT_LEFT_DRIVE_MOTOR_INVERTED = false;
+    public static final boolean FRONT_RIGHT_DRIVE_MOTOR_INVERTED = true;
+    public static final boolean BACK_LEFT_DRIVE_MOTOR_INVERTED = true;
+    public static final boolean BACK_RIGHT_DRIVE_MOTOR_INVERTED = true;
 
     public static final boolean FRONT_LEFT_STEER_MOTOR_INVERTED = false;
     public static final boolean FRONT_RIGHT_STEER_MOTOR_INVERTED = false;
     public static final boolean BACK_LEFT_STEER_MOTOR_INVERTED = false;
     public static final boolean BACK_RIGHT_STEER_MOTOR_INVERTED = false;
 
-    public static final Translation2d FRONT_LEFT_SWERVE_MODULE_LOCATION = new Translation2d(0.301625, 0.301625);
-    public static final Translation2d FRONT_RIGHT_SWERVE_MODULE_LOCATION = new Translation2d(0.301625, -0.301625);
-    public static final Translation2d BACK_LEFT_SWERVE_MODULE_LOCATION = new Translation2d(-0.301625, 0.301625);
-    public static final Translation2d BACK_RIGHT_SWERVE_MODULE_LOCATION = new Translation2d(-0.301625, -0.301625);
+    public static final Translation2d FRONT_LEFT_SWERVE_MODULE_LOCATION = new Translation2d(0.3048, 0.3048);
+    public static final Translation2d FRONT_RIGHT_SWERVE_MODULE_LOCATION = new Translation2d(0.3048, -0.3048);
+    public static final Translation2d BACK_LEFT_SWERVE_MODULE_LOCATION = new Translation2d(-0.3048, 0.3048);
+    public static final Translation2d BACK_RIGHT_SWERVE_MODULE_LOCATION = new Translation2d(-0.3048, -0.3048);
 
     public static final SwerveDriveKinematics SWERVE_DRIVE_KINEMATICS = new SwerveDriveKinematics(
             FRONT_LEFT_SWERVE_MODULE_LOCATION,
@@ -88,11 +91,11 @@ public final class Constants {
             BACK_RIGHT_SWERVE_MODULE_LOCATION
     );
 
-    public static final double slowMultiplier = 1;
-    public static final LinearVelocity SWERVE_DRIVE_MAX_SPEED = MetersPerSecond.of(5.5 * slowMultiplier);
-    public static final AngularVelocity SWERVE_DRIVE_MAX_ANGULAR_VELOCITY = DegreesPerSecond.of(570 * slowMultiplier);
-    public static final LinearAcceleration SWERVE_DRIVE_MAX_ACCELERATION = MetersPerSecondPerSecond.of(6 * slowMultiplier);
-    public static final AngularAcceleration SWERVE_DRIVE_MAX_ANGULAR_ACCELERATION = DegreesPerSecondPerSecond.of(1062 * slowMultiplier);
+    public static final double SLOW_MULTIPLIER = 1;
+    public static final LinearVelocity SWERVE_DRIVE_MAX_SPEED = MetersPerSecond.of(5.5 * SLOW_MULTIPLIER);
+    public static final AngularVelocity SWERVE_DRIVE_MAX_ANGULAR_VELOCITY = DegreesPerSecond.of(500 * SLOW_MULTIPLIER);
+    public static final LinearAcceleration SWERVE_DRIVE_MAX_ACCELERATION = MetersPerSecondPerSecond.of(6 * SLOW_MULTIPLIER);
+    public static final AngularAcceleration SWERVE_DRIVE_MAX_ANGULAR_ACCELERATION = DegreesPerSecondPerSecond.of(1062 * SLOW_MULTIPLIER);
 
     public static final double DRIVE_MOTOR_CURRENT_LIMIT = 40;
     public static final int STEER_MOTOR_CURRENT_LIMIT = 30;
@@ -118,10 +121,16 @@ public final class Constants {
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
 
-    public static final double INTAKE_FRAME_RAISED_POSITION = 10.0;
-    public static final double INTAKE_FRAME_LOWERED_POSITION = 0.0;
+    public static final int PIGEON_MOUNT_PITCH = 0;
+    public static final int PIGEON_MOUNT_ROLL = 90;
+    public static final int PIGEON_MOUNT_YAW = 0;
+
+    public static final double INTAKE_LEFT_FRAME_RAISED_POSITION = 0;
+    public static final double INTAKE_RIGHT_FRAME_RAISED_POSITION = 0;
+    public static final double INTAKE_LEFT_FRAME_LOWERED_POSITION = 21;
+    public static final double INTAKE_RIGHT_FRAME_LOWERED_POSITION = 21;
 
     public static final double HOOD_LOW_LEFT_SETPOINT = 0.0;
-    public static final double HOOD_LOW_RIGHT_SETPOINT = 0.5;
+    public static final double HOOD_LOW_RIGHT_SETPOINT = 0.8;
     public static final double HOOD_HIGH_LEFT_SETPOINT = 1.0;
 }

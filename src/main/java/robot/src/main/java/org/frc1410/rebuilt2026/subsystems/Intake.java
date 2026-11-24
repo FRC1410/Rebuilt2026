@@ -1,16 +1,19 @@
 package robot.src.main.java.org.frc1410.rebuilt2026.subsystems;
 
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import framework.src.main.java.org.frc1410.framework.scheduler.subsystem.TickedSubsystem;
-import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.*;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.INTAKE_FRAME_SPARK_LEFT;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.INTAKE_FRAME_SPARK_RIGHT;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.INTAKE_SPARK;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.INTAKE_TEST_SPARK;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
 
 public class Intake implements TickedSubsystem {
@@ -18,6 +21,7 @@ public class Intake implements TickedSubsystem {
     private final SparkMax intakeMotor;
     private final SparkMax intakeFrameLeft;
     private final SparkMax intakeFrameRight;
+    private final SparkMax intakeTestMotor;
     
     private final RelativeEncoder frameLeftEncoder;
     private final RelativeEncoder frameRightEncoder;
@@ -25,12 +29,14 @@ public class Intake implements TickedSubsystem {
     private double currentSpeed = 0;
     private double currentFrameSpeedLeft = 0;
     private double currentFrameSpeedRight = 0;
+    private double currentTestSpeed = 0;
 
     private final NetworkTable networkTable = NetworkTableInstance.getDefault().getTable("Intake Sparks");
 
     private final DoublePublisher currentSpeedPublisher = NetworkTables.PublisherFactory(networkTable, "Intake Power", currentSpeed);
-    private final DoublePublisher currentFrameLeftPublisher = NetworkTables.PublisherFactory(networkTable, "Frame Left Power", currentSpeed);
-    private final DoublePublisher currentFrameRightPublisher = NetworkTables.PublisherFactory(networkTable, "Frame Right Power", currentSpeed);
+    private final DoublePublisher currentFrameLeftPublisher = NetworkTables.PublisherFactory(networkTable, "Frame Left Power", currentFrameSpeedLeft);
+    private final DoublePublisher currentFrameRightPublisher = NetworkTables.PublisherFactory(networkTable, "Frame Right Power", currentFrameSpeedRight);
+    private final DoublePublisher currentTestSpeedPublisher = NetworkTables.PublisherFactory(networkTable, "Intake Test Power", currentTestSpeed);
     private final DoublePublisher frameLeftPositionPublisher = NetworkTables.PublisherFactory(networkTable, "Frame Left Position", 0.0);
     private final DoublePublisher frameRightPositionPublisher = NetworkTables.PublisherFactory(networkTable, "Frame Right Position", 0.0);
 
@@ -56,6 +62,13 @@ public class Intake implements TickedSubsystem {
 
         this.intakeFrameRight.configure(intakeFrameRightConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
         
+        this.intakeTestMotor = new SparkMax(INTAKE_TEST_SPARK, SparkLowLevel.MotorType.kBrushless);
+        SparkMaxConfig intakeTestMotorConfig = new SparkMaxConfig();
+        intakeTestMotorConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
+        intakeTestMotorConfig.smartCurrentLimit(30);
+
+        this.intakeTestMotor.configure(intakeTestMotorConfig, com.revrobotics.ResetMode.kNoResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
+
         this.frameLeftEncoder = this.intakeFrameLeft.getEncoder();
         this.frameRightEncoder = this.intakeFrameRight.getEncoder();
     }
@@ -82,12 +95,25 @@ public class Intake implements TickedSubsystem {
         currentFrameSpeedRight = rightSpeed;
     }
     
+    public double getTestSpeed() {
+        return this.intakeTestMotor.get();
+    }
+
+    public void setTestSpeed(double speed) {
+        currentTestSpeed = speed;
+    }
     public double getFrameLeftPosition() {
         return this.frameLeftEncoder.getPosition();
+    }
+    public void setFrameLeftPosition(double leftSpeed) {
+        currentFrameSpeedRight = leftSpeed;
     }
     
     public double getFrameRightPosition() {
         return this.frameRightEncoder.getPosition();
+    }
+    public void setFrameRightPosition(double rightSpeed) {
+        currentFrameSpeedRight = rightSpeed;
     }
     
     public void resetFrameEncoders() {
@@ -98,12 +124,18 @@ public class Intake implements TickedSubsystem {
     @Override
     public void periodic() {
         this.intakeMotor.set(currentSpeed);
-        this.currentSpeedPublisher.set(currentSpeed);
         this.intakeFrameLeft.set(currentFrameSpeedLeft);
-        this.currentFrameLeftPublisher.set(currentFrameSpeedLeft);
         this.intakeFrameRight.set(currentFrameSpeedRight);
+        this.intakeTestMotor.set(currentTestSpeed);
+    }
+
+    @Override
+    public void telem() {
+        this.currentSpeedPublisher.set(currentSpeed);
+        this.currentFrameLeftPublisher.set(currentFrameSpeedLeft);
         this.currentFrameRightPublisher.set(currentFrameSpeedRight);
         this.frameLeftPositionPublisher.set(this.frameLeftEncoder.getPosition());
         this.frameRightPositionPublisher.set(this.frameRightEncoder.getPosition());
+        this.currentTestSpeedPublisher.set(currentTestSpeed);
     }
 }

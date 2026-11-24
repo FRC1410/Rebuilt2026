@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.2
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "LeftStart to CenterAZ"
@@ -20,6 +26,12 @@
           "type": "path",
           "data": {
             "pathName": "Intake from IntakeLeft"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ReAlignLeft"
           }
         }
       ]

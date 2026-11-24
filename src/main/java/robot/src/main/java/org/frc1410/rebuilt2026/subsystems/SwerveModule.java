@@ -10,10 +10,10 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkFlexConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -50,7 +50,7 @@ public class SwerveModule implements TickedSubsystem {
 
 
     private final TalonFX driveMotor;
-    private final SparkFlex steerMotor;
+    private final SparkMax steerMotor;
 
     private final CANcoder steerEncoder;
 
@@ -99,20 +99,20 @@ public class SwerveModule implements TickedSubsystem {
         driveMotorConfig.CurrentLimits.SupplyCurrentLimit = DRIVE_MOTOR_CURRENT_LIMIT;
         driveMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
 
-        driveMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        driveMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         driveMotorConfig.MotorOutput.Inverted
                 = driveInverted ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
 
         this.driveMotor.getConfigurator().apply(driveMotorConfig);
 
         // Steer config
-        var sparkConfig = new SparkFlexConfig();
+        var sparkConfig = new SparkMaxConfig();
 
         sparkConfig.smartCurrentLimit(STEER_MOTOR_CURRENT_LIMIT);
         sparkConfig.idleMode(SparkBaseConfig.IdleMode.kBrake);
         sparkConfig.inverted(steerInverted);
 
-        this.steerMotor = new SparkFlex(steerMotorID, MotorType.kBrushless);
+        this.steerMotor = new SparkMax(steerMotorID, MotorType.kBrushless);
         this.steerMotor.configure(sparkConfig, com.revrobotics.ResetMode.kResetSafeParameters, com.revrobotics.PersistMode.kPersistParameters);
 
         // Steer encoder config
@@ -205,6 +205,7 @@ public class SwerveModule implements TickedSubsystem {
         return Meters.of(this.driveMotor.getPosition().getValue().in(Rotations) * WHEEL_CIRCUMFERENCE.in(Meters) / DRIVE_GEAR_RATIO);
     }
 
+    @SuppressWarnings("unused")
     private double motorEncoderAngle() {
         return this.steerMotor.getEncoder().getPosition();
     }
@@ -217,7 +218,10 @@ public class SwerveModule implements TickedSubsystem {
         );
 
         this.steerMotor.setVoltage(steerPIDOutput);
+    }
 
+    @Override
+    public void telem() {
         this.desiredVelocity.set(this.desiredState.speedMetersPerSecond);
         this.desiredAngle.set(this.desiredState.angle.getDegrees());
 
