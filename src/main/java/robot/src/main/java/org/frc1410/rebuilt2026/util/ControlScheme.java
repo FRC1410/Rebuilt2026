@@ -65,7 +65,7 @@ public class ControlScheme {
         HOOD_LOW_RIGHT = this.operatorController.LEFT_TRIGGER.button();
         HOOD_HIGH_LEFT = this.operatorController.RIGHT_STICK;
 
-        AUTO_ALIGN = this.driverController.LEFT_STICK;
+        AUTO_ALIGN = this.driverController.LEFT_BUMPER;
 
 
         SLOWMODE_TOGGLE = this.driverController.X;

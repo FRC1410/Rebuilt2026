@@ -53,7 +53,7 @@ public class Vision implements TickedSubsystem {
     public void autoAlign() {
         boolean found = false;
         for (Cam c : eyesOfCthulu) {
-            c.lookForTag(7);
+            c.lookForTag(19);
             if (Math.abs(c.returnCamYaw()) > Math.abs(calcMaxAngleError(c.returnCamDist())/5)) {
                 found = true;
                 // if (c.returnCamYaw() < 0.25 && c.returnCamYaw() > -0.25) {
