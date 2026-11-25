@@ -39,6 +39,8 @@ public class ControlScheme {
     public Button SLOWMODE_TOGGLE;
     public Button GUARDMODE_TOGGLE;
 
+    public Button AUTO_ALIGN;
+
     public ControlScheme(Controller C1, Controller C2) {
         driverController = C1;
         operatorController = C2;
@@ -59,7 +61,7 @@ public class ControlScheme {
         HOOD_HIGH_LEFT = this.operatorController.X;
 
 
-        TRANSFER = this.driverController.RIGHT_BUMPER;
+        TRANSFER = this.driverController.LEFT_BUMPER;
         TRANSFER2 = this.operatorController.DPAD_RIGHT;
 
         PASSING_ANGLE_LOCK = this.driverController.B;
@@ -67,6 +69,10 @@ public class ControlScheme {
 
         SLOWMODE_TOGGLE = this.driverController.RIGHT_STICK;
         GUARDMODE_TOGGLE = this.driverController.DPAD_DOWN;
+
+        AUTO_ALIGN = this.driverController.RIGHT_BUMPER;
+
+
         
         //Seb Op Controls:
         STORAGE_INTAKE = this.operatorController.LEFT_BUMPER;

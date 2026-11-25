@@ -23,6 +23,9 @@ import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.Toggle
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.DriveCommands.ToggleSlowmodeCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeAutoCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.IntakeCommands.IntakeCommand;
+import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Cam;
+import robot.src.main.java.org.frc1410.rebuilt2026.Vision.Vision;
+import robot.src.main.java.org.frc1410.rebuilt2026.commands.AutoAlign;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ResetCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.HoodTestCommand;
 import robot.src.main.java.org.frc1410.rebuilt2026.commands.ShooterCommands.MoveHoodCommand;
@@ -38,6 +41,10 @@ import robot.src.main.java.org.frc1410.rebuilt2026.subsystems.Storage;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.HOLONOMIC_AUTO_CONFIG;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.Constants.ROBOT_CONFIG;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.ControlScheme;
+import robot.src.main.java.org.frc1410.rebuilt2026.util.Tuning;
+
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.CAM_NAME1;
+import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.CAM_NAME2;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.DRIVER_CONTROLLER;
 import static robot.src.main.java.org.frc1410.rebuilt2026.util.IDs.OPERATOR_CONTROLLER;
 import robot.src.main.java.org.frc1410.rebuilt2026.util.NetworkTables;
@@ -67,8 +74,8 @@ public final class Robot extends PhaseDrivenRobot {
     // private final MoveHoodCommand moveHoodLowRightCommand = new MoveHoodCommand(shooter, HoodStates.LOW_RIGHT);
     private final MoveHoodCommand moveHoodHighLeftCommand = new MoveHoodCommand(shooter, HoodStates.HIGH_LEFT);
 
-    // Cam[] eyesOfCthulu = new Cam[]{new Cam(CAM_NAME1, EoC1_OFFSET, drivetrain::addVisionMeasurement), new Cam(CAM_NAME2, EoC2_OFFSET, drivetrain::addVisionMeasurement)};
-    // Vision kv = subsystems.track(new Vision(eyesOfCthulu, drivetrain));
+    Cam[] eyesOfCthulu = new Cam[]{new Cam(CAM_NAME1, Tuning.EoC1_OFFSET, drivetrain::addVisionMeasurement), new Cam(CAM_NAME2, Tuning.EoC2_OFFSET, drivetrain::addVisionMeasurement)};
+    Vision kv = subsystems.track(new Vision(eyesOfCthulu, drivetrain));
     private final Storage storage = subsystems.track(new Storage());
 
     private final StorageToggleCommand storageIntake = new StorageToggleCommand(storage, Storage.StorageStates.INTAKE);
@@ -204,6 +211,15 @@ public final class Robot extends PhaseDrivenRobot {
                 new ToggleGuardModeCommand(this.drivetrain),
                 TaskPersistence.GAMEPLAY
         );
+
+        this.scheduler.scheduleDefaultCommand(
+			new AutoAlign(
+				drivetrain, 
+				kv, 
+				scheme.AUTO_ALIGN
+			), 
+			TaskPersistence.GAMEPLAY
+		);
 
         this.scheduler.scheduleDefaultCommand(intakeCommand, TaskPersistence.GAMEPLAY);
         this.scheme.SHOOTING_TOGGLE.whileHeldOnce(shootingToggleCommand, TaskPersistence.GAMEPLAY);
